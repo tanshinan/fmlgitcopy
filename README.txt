@@ -1,1 +1,1 @@
-Here goes disussions and information regarding the specs for the VM
+Here goes all of the files and folders for the actuall VM implementation

@@ -1,0 +1,1 @@
+Here goes disussions and information regarding the specs for the VM

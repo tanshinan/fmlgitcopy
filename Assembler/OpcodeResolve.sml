@@ -95,12 +95,12 @@ struct
 		|numberOfArgs("EQL") = 2
 		|numberOfArgs("LES") = 2
 		|numberOfArgs("GRT") = 2
-		|numberOfArgs("BRL") = 2
-		|numberOfArgs("BRR") = 2
+		|numberOfArgs("BRL") = 1
+		|numberOfArgs("BRR") = 1
 		|numberOfArgs("AND") = 2
 		|numberOfArgs("ORR") = 2
 		|numberOfArgs("XOR") = 2
-		|numberOfArgs("NOT") = 2
+		|numberOfArgs("NOT") = 1
 		
 		|numberOfArgs("JMP") = 1
 		|numberOfArgs("JEQ") = 2
@@ -111,9 +111,9 @@ struct
 		
 		|numberOfArgs("HLT") = 0
 		|numberOfArgs("SEM") = 0
+		|numberOfArgs(_) = raise ASSEMBLER "Tried to parse an malformed expression\n"
 		
 fun validReadArguments("NOP") = []
-<<<<<<< HEAD
 		|validReadArguments("MOV") = [0,1,2,3,4,5,6]
 		
 		|validReadArguments("INC") = []
@@ -143,37 +143,50 @@ fun validReadArguments("NOP") = []
 		
 		|validReadArguments("HLT") = []
 		|validReadArguments("SEM") = []
-=======
-		|validReadArguments("MOV") = 2
+		|validReadArguments(_) = raise ASSEMBLER "Tried to parse an malformed expression\n"
+
+
+		fun validWriteArguments("NOP") = []
+		|validWriteArguments("MOV") = [0,10,20,30,40,50,60,70]
 		
-		|validReadArguments("INC") = 1
-		|validReadArguments("DEC") = 1
-		|validReadArguments("ADD") = 2
-		|validReadArguments("SUB") = 2
-		|validReadArguments("MUL") = 2
-		|validReadArguments("DIV") = 2
-		|validReadArguments("MOD") = 2
+		|validWriteArguments("INC") = [0,10]
+		|validWriteArguments("DEC") = [0,10]
+		|validWriteArguments("ADD") = [0,10,20,30,40,50,80]
+		|validWriteArguments("SUB") = [0,10,20,30,40,50,80]
+		|validWriteArguments("MUL") = [0,10,20,30,40,50,80]
+		|validWriteArguments("DIV") = [0,10,20,30,40,50,80]
+		|validWriteArguments("MOD") = [0,10,20,30,40,50,80]
 		
-		|validReadArguments("EQL") = 2
-		|validReadArguments("LES") = 2
-		|validReadArguments("GRT") = 2
-		|validReadArguments("BRL") = 2
-		|validReadArguments("BRR") = 2
-		|validReadArguments("AND") = 2
-		|validReadArguments("ORR") = 2
-		|validReadArguments("XOR") = 2
-		|validReadArguments("NOT") = 2
+		|validWriteArguments("EQL") = [0,10,20,30,40,50,80]
+		|validWriteArguments("LES") = [0,10,20,30,40,50,80]
+		|validWriteArguments("GRT") = [0,10,20,30,40,50,80]
+		|validWriteArguments("BRL") = []
+		|validWriteArguments("BRR") = []
+		|validWriteArguments("AND") = [0,10,20,30,40,50,80]
+		|validWriteArguments("ORR") = [0,10,20,30,40,50,80]
+		|validWriteArguments("XOR") = [0,10,20,30,40,50,80]
+		|validWriteArguments("NOT") = []
 		
-		|validReadArguments("JMP") = 1
-		|validReadArguments("JEQ") = 2
-		|validReadArguments("JLE") = 2
-		|validReadArguments("JGR") = 2
-		|validReadArguments("JSR") = 1
-		|validReadArguments("RET") = 0
+		|validWriteArguments("JMP") = []
+		|validWriteArguments("JEQ") = [0,10,20,30,40,50,80]
+		|validWriteArguments("JLE") = [0,10,20,30,40,50,80]
+		|validWriteArguments("JGR") = [0,10,20,30,40,50,80]
+		|validWriteArguments("JSR") = [0,10,20,30,40,50,80]
+		|validWriteArguments("RET") = []
 		
-		|validReadArguments("HLT") = 0
-		|validReadArguments("SEM") = 0
->>>>>>> 85685b3a7b03c1e87f4d32b3cd595658da8aa9ff
+		|validWriteArguments("HLT") = []
+		|validWriteArguments("SEM") = []
+		|validWriteArguments(_) = raise ASSEMBLER "Tried to parse an malformed expression\n"
+		
+		local
+			fun find([],a) = false
+			|find(x::xs,a) = (a = x) orelse find(xs,a)
+		in
+			fun isValidRead(m,a) = find(validReadArguments(m),a)
+			fun isValidWrite(m,a) = find(validWriteArguments(m),a)
+		end
+		
+		 
 	
 end
 (*

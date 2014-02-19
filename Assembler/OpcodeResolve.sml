@@ -113,35 +113,35 @@ struct
 		|numberOfArgs("SEM") = 0
 		
 fun validReadArguments("NOP") = []
-		|validReadArguments("MOV") = 2
+		|validReadArguments("MOV") = [0,1,2,3,4,5,6]
 		
-		|validReadArguments("INC") = 1
-		|validReadArguments("DEC") = 1
-		|validReadArguments("ADD") = 2
-		|validReadArguments("SUB") = 2
-		|validReadArguments("MUL") = 2
-		|validReadArguments("DIV") = 2
-		|validReadArguments("MOD") = 2
+		|validReadArguments("INC") = []
+		|validReadArguments("DEC") = []
+		|validReadArguments("ADD") = [0,1,2,3,4,5,6]
+		|validReadArguments("SUB") = [0,1,2,3,4,5,6]
+		|validReadArguments("MUL") = [0,1,2,3,4,5,6]
+		|validReadArguments("DIV") = [0,1,2,3,4,5,6]
+		|validReadArguments("MOD") = [0,1,2,3,4,5,6]
 		
-		|validReadArguments("EQL") = 2
-		|validReadArguments("LES") = 2
-		|validReadArguments("GRT") = 2
-		|validReadArguments("BRL") = 2
-		|validReadArguments("BRR") = 2
-		|validReadArguments("AND") = 2
-		|validReadArguments("ORR") = 2
-		|validReadArguments("XOR") = 2
-		|validReadArguments("NOT") = 2
+		|validReadArguments("EQL") = [0,1,2,3,4,5,6]
+		|validReadArguments("LES") = [0,1,2,3,4,5,6]
+		|validReadArguments("GRT") = [0,1,2,3,4,5,6]
+		|validReadArguments("BRL") = [0,1,2,3,4,5,6]
+		|validReadArguments("BRR") = [0,1,2,3,4,5,6]
+		|validReadArguments("AND") = [0,1,2,3,4,5,6]
+		|validReadArguments("ORR") = [0,1,2,3,4,5,6]
+		|validReadArguments("XOR") = [0,1,2,3,4,5,6]
+		|validReadArguments("NOT") = [0,1,2,3,4,5,6]
 		
-		|validReadArguments("JMP") = 1
-		|validReadArguments("JEQ") = 2
-		|validReadArguments("JLE") = 2
-		|validReadArguments("JGR") = 2
-		|validReadArguments("JSR") = 1
-		|validReadArguments("RET") = 0
+		|validReadArguments("JMP") = [0,1,3,4,5,6]
+		|validReadArguments("JEQ") = [0,1,2,3,4,5,6]
+		|validReadArguments("JLE") = [0,1,2,3,4,5,6]
+		|validReadArguments("JGR") = [0,1,2,3,4,5,6]
+		|validReadArguments("JSR") = [0,1,2,3,4,5,6]
+		|validReadArguments("RET") = []
 		
-		|validReadArguments("HLT") = 0
-		|validReadArguments("SEM") = 0
+		|validReadArguments("HLT") = []
+		|validReadArguments("SEM") = []
 	
 end
 (*

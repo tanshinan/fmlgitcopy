@@ -5,7 +5,8 @@ Git is silly..... It makes no sense
 Should we implement floating point arithmectis? No we shouldnt.
 
 DUUUDES!
-We now have a partially working assembler :) It handles the parsing and tokenization. There is only address resolution left to do.
+We now have a partially working assembler :) It handles the parsing and tokenization. 
+There is only address resolution left to do.
 
 This:
 	% This is just a comment

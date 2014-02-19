@@ -194,4 +194,4 @@ val lame_test = Resolve.resolveExpression(StringUtills.spaceSplit("NOP"));
 val lame_test = Resolve.resolveExpression(StringUtills.spaceSplit("MOV x [y]"));
 val lame_test = Resolve.resolveExpression(StringUtills.spaceSplit("INC x"));
 val lame_test = Resolve.resolveExpression(StringUtills.spaceSplit("JEQ s @bob"));
-*)
+hmmmmmmmm .....*)

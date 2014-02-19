@@ -12,13 +12,25 @@ struct
 	exception SYNTAX of string
 	exception ASSEMBLER of string
 	
+	(*
+		The SML plugin for eclipse bitches about some #"" things.
+		and yes i know its ugly
+		*)
 	val comment_flag = 37 (* Char.ord(#"%")*)
-	val label_flag = 35 (*Char.ord(#"#") gets flaged with a syntax error :/*)
+	val label_flag = 35 (*Char.ord(#"#")*)
 	val value_flag = 64 (*Char.ord(#"@")*)
 	val address_flag = 36 (*Char.ord(#"$")*) 
 	val base_adress = 0
 	
 	
+		(*
+			Yes i know that this is ugly but life sucks without side-effects.
+			
+			The Intermediate structure gets built up in the wrong order. The first lines will end upp on the bottom of the lists.
+			This is not the worst thing in the world. One just has to take it into account.
+			
+			The entries in label_list and value_list are in the same order (but reversed) as they appeared in the file.
+		*)
 		structure Inter =
 		struct
 			(*I(label_list,value_list,token_list,curretn_label,address)*)
@@ -85,13 +97,13 @@ struct
 
 
 
-	(*
+	(* scanLine
 	Scans one line and adds it to an intermediate structure
 	
 	Arguments:
-		line = Line to be scanned
-		l = Current line number
-		i = Current intermediate structure
+		line = 	Line to be scanned
+		l = 		Current line number
+		i = 		Current intermediate structure
 	*)
 	fun scanLine(line, i, l)  =
 		let
@@ -154,33 +166,36 @@ struct
 						case expression of
 						[m] => Inter.addToken(i,Ic(Resolve.mnemonic(m)))
 						|[m,w] => 
-											let
-												val assert_argument = Resolve.isValidWrite(m,Resolve.write(w)) orelse  (print (error(l,"Forbidden argument",line));raise SYNTAX "")
-												val assert_no_s = (w <> "$s") orelse  (print (error(l,"Forbidden argument",line));raise SYNTAX "")
-												val instruction = Inter.addToken(i,Ic(Resolve.mnemonic(m) + Resolve.write(w)))
-												
-											in
-												if resolveToken(w) = NONE then
-													instruction
-												else
-													Inter.addToken(instruction,Option.valOf(resolveToken(w)))
-											end
+							let
+								val assert_argument = Resolve.isValidWrite(m,Resolve.write(w)) orelse  (print (error(l,"Forbidden argument",line));raise SYNTAX "")
+								val assert_no_s = (w <> "$s") orelse  (print (error(l,"Forbidden argument",line));raise SYNTAX "")
+								val instruction = Inter.addToken(i,Ic(Resolve.mnemonic(m) + Resolve.write(w)))
+								
+							in
+								if resolveToken(w) = NONE then
+									instruction
+								else
+									Inter.addToken(instruction,Option.valOf(resolveToken(w)))
+							end
 						
-						|[m,r,w] => (*How do we handle the moving from A to A........*)
-											let
-												val assert_argument_write = Resolve.isValidWrite(m,Resolve.write(w)) orelse  (print (error(l,"Write argument is forbidden",line));raise SYNTAX "")
-												val assert_argument_read = Resolve.isValidRead(m,Resolve.read(r)) orelse  (print (error(l,"Read argument is forbidden",line));raise SYNTAX "")
-												val assert_no_s = ((w <> "$s") andalso (w <> "$s")) orelse  (print (error(l,"Forbidden argument",line));raise SYNTAX "")
-												val instruction = Inter.addToken(i,Ic(Resolve.mnemonic(m) + Resolve.write(w)+Resolve.read(r)))
-												
-											in
-													case (resolveToken(w),resolveToken(r)) of
-													(SOME(a),NONE) => Inter.addToken(instruction,Option.valOf(resolveToken(w)))
-													|(NONE,SOME(a)) => Inter.addToken(instruction,Option.valOf(resolveToken(r)))
-													|(NONE,NONE) => instruction
-													|(_,_) => (print (error(l,"Forbidden argument",line));raise SYNTAX "")
-													
-											end
+						|[m,r,w] => 
+							let
+								val assert_argument_write = Resolve.isValidWrite(m,Resolve.write(w)) orelse 
+										(print (error(l,"Write argument is forbidden",line));raise SYNTAX "")
+								val assert_argument_read = Resolve.isValidRead(m,Resolve.read(r)) orelse  
+										(print (error(l,"Read argument is forbidden",line));raise SYNTAX "")
+								val assert_no_s = ((w <> "$s") andalso (w <> "$s")) orelse  
+										(print (error(l,"Forbidden argument",line));raise SYNTAX "")
+								val instruction = Inter.addToken(i,Ic(Resolve.mnemonic(m) + Resolve.write(w)+Resolve.read(r)))
+								
+							in
+									case (resolveToken(w),resolveToken(r)) of
+									(SOME(a),NONE) => Inter.addToken(instruction,Option.valOf(resolveToken(w)))
+									|(NONE,SOME(a)) => Inter.addToken(instruction,Option.valOf(resolveToken(r)))
+									|(NONE,NONE) => instruction
+									|(_,_) => (print (error(l,"Forbidden argument",line));raise SYNTAX "")
+									
+							end
 						|_ => raise ASSEMBLER "OMG SERIOUSLY!?!?!?!?!"
 					end
 				)

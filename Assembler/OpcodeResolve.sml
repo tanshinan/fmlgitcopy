@@ -80,10 +80,73 @@ struct
 	|resolveExpression([m,a1]) = mnemonic(m)+read(a1)
 	|resolveExpression([m,a1,a2]) = mnemonic(m)+read(a1)+write(a2)
 	|resolveExpression(_) = raise ASSEMBLER "Tried to parse an malformed expression\n"
+	
+	fun numberOfArgs("NOP") = 0
+		|numberOfArgs("MOV") = 2
+		
+		|numberOfArgs("INC") = 1
+		|numberOfArgs("DEC") = 1
+		|numberOfArgs("ADD") = 2
+		|numberOfArgs("SUB") = 2
+		|numberOfArgs("MUL") = 2
+		|numberOfArgs("DIV") = 2
+		|numberOfArgs("MOD") = 2
+		
+		|numberOfArgs("EQL") = 2
+		|numberOfArgs("LES") = 2
+		|numberOfArgs("GRT") = 2
+		|numberOfArgs("BRL") = 2
+		|numberOfArgs("BRR") = 2
+		|numberOfArgs("AND") = 2
+		|numberOfArgs("ORR") = 2
+		|numberOfArgs("XOR") = 2
+		|numberOfArgs("NOT") = 2
+		
+		|numberOfArgs("JMP") = 1
+		|numberOfArgs("JEQ") = 2
+		|numberOfArgs("JLE") = 2
+		|numberOfArgs("JGR") = 2
+		|numberOfArgs("JSR") = 1
+		|numberOfArgs("RET") = 0
+		
+		|numberOfArgs("HLT") = 0
+		|numberOfArgs("SEM") = 0
+		
+fun validReadArguments("NOP") = []
+		|validReadArguments("MOV") = 2
+		
+		|validReadArguments("INC") = 1
+		|validReadArguments("DEC") = 1
+		|validReadArguments("ADD") = 2
+		|validReadArguments("SUB") = 2
+		|validReadArguments("MUL") = 2
+		|validReadArguments("DIV") = 2
+		|validReadArguments("MOD") = 2
+		
+		|validReadArguments("EQL") = 2
+		|validReadArguments("LES") = 2
+		|validReadArguments("GRT") = 2
+		|validReadArguments("BRL") = 2
+		|validReadArguments("BRR") = 2
+		|validReadArguments("AND") = 2
+		|validReadArguments("ORR") = 2
+		|validReadArguments("XOR") = 2
+		|validReadArguments("NOT") = 2
+		
+		|validReadArguments("JMP") = 1
+		|validReadArguments("JEQ") = 2
+		|validReadArguments("JLE") = 2
+		|validReadArguments("JGR") = 2
+		|validReadArguments("JSR") = 1
+		|validReadArguments("RET") = 0
+		
+		|validReadArguments("HLT") = 0
+		|validReadArguments("SEM") = 0
+	
 end
-
+(*
 val lame_test = Resolve.resolveExpression(StringUtills.spaceSplit("NOP"));
 val lame_test = Resolve.resolveExpression(StringUtills.spaceSplit("MOV x [y]"));
 val lame_test = Resolve.resolveExpression(StringUtills.spaceSplit("INC x"));
 val lame_test = Resolve.resolveExpression(StringUtills.spaceSplit("JEQ s @bob"));
-
+*)

@@ -1,4 +1,4 @@
-An address is written [addr].
+An address is written $.
 Values are added as is.
 An value is written @XXXX.
 A label is written #XXXX.

@@ -34,46 +34,42 @@ struct
 		
 		|mnemonic("HLT") = 100000
 		|mnemonic("SEM") = 200000
-		|mnemonic(_) = raise SYNTAX "Unknown mnemonic!\n"
+		|mnemonic(_) = raise ASSEMBLER "Unknown mnemonic!\n"
 	
 	fun read("x") = 0
 		|read("y") = 1
 		|read("s") = 2
-		|read("[x]") = 3
-		|read("[y]") = 4
+		|read("$x") = 3
+		|read("$y") = 4
 		|read("") = 0
 		|read(s) =
 			let
 				val head = Char.ord(List.hd(String.explode(s))); 
 			in
-				if (head = 91) orelse (head = 64) then (* 91 = "[" 64 = "@" *)
+				if (head = 36) orelse (head = 64) then (* 36 = "$" 64 = "@" *)
 					5
 				else
-					if Char.isDigit(Char.chr(head)) then
-						6
-					else
-						raise SYNTAX "Mallformed read argument\n"
+					6
+
 			end
 		
 	fun write("x") = 0
 		|write("y") = 10
 		|write("s") = 20
-		|write("[x]") = 30
-		|write("[y]") = 40
+		|write("$x") = 30
+		|write("$y") = 40
 		|write("q1") = 60
 		|write("q2") = 70
-		|write("") = 0
+		|write("") = raise ASSEMBLER "WTF!?\n"
 		|write(s) =
 			let
 				val head = Char.ord(List.hd(String.explode(s))); 
 			in
-				if (head = 91) orelse (head = 64) then (* 91 = "[" 64 = "@" *)
+				if (head = 36)then (* 36 = "$" 64 = "@" *)
 					50
 				else 
-					if Char.isDigit(Char.chr(head)) then
-						80
-					else
-						raise SYNTAX "Mallformed write argument\n"
+					80
+
 			end
 	
 	fun resolveExpression([m]) = mnemonic(m)
@@ -134,7 +130,7 @@ fun validReadArguments("NOP") = []
 		|validReadArguments("XOR") = [0,1,2,3,4,5,6]
 		|validReadArguments("NOT") = [0,1,2,3,4,5,6]
 		
-		|validReadArguments("JMP") = [0,1,3,4,5,6]
+		|validReadArguments("JMP") = []
 		|validReadArguments("JEQ") = [0,1,2,3,4,5,6]
 		|validReadArguments("JLE") = [0,1,2,3,4,5,6]
 		|validReadArguments("JGR") = [0,1,2,3,4,5,6]
@@ -167,7 +163,7 @@ fun validReadArguments("NOP") = []
 		|validWriteArguments("XOR") = [0,10,20,30,40,50,80]
 		|validWriteArguments("NOT") = []
 		
-		|validWriteArguments("JMP") = []
+		|validWriteArguments("JMP") = [0,10,20,30,40,50,80]
 		|validWriteArguments("JEQ") = [0,10,20,30,40,50,80]
 		|validWriteArguments("JLE") = [0,10,20,30,40,50,80]
 		|validWriteArguments("JGR") = [0,10,20,30,40,50,80]

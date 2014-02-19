@@ -1,5 +1,7 @@
 /.project
-
+/.gitignore
 /.project~
-/Specs
 /.settings
+/.gitignore.orig
+/.project.orig
+/.texlipse.orig

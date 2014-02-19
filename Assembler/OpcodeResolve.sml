@@ -113,6 +113,7 @@ struct
 		|numberOfArgs("SEM") = 0
 		
 fun validReadArguments("NOP") = []
+<<<<<<< HEAD
 		|validReadArguments("MOV") = [0,1,2,3,4,5,6]
 		
 		|validReadArguments("INC") = []
@@ -142,6 +143,37 @@ fun validReadArguments("NOP") = []
 		
 		|validReadArguments("HLT") = []
 		|validReadArguments("SEM") = []
+=======
+		|validReadArguments("MOV") = 2
+		
+		|validReadArguments("INC") = 1
+		|validReadArguments("DEC") = 1
+		|validReadArguments("ADD") = 2
+		|validReadArguments("SUB") = 2
+		|validReadArguments("MUL") = 2
+		|validReadArguments("DIV") = 2
+		|validReadArguments("MOD") = 2
+		
+		|validReadArguments("EQL") = 2
+		|validReadArguments("LES") = 2
+		|validReadArguments("GRT") = 2
+		|validReadArguments("BRL") = 2
+		|validReadArguments("BRR") = 2
+		|validReadArguments("AND") = 2
+		|validReadArguments("ORR") = 2
+		|validReadArguments("XOR") = 2
+		|validReadArguments("NOT") = 2
+		
+		|validReadArguments("JMP") = 1
+		|validReadArguments("JEQ") = 2
+		|validReadArguments("JLE") = 2
+		|validReadArguments("JGR") = 2
+		|validReadArguments("JSR") = 1
+		|validReadArguments("RET") = 0
+		
+		|validReadArguments("HLT") = 0
+		|validReadArguments("SEM") = 0
+>>>>>>> 85685b3a7b03c1e87f4d32b3cd595658da8aa9ff
 	
 end
 (*

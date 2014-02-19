@@ -51,11 +51,23 @@ struct
 					I(label_list,value_list, (current_pointer_name,0,a) :: ((pointer_name,n,t) :: rest), Label(current_pointer_name,i),address+1) (*if we change pointer*)
 				else
 					I(label_list,value_list, ((pointer_name,n+1,a) :: ((pointer_name,n,t) :: rest)), Label(current_pointer_name,i),address+1)
-					
+			
+			fun dumpTokenList(i) = 
+				let
+					val token_list = List.rev(getTokenList(i))
+					fun printPretty ([]) = ()
+					|printPretty((p,n,Ic(i))::xs) = (print (p ^"+"^ Int.toString(n)^":\t"^ Int.toString(i)  ^"\n"); printPretty(xs))
+					|printPretty((p,n,Ref(s))::xs) = (print (p ^"+"^ Int.toString(n)^":\t"^ s  ^"\n"); printPretty(xs))
+					|printPretty((p,n,Arg(i))::xs) = (print (p ^"+"^ Int.toString(n)^":\t"^ Int.toString(i)  ^"\n"); printPretty(xs)) 
+				in
+					printPretty(token_list)
+				end
 			
 		end
 	
 	val initial = Inter.initial
+	
+	fun dumpTokenList(i) = Inter.dumpTokenList(i)
 	
 	fun error(line_number,message,cause) = "\nSYNTAX ERROR!\n" ^ message ^ " at line: " ^ Int.toString(line_number) ^ "\n"
 				^ "Caused by: "  ^ cause ^"\n"
@@ -63,6 +75,14 @@ struct
 
 
 
+	(*
+	Scans one line and adds it to an intermediate structure
+	
+	Arguments:
+		line = Line to be scanned
+		l = Current line number
+		i = Current intermediate structure
+	*)
 	fun scanLine(line, i, l)  =
 		let
 			val line = StringUtills.trim(line)
@@ -136,18 +156,53 @@ struct
 													Inter.addToken(instruction,Option.valOf(resolveToken(w)))
 											end
 						
-						|[m,w,r] => i
+						|[m,r,w] => (*How do we handle the moving from A to A........*)
+											let
+												val assert_argument_write = Resolve.isValidWrite(m,Resolve.write(w)) orelse  (print (error(l,"Write argument is forbidden",line));raise SYNTAX "")
+												val assert_argument_read = Resolve.isValidRead(m,Resolve.read(r)) orelse  (print (error(l,"Read argument is forbidden",line));raise SYNTAX "")
+												val assert_no_s = ((w <> "$s") andalso (w <> "$s")) orelse  (print (error(l,"Forbidden argument",line));raise SYNTAX "")
+												val instruction = Inter.addToken(i,Ic(Resolve.mnemonic(m) + Resolve.write(w)+Resolve.read(r)))
+												
+											in
+													case (resolveToken(w),resolveToken(r)) of
+													(SOME(a),NONE) => Inter.addToken(instruction,Option.valOf(resolveToken(w)))
+													|(NONE,SOME(a)) => Inter.addToken(instruction,Option.valOf(resolveToken(r)))
+													|(NONE,NONE) => instruction
+													|(_,_) => (print (error(l,"Forbidden argument",line));raise SYNTAX "")
+													
+											end
 						|_ => raise ASSEMBLER "OMG SERIOUSLY!?!?!?!?!"
 					end
-				
 				)
 		)
 		end
+	
+	fun scanList([],i,n) = i
+	|scanList(x::xs,i,n) =scanList(xs,scanLine(x,i,n),n+1) 
 
 end
+(*
 val lol_test = Assembler.scanLine("%utter fitta och sådant trevligt", Assembler.initial,1);
 val lol_test = Assembler.scanLine("#lolTrol", lol_test,2);
 val lol_test = Assembler.scanLine("@roflol", lol_test,3);
 val lol_test = Assembler.scanLine("NOP", lol_test,4);
 val lol_test = Assembler.scanLine("INC x", lol_test,5);
 val lol_test = Assembler.scanLine("JMP lolTroll", lol_test,5);
+val lol_test = Assembler.scanLine("ADD x y", lol_test,6);
+val lol_test = Assembler.scanLine("JEQ x 123", lol_test,6);*)
+val asm_code = [
+"#start",
+"MOV 10 x",
+"MOV 189 y",
+"@result",
+"ADD x y",
+"MOV s $result",
+"#loop",
+"MOV $result x",
+"INC x",
+"JEQ 1000 s",
+"JMP loop",
+"MOV $result s",
+"HLT"
+];
+Assembler.dumpTokenList(Assembler.scanList(asm_code,Assembler.initial,1));

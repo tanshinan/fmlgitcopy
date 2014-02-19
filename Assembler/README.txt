@@ -1,10 +1,8 @@
-An address is written $.
+An dereferencing of address is written $addr.
 Values are added as is.
-An value is written @XXXX.
-A label is written #XXXX.
+An value is declared by @XXXX.
+A label is written #XXXX. 
 
-Unresolved addresses all point to 0 
-
-Labels are initialized by being written on a single line.
+Labels are initialized by being written on a single line as are values.
 Lines starting with % are ignored
 Move operations are on the form MOVE <from> <to>

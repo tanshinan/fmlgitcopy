@@ -55,10 +55,20 @@ struct
 			fun dumpTokenList(i) = 
 				let
 					val token_list = List.rev(getTokenList(i))
+					
+					fun makePretty(s) = 
+						case String.size(s) of
+						1 => "00000"^s
+						|2 => "0000"^s
+						|3 => "000"^s
+						|4 => "00"^s
+						|5 => "0"^s
+						|_ => s
+					
 					fun printPretty ([]) = ()
-					|printPretty((p,n,Ic(i))::xs) = (print (p ^"+"^ Int.toString(n)^":\t"^ Int.toString(i)  ^"\n"); printPretty(xs))
-					|printPretty((p,n,Ref(s))::xs) = (print (p ^"+"^ Int.toString(n)^":\t"^ s  ^"\n"); printPretty(xs))
-					|printPretty((p,n,Arg(i))::xs) = (print (p ^"+"^ Int.toString(n)^":\t"^ Int.toString(i)  ^"\n"); printPretty(xs)) 
+					|printPretty((p,n,Ic(i))::xs) = (print (p ^"+"^ Int.toString(n)^": "^ makePretty(Int.toString(i))  ^"\n"); printPretty(xs))
+					|printPretty((p,n,Ref(s))::xs) = (print (p ^"+"^ Int.toString(n)^": "^ s  ^"\n"); printPretty(xs))
+					|printPretty((p,n,Arg(i))::xs) = (print (p ^"+"^ Int.toString(n)^": "^ makePretty(Int.toString(i))  ^"\n"); printPretty(xs)) 
 				in
 					printPretty(token_list)
 				end
@@ -191,12 +201,19 @@ val lol_test = Assembler.scanLine("JMP lolTroll", lol_test,5);
 val lol_test = Assembler.scanLine("ADD x y", lol_test,6);
 val lol_test = Assembler.scanLine("JEQ x 123", lol_test,6);*)
 val asm_code = [
+"% This is just a comment",
+"% Here we have a label specifying that",
+"% all the instructions from here on should lie",
+"% after the adress wich will be assigned",
+"% to the #start pointer",
 "#start",
 "MOV 10 x",
 "MOV 189 y",
+"% This declares a adress pointer.",
 "@result",
 "ADD x y",
 "MOV s $result",
+"% Here we place a new label.",
 "#loop",
 "MOV $result x",
 "INC x",

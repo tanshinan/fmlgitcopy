@@ -113,7 +113,7 @@ struct
 		|numberOfArgs("SEM") = 0
 		|numberOfArgs(_) = raise ASSEMBLER "Tried to parse an malformed expression\n"
 		
-fun validReadArguments("NOP") = []
+fun validReadArguments("NOP") = [] 
 		|validReadArguments("MOV") = [0,1,2,3,4,5,6]
 		
 		|validReadArguments("INC") = []

@@ -1,0 +1,2 @@
+2014-02-20
+Kontroll av kod samt genomläsning av spces samt skapade filer för loggnig av arbete, och planering samt flöde.

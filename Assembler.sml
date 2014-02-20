@@ -233,6 +233,9 @@ struct
 			val value_list = List.rev(Inter.getValueList(i))
 			val label_list = List.rev(Inter.getLabelList(i))
 			
+			(*
+				Assigns each label pointer its correct adress
+			*)
 			fun resolveLabels([],[],current_label,current_adress) = []
 				|resolveLabels(label_list,[],current_label,current_adress) = []
 				|resolveLabels(label_list as (label :: rest_label),token_list as ((token as (name,offs,tok)) :: rest_token),NULL,current_adress) = 
@@ -250,6 +253,9 @@ struct
 						
 			val resolved_labels = resolveLabels(label_list,token_list,NULL,base_adress)
 
+			(*
+				Resolves any label pointer to its adress.
+			*)
 			fun firstPass(resolved_labels,[]) =[] 
 			|firstPass(resolved_labels,((label_name,offs,Ref(name)) :: token_rest)) = 
 				let

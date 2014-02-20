@@ -6,7 +6,7 @@ OS.FileSys.chDir(".");
 structure Assembler = 
 struct
 
-	datatype pointer = Label of (string * (int option)) | Value of (string * (int option)) | Null;
+	datatype pointer = Label of (string * (int option)) | Value of (string * (int option)) | NULL;
 	datatype token = Ic of int | Ref of string | Arg of int;
 	
 	exception SYNTAX of string
@@ -22,6 +22,17 @@ struct
 	val address_flag = 36 (*Char.ord(#"$")*) 
 	val base_adress = 0
 	
+	fun getPointerName(Label(name,_)) = name
+	|getPointerName(Value(name,_)) = name
+	|getPointerName(NULL) = raise ASSEMBLER "Got NULL???\n"
+	
+	fun getPointerAddress(Label(_,a)) = Option.valOf(a)
+	|getPointerAddress(Value(_,a)) = Option.valOf(a)
+	|getPointerAddress(NULL) = raise ASSEMBLER "Got NULL???\n"
+	
+	fun setPointerAddress(Label(name,_),a) = Label(name,SOME(a))
+	|setPointerAddress(Value(name,_),a) = Value(name,SOME(a))
+	|setPointerAddress(NULL,a) = raise ASSEMBLER "Got NULL???\n"
 	
 		(*
 			Yes i know that this is ugly but life sucks without side-effects.
@@ -36,7 +47,7 @@ struct
 			(*I(label_list,value_list,token_list,curretn_label,address)*)
 			datatype inter = I of ((pointer list) * (pointer list) * ((string*int*token) list) * pointer * int)
 			
-			val initial = I([],[],[],Null,0)
+			val initial = I([],[],[],NULL,0)
 			
 			fun getLabelList(I(label_list,value_list,token_list,current_label,address)) = label_list
 			fun getValueList(I(label_list,value_list,token_list,current_label,address)) = value_list
@@ -54,7 +65,7 @@ struct
 			fun addLabel(I(label_list,value_list,token_list,current_label,address), a) =I(a::label_list,value_list,token_list,current_label,address)
 			fun addValue(I(label_list,value_list,token_list,current_label,address), a) =I(label_list,a::value_list,token_list,current_label,address)
 			
-			fun addToken(I(label_list,value_list,token_list,Null,address), a) = raise SYNTAX "Cant use Null pointer\n"
+			fun addToken(I(label_list,value_list,token_list,NULL,address), a) = raise SYNTAX "Cant use NULL pointer\n"
 			|addToken(I(label_list,value_list,[],Label(current_pointer_name,i),address), a) = (*When list is empty*)
 				I(label_list,value_list, [(current_pointer_name,0,a)], Label(current_pointer_name,i),address+1)
 				
@@ -63,6 +74,10 @@ struct
 					I(label_list,value_list, (current_pointer_name,0,a) :: ((pointer_name,n,t) :: rest), Label(current_pointer_name,i),address+1) (*if we change pointer*)
 				else
 					I(label_list,value_list, ((pointer_name,n+1,a) :: ((pointer_name,n,t) :: rest)), Label(current_pointer_name,i),address+1)
+			
+			fun getTokenPointer(I(label_list,value_list,(name,offs,tok) :: token_list ,current_label,address)) = name
+			(*|getTokenPointer(I(label_list,value_list,[(name,offs,tok)],current_label,address)) = name*)
+			|getTokenPointer(I(label_list,value_list,[],current_label,address)) = raise ASSEMBLER "Tried to get name from empty token list"
 			
 			fun dumpTokenList(i) = 
 				let
@@ -182,10 +197,13 @@ struct
 							let
 								val assert_argument_write = Resolve.isValidWrite(m,Resolve.write(w)) orelse 
 										(print (error(l,"Write argument is forbidden",line));raise SYNTAX "")
+										
 								val assert_argument_read = Resolve.isValidRead(m,Resolve.read(r)) orelse  
 										(print (error(l,"Read argument is forbidden",line));raise SYNTAX "")
+										
 								val assert_no_s = ((w <> "$s") andalso (w <> "$s")) orelse  
 										(print (error(l,"Forbidden argument",line));raise SYNTAX "")
+										
 								val instruction = Inter.addToken(i,Ic(Resolve.mnemonic(m) + Resolve.write(w)+Resolve.read(r)))
 								
 							in
@@ -202,19 +220,68 @@ struct
 		)
 		end
 	
+	(*
+		Scans and tokenizes a list of strings. Creates the intermediate structure to be assembled.
+	*)
 	fun scanList([],i,n) = i
 	|scanList(x::xs,i,n) =scanList(xs,scanLine(x,i,n),n+1) 
+	
+	fun resolveAddresses(i) =
+		let
+			
+			val token_list = List.rev(Inter.getTokenList(i))
+			val value_list = List.rev(Inter.getValueList(i))
+			val label_list = List.rev(Inter.getLabelList(i))
+			
+			fun resolveLabels([],[],current_label,current_adress) = []
+			
+				|resolveLabels(label_list,[],current_label,current_adress) = []
+				
+				|resolveLabels(label_list as (label :: rest_label),token_list as ((token as (name,offs,tok)) :: rest_token),NULL,current_adress) = 
+					setPointerAddress(label,current_adress) :: resolveLabels(rest_label,rest_token,label,current_adress+1)
+		
+				|resolveLabels([],token_list as ((token as (name,offs,tok)) :: rest_token),current_label,current_adress) =
+					if getPointerName(current_label) = name then
+							resolveLabels(label_list,rest_token,current_label,current_adress+1)
+						else 
+							raise ASSEMBLER "Found un initialized label :("
+				
+				|resolveLabels(label_list as (label :: rest_label),token_list as ((token as (name,offs,tok)) :: rest_token),current_label,current_adress) =
+					if getPointerName(current_label)  =  name then
+						resolveLabels(label_list,rest_token,current_label,current_adress+1)
+					else 
+						setPointerAddress(label,current_adress) :: resolveLabels(rest_label,rest_token,label,current_adress+1)
+					
+			
+					
+			val resolved_labels = resolveLabels(label_list,token_list,NULL,base_adress)
+			
+			
+			fun firstPass(resolved_labels,[]) =[] 
+				
+			|firstPass(resolved_labels,((label_name,offs,Ref(name)) :: token_rest)) = 
+				let
+					val label_address = getPointerAddress(Option.valOf(List.find (fn x => (label_name = getPointerName(x))) resolved_labels))
+					val arg_adress = getPointerAddress(Option.valOf(List.find (fn x => (name = getPointerName(x))) resolved_labels))
+					handle Option => raise ASSEMBLER ("Couldnt find label    " ^ label_name)
+				in
+					(label_address+offs,Ic(arg_adress)) :: firstPass(resolved_labels,token_rest) 
+				end
+				
+			|firstPass(resolved_labels,((label_name,offs,a) :: token_rest)) = 
+				let
+					val label_address = getPointerAddress(Option.valOf(List.find (fn x => (label_name = getPointerName(x))) resolved_labels))
+					handle Option => raise ASSEMBLER ("Couldnt find label    " ^ label_name)
+				in
+					(label_address+offs,a : token) :: firstPass(resolved_labels,token_rest) 
+				end
+		in
+			(*resolved_labels*)
+			firstPass(resolved_labels,token_list)
+		end
 
 end
-(*
-val lol_test = Assembler.scanLine("%utter fitta och sådant trevligt", Assembler.initial,1);
-val lol_test = Assembler.scanLine("#lolTrol", lol_test,2);
-val lol_test = Assembler.scanLine("@roflol", lol_test,3);
-val lol_test = Assembler.scanLine("NOP", lol_test,4);
-val lol_test = Assembler.scanLine("INC x", lol_test,5);
-val lol_test = Assembler.scanLine("JMP lolTroll", lol_test,5);
-val lol_test = Assembler.scanLine("ADD x y", lol_test,6);
-val lol_test = Assembler.scanLine("JEQ x 123", lol_test,6);*)
+
 val asm_code = [
 "% This is just a comment",
 "% Here we have a label specifying that",
@@ -235,6 +302,16 @@ val asm_code = [
 "JEQ 1000 s",
 "JMP loop",
 "MOV $result s",
+"HLT",
+"#troll",
+"MOV $result x",
+"INC x",
+"JEQ 1000 s",
+"JMP loop",
+"MOV $result s",
 "HLT"
 ];
-Assembler.dumpTokenList(Assembler.scanList(asm_code,Assembler.initial,1));
+val intermediate_state = Assembler.scanList(asm_code,Assembler.initial,1);
+Assembler.dumpTokenList(intermediate_state);
+val fitta = Assembler.resolveAddresses(intermediate_state);
+Assembler.getPointerAddress(Option.valOf(List.find (fn x => ("start" = Assembler.getPointerName(x))) fitta))

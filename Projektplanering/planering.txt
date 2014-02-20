@@ -1,0 +1,19 @@
+Projektplannering för PKD 2013/2014
+
+Deltagare:
+Henrik Sommerland
+Oskar Ahlberg
+Aleksander Lundqvist
+
+Startdatum:
+
+Slutdatum:
+
+Projektbeskrivning samt Speccs,
+Se filen specs.pdf 
+samt drawing.svg
+i mappen .\fml\spesc\
+
+Milestones:
+
+Möteslogg:

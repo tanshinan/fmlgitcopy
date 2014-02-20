@@ -234,40 +234,33 @@ struct
 			val label_list = List.rev(Inter.getLabelList(i))
 			
 			fun resolveLabels([],[],current_label,current_adress) = []
-			
 				|resolveLabels(label_list,[],current_label,current_adress) = []
-				
 				|resolveLabels(label_list as (label :: rest_label),token_list as ((token as (name,offs,tok)) :: rest_token),NULL,current_adress) = 
 					setPointerAddress(label,current_adress) :: resolveLabels(rest_label,rest_token,label,current_adress+1)
-		
 				|resolveLabels([],token_list as ((token as (name,offs,tok)) :: rest_token),current_label,current_adress) =
 					if getPointerName(current_label) = name then
 							resolveLabels(label_list,rest_token,current_label,current_adress+1)
 						else 
 							raise ASSEMBLER "Found un initialized label :("
-				
 				|resolveLabels(label_list as (label :: rest_label),token_list as ((token as (name,offs,tok)) :: rest_token),current_label,current_adress) =
 					if getPointerName(current_label)  =  name then
 						resolveLabels(label_list,rest_token,current_label,current_adress+1)
 					else 
 						setPointerAddress(label,current_adress) :: resolveLabels(rest_label,rest_token,label,current_adress+1)
-					
-			
-					
+						
 			val resolved_labels = resolveLabels(label_list,token_list,NULL,base_adress)
-			
-			
+
 			fun firstPass(resolved_labels,[]) =[] 
-				
 			|firstPass(resolved_labels,((label_name,offs,Ref(name)) :: token_rest)) = 
 				let
 					val label_address = getPointerAddress(Option.valOf(List.find (fn x => (label_name = getPointerName(x))) resolved_labels))
-					val arg_adress = getPointerAddress(Option.valOf(List.find (fn x => (name = getPointerName(x))) resolved_labels))
-					handle Option => raise ASSEMBLER ("Couldnt find label    " ^ label_name)
+					val arg_address = (List.find (fn x => (name = getPointerName(x))) resolved_labels)
+					handle Option => raise ASSEMBLER ("Couldnt find label: " ^ label_name ^ " or " ^ name)
 				in
-					(label_address+offs,Ic(arg_adress)) :: firstPass(resolved_labels,token_rest) 
+					case arg_address of
+					NONE => (label_address+offs,Ref(name)) :: firstPass(resolved_labels,token_rest)
+					|SOME(a) => (label_address+offs,Ic(getPointerAddress(a))) :: firstPass(resolved_labels,token_rest) 
 				end
-				
 			|firstPass(resolved_labels,((label_name,offs,a) :: token_rest)) = 
 				let
 					val label_address = getPointerAddress(Option.valOf(List.find (fn x => (label_name = getPointerName(x))) resolved_labels))
@@ -275,9 +268,13 @@ struct
 				in
 					(label_address+offs,a : token) :: firstPass(resolved_labels,token_rest) 
 				end
+			
+			val pass1 = firstPass(resolved_labels,token_list)
+			
+			val max_address = #1(List.last(pass1)) 
 		in
 			(*resolved_labels*)
-			firstPass(resolved_labels,token_list)
+			List.last(pass1)
 		end
 
 end
@@ -314,4 +311,3 @@ val asm_code = [
 val intermediate_state = Assembler.scanList(asm_code,Assembler.initial,1);
 Assembler.dumpTokenList(intermediate_state);
 val fitta = Assembler.resolveAddresses(intermediate_state);
-Assembler.getPointerAddress(Option.valOf(List.find (fn x => ("start" = Assembler.getPointerName(x))) fitta))

@@ -1,6 +1,6 @@
-
+OS.FileSys.chDir("Utills");
 use "OpcodeResolve.sml";
-
+OS.FileSys.chDir(".");
 (*datatype intermediate = I of (((string*int) list) * ((string) list) * (( (string*int)*token) list))*)
 
 structure Assembler = 

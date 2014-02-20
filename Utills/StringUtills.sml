@@ -2,9 +2,7 @@ structure StringUtills =
 struct
 	exception SYNTAX of string
 	
-	(*
-		Splitts a string at every blankspace into a list of strings.
-	*)
+	
 	val space = 32 (*Char.ord(#" ")*)
 	
 	fun flatten l =
@@ -16,6 +14,9 @@ struct
 		flatten'(l,[],[])
 	end 
 	
+	(*
+		Splitts a string at every blankspace into a list of strings.
+	*)
 	fun spaceSplit("") = []
 	|spaceSplit(s) = 
 		let
@@ -29,7 +30,10 @@ struct
 			List.filter (fn x => x <> "") (split'(String.explode(s),[],[]))
 		end
 	
-	
+	(*
+		Removes all leading and trailing spaces characters and also runns of spaces.
+		This might get changed to remove all whitespace characters.
+	*)
 	fun trim(s) = 
 		let
 			fun trim'([],A1,A2,1) = List.rev(A2)
@@ -44,11 +48,14 @@ struct
 					trim'(xs,A1,A2,1)
 				else
 					trim'(xs,x::[],List.rev(A1)::A2,0)
-			|trim'(_,_,_,_) = raise SYNTAX "WTF!?!?!?!?!?!? \n"
+			|trim'(_,_,_,_) = raise SYNTAX "WTF!?!?!?!?!?!? \n" (*This should never ever happen. Just here to get rid of warning*)
 		in
 			String.implode(flatten(trim'(String.explode(s),[],[],1)))
 		end
 		
+		(*
+			Counts the number of words in a string.
+		*)
 		fun words(s) = List.length(spaceSplit(trim(s)))
 		
 end

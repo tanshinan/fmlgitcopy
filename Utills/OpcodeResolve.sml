@@ -3,7 +3,16 @@ structure Resolve =
 struct
 	exception SYNTAX of string
 	exception ASSEMBLER of string
-
+	
+	(*
+		¡MUY IMPORTANTE!
+		All these functions MUST addhere to the VM specifications	
+	*)
+	
+	
+	(*
+		You guys might want to write an inverse of this function to resolve valid arguments.
+	*)
 	fun mnemonic("NOP") = 000000
 		|mnemonic("MOV") = 000000
 		
@@ -36,6 +45,10 @@ struct
 		|mnemonic("SEM") = 200000
 		|mnemonic(_) = raise ASSEMBLER "Unknown mnemonic!\n"
 	
+	(*
+		This function is here to aid the assembler. 
+		It could be used by the VM implementation to reverse instructions into opcodes
+	*)
 	fun read("x") = 0
 		|read("y") = 1
 		|read("s") = 2
@@ -52,7 +65,11 @@ struct
 					6
 
 			end
-		
+	
+	(*
+		This function is here to aid the assembler. 
+		It could be used by the VM implementation to reverse instructions into opcodes
+	*)
 	fun write("x") = 0
 		|write("y") = 10
 		|write("s") = 20
@@ -60,7 +77,7 @@ struct
 		|write("$y") = 40
 		|write("q1") = 60
 		|write("q2") = 70
-		|write("") = raise ASSEMBLER "WTF!?\n"
+		|write("") = 0
 		|write(s) =
 			let
 				val head = Char.ord(List.hd(String.explode(s))); 

@@ -21,9 +21,8 @@
 \begin{document}
 \maketitle
 This VM is a very simple and minimalistic machine. It has an memory of
-arbitrary size which is specified at run-time. The memory works with signed
-integers of arbitrary size as words. The VM is asynchronous and each operation
-takes one step.
+arbitrary size which is specified at run-time. All data in the VM is signed
+integers. The VM is asynchronous and each operation takes one step.
 \section{Structure}
 The VM consists of 9 components. Two general purpouse registers(\x \ , \y ), one
 general purpose stack (\s), One virtual read only register (\A), One jump stack
@@ -76,7 +75,7 @@ VM crashing. The main part of the RAM is then sectioned in two two parts. One
 ``ordinary'' part and one external part. Prepherial components such as I/O
 handlers and such can only accsess the external memory.\\
 The two special addresses are -1 where the size of the entire memory is stored
-and -2 stores the address at which the external memory start.
+and -2 stores the address at which the external memory starts.
 
 \section{ISA}
 Every opcode is represented by a integer where each digit provides
@@ -178,17 +177,17 @@ and a exception should be thrown and the VM shall crash.
 The standard address jump (J) will jump the \pc \ to the address given by its
 read digit.\\
 The conditional jumps takes the write digit as its first argument and the read
-digit as its second argument. If the condition is met the \pc \ will be
-incremented by 1 (or 2 if \A \ is used) otherwise the \pc \ will be incremented
-by 2 (or 3 if \A \ is used).\\
+digit as its second argument. If the test fails the \pc \ will skipp the next
+instruction. This will require som tricks to implement. The VM must , at
+runtime, identify weather or not the following instruction takes up one or two
+memmory cells.\\
+
 A $J_{SR}$ (subroutine jump) will take a argument in \A \ and move the \pc \
 there and it will also put its current value on \J.\\
 A return jump will jump to the address at the top of \J \ and then pop the
 stack.If the jump where to be empty the VM should crash and an exception
 should be raised.\\
-For all jump operations the third and fourth digit must be 0 or the instruction
-is invalid and the VM should crash. The first and second digit will be ignored
-if they are not used.
+
 
 \subsubsection{Special}
 The two special operations exist. The Halt operation which just stops the VM and

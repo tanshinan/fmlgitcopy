@@ -20,6 +20,7 @@ struct
 	val label_flag = 35 (*Char.ord(#"#")*)
 	val value_flag = 64 (*Char.ord(#"@")*)
 	val address_flag = 36 (*Char.ord(#"$")*) 
+	val data_flag = 58 (*Char.ord(#":")*) 
 	val base_adress = 0
 	
 	fun getTokenName(Ref(name)) = name
@@ -186,6 +187,17 @@ struct
 						Inter.addValue(i,Value(line_tail,NONE))
 					end
 				)
+				
+				|58 => (*this is data*)(
+					let
+						val assert_length = (StringUtills.words(line_tail) = 1) orelse (print (error(l,"Mallformed value assignment",line));raise SYNTAX "")
+						val data = Int.fromString(line_tail)
+					in
+						case data of
+						SOME(n) => Inter.addToken(i,Arg(n))
+						|NONE => (print (error(l,"Data is not an integer",line));raise SYNTAX "")
+					end
+				)
 				|_ =>  (*this is magic*)(
 					let
 						(*<operation> <write> <read>*)
@@ -346,6 +358,7 @@ val asm_code = [
 "",
 "#start",
 "MOV 10 x",
+":99999",
 "",
 "MOV 189 y",
 "% This declares a adress pointer.",

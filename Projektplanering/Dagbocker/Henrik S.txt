@@ -4,3 +4,7 @@
 	Assembler now does address resolution for labels.
 21/2 10:30
 	Added support for empty lines to the Assembler.
+21/2 11:15
+	Assembler now does full address resolution
+21/2 17:00
+	Added support for raw data entry.

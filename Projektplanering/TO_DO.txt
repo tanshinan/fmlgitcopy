@@ -2,6 +2,9 @@ URGENT:
 	Approve on VM specifications.
 	Start work on VM implementation.
 
+	INPUT
+	OUTPUT OF STATE
+
 LESS URGENT:
 	Start writing report.
 	Construct I/O devices for the VM

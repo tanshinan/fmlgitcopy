@@ -1,4 +1,4 @@
-Projektplannering för PKD 2013/2014
+﻿Projektplannering för PKD 2013/2014
 
 Deltagare:
 Henrik Sommerland
@@ -7,7 +7,7 @@ Aleksander Lundqvist
 
 Startdatum:
 
-Slutdatum:
+Slutdatum:  6 7 mars
 
 Projektbeskrivning samt Speccs,
 Se filen specs.pdf 

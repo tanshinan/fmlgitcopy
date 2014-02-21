@@ -74,6 +74,7 @@ struct
 					I(label_list,value_list, (current_pointer_name,0,a) :: ((pointer_name,n,t) :: rest), Label(current_pointer_name,i),address+1) (*if we change pointer*)
 				else
 					I(label_list,value_list, ((pointer_name,n+1,a) :: ((pointer_name,n,t) :: rest)), Label(current_pointer_name,i),address+1)
+			|addToken(_,_) = raise ASSEMBLER "Something went horribly wrong :("
 			
 			fun getTokenPointer(I(label_list,value_list,(name,offs,tok) :: token_list ,current_label,address)) = name
 			(*|getTokenPointer(I(label_list,value_list,[(name,offs,tok)],current_label,address)) = name*)

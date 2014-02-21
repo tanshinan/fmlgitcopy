@@ -1,9 +1,7 @@
 URGENT:
-	Approve on VM specifications.
+	Approve on VM specifications. Se README_VM.txt for details regarding implementation.
 	Start work on VM implementation.
 
-	INPUT
-	OUTPUT OF STATE
 
 LESS URGENT:
 	Start writing report.

@@ -54,11 +54,18 @@ struct
 			String.implode(flatten(trim'(String.explode(s),[],[],1)))
 		end
 		
-		(*
-			Counts the number of words in a string.
-		*)
-		fun words(s) = List.length(spaceSplit(trim(s)))
-		
+	(*
+		Counts the number of words in a string.
+	*)
+	fun words(s) = List.length(spaceSplit(trim(s)))
+	
+	(*
+		This is cheating. It assumes that the new line is the last two charracters.
+		Wich ofcourse it will be for IO streams.
+	*)
+	fun removeNewLine(s) = String.substring(s,0,String.size(s)-1)
+
+
 end
 (*
 val test1 = StringUtills.spaceSplit("ABDSA ADSF @kesofitta [hamsterballe]");
@@ -66,3 +73,5 @@ val test2 = StringUtills.spaceSplit("NOP");
 val test3 = StringUtills.spaceSplit("MOV [x] x");
 val test4 = StringUtills.trim("   hej pa          dig     du lol");
 *)
+(*val test  = StringUtills.removeNewLine("snopp i kopp\n")*)
+

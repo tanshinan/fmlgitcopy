@@ -20,5 +20,11 @@ The VM will have to contain  a few things:
 	A method for printing the entire state of the machine in a nice way
 		does not have to print all of the RAM. Although a separate
 		dump memory function should exist
-	A method for typing in values to the memmory manually.
+	A method for typing in values to the memory manually.
+	A method for loading a program. The programs will come as a 
+		text file where each line is an integer. the first line is the
+		starting address of the file and the first line should not be
+		loaded into the memory. There will be a nice function for the 
+		input in the Utils/IO.sml file
+	
 	

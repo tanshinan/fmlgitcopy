@@ -35,9 +35,9 @@ struct
 		|mnemonic("NOT") = 009000
 		
 		|mnemonic("JMP") = 010000
-		|mnemonic("JEQ") = 020000
-		|mnemonic("JLE") = 030000
-		|mnemonic("JGR") = 040000
+		|mnemonic("BEQ") = 020000
+		|mnemonic("BLE") = 030000
+		|mnemonic("BGR") = 040000
 		|mnemonic("JSR") = 050000
 		|mnemonic("RET") = 060000
 		
@@ -116,9 +116,9 @@ struct
 		|numberOfArgs("NOT") = 1
 		
 		|numberOfArgs("JMP") = 1
-		|numberOfArgs("JEQ") = 2
-		|numberOfArgs("JLE") = 2
-		|numberOfArgs("JGR") = 2
+		|numberOfArgs("BEQ") = 2
+		|numberOfArgs("BLE") = 2
+		|numberOfArgs("BGR") = 2
 		|numberOfArgs("JSR") = 1
 		|numberOfArgs("RET") = 0
 		
@@ -148,9 +148,9 @@ fun validReadArguments("NOP") = []
 		|validReadArguments("NOT") = [0,1,2,3,4,5,6]
 		
 		|validReadArguments("JMP") = []
-		|validReadArguments("JEQ") = [0,1,2,3,4,5,6]
-		|validReadArguments("JLE") = [0,1,2,3,4,5,6]
-		|validReadArguments("JGR") = [0,1,2,3,4,5,6]
+		|validReadArguments("BEQ") = [0,1,2,3,4,5,6]
+		|validReadArguments("BLE") = [0,1,2,3,4,5,6]
+		|validReadArguments("BGR") = [0,1,2,3,4,5,6]
 		|validReadArguments("JSR") = [0,1,2,3,4,5,6]
 		|validReadArguments("RET") = []
 		
@@ -181,9 +181,9 @@ fun validReadArguments("NOP") = []
 		|validWriteArguments("NOT") = []
 		
 		|validWriteArguments("JMP") = [0,10,20,30,40,50,80]
-		|validWriteArguments("JEQ") = [0,10,20,30,40,50,80]
-		|validWriteArguments("JLE") = [0,10,20,30,40,50,80]
-		|validWriteArguments("JGR") = [0,10,20,30,40,50,80]
+		|validWriteArguments("BEQ") = [0,10,20,30,40,50,80]
+		|validWriteArguments("BLE") = [0,10,20,30,40,50,80]
+		|validWriteArguments("BGR") = [0,10,20,30,40,50,80]
 		|validWriteArguments("JSR") = [0,10,20,30,40,50,80]
 		|validWriteArguments("RET") = []
 		
@@ -206,5 +206,5 @@ end
 val lame_test = Resolve.resolveExpression(StringUtills.spaceSplit("NOP"));
 val lame_test = Resolve.resolveExpression(StringUtills.spaceSplit("MOV x [y]"));
 val lame_test = Resolve.resolveExpression(StringUtills.spaceSplit("INC x"));
-val lame_test = Resolve.resolveExpression(StringUtills.spaceSplit("JEQ s @bob"));
+val lame_test = Resolve.resolveExpression(StringUtills.spaceSplit("BEQ s @bob"));
 hmmmmmmmm .....*)

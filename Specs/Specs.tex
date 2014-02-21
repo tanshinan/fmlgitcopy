@@ -113,7 +113,7 @@ Arit &  & $++$ & $--$ & $+$ & $-$ & $\star$ & $\div$ & \%  &  & \\
 
 Logic &  &  $=$ & $<$ & $>$ & $<<$ & $>>$ & and & or & xor & not\\
 
-Jump & & J & J_{=} & J_{<} & J_{>} & J_{SR} & Ret & & & \\
+Jump & & J & B_{=} & B_{<} & B_{>} & J_{SR} & Ret & & & \\
 
 Special & & H & Se &  &  &  &  &  &  &  \\	
 \end{tabular}
@@ -186,7 +186,7 @@ and a exception should be thrown and the VM shall crash.
 \subsubsection{Jump operations}
 The standard address jump (J) will jump the \pc \ to the address given by its
 read digit.\\
-The conditional jumps takes the write digit as its first argument and the read
+The conditional breaks takes the write digit as its first argument and the read
 digit as its second argument. If the test fails the \pc \ will skipp the next
 instruction. This will require som tricks to implement. The VM must , at
 runtime, identify weather or not the following instruction takes up one or two
@@ -235,9 +235,9 @@ Args
 \V+NOT+ & Not		& r & r & w & r & r & r & r & 2 \\
 \hline
 \V+JMP+ & Jump		& r & r & x & r & r & r & r & 1 \\
-\V+JEQ+ & Jump Equal& r & r & r & r & r & r & r & 2 \\
-\V+JLE+ & Jump Less	& r & r & r & r & r & r & r & 2 \\
-\V+JGR+ & Jump Greater& r & r & r & r & r & r & r & 2 \\
+\V+BEQ+ & Jump Equal& r & r & r & r & r & r & r & 2 \\
+\V+BLE+ & Jump Less	& r & r & r & r & r & r & r & 2 \\
+\V+BGR+ & Jump Greater& r & r & r & r & r & r & r & 2 \\
 \V+JSR+ & Subroutine Jump& r & r & x & r & r & r & r & 1 \\
 \V+RET+ & Return Jump& x & x & x & x & x & x & x & 0 \\
 \hline

@@ -1,7 +1,9 @@
+val current_dir = OS.FileSys.getDir();
 OS.FileSys.chDir("Utills");
-use "OpcodeResolve.sml";
-OS.FileSys.chDir(".");
-(*datatype intermediate = I of (((string*int) list) * ((string) list) * (( (string*int)*token) list))*)
+use "OpcodeResolve.sml"; (*allso imports StringUtills.sml*)
+use "IO.sml";
+OS.FileSys.chDir(current_dir);
+
 
 structure Assembler = 
 struct
@@ -142,7 +144,9 @@ struct
 					String.implode(List.tl(String.explode(line)))
 				else
 					""
-				
+			(*
+				This odd function makes sure that only references and non register arguments are processed.
+			*)
 			fun resolveToken("x") = NONE
 			|resolveToken("y") = NONE
 			|resolveToken("s") = NONE
@@ -205,13 +209,14 @@ struct
 						val number_of_args = Resolve.numberOfArgs(List.hd(expression))
 						val assert_length = (number_of_args = (List.length(expression)-1)) orelse (print (error(l,"To many arguments",line));raise SYNTAX "")
 
+						
 					in
 						case expression of
 						[m] => Inter.addToken(i,Ic(Resolve.mnemonic(m)))
 						|[m,w] => 
 							let
-								val assert_argument = Resolve.isValidWrite(m,Resolve.write(w)) orelse  (print (error(l,"Forbidden argument",line));raise SYNTAX "")
-								val assert_no_s = (w <> "$s") orelse  (print (error(l,"Forbidden argument",line));raise SYNTAX "")
+								val assert_argument = Resolve.isValidWrite(m,Resolve.write(w)) orelse  (print (error(l,"Forbidden write argument",line));raise SYNTAX "")
+								val assert_no_s = (w <> "$s") orelse  (print (error(l,"Can't use stack as pointer",line));raise SYNTAX "")
 								val instruction = Inter.addToken(i,Ic(Resolve.mnemonic(m) + Resolve.write(w)))
 								
 							in
@@ -230,7 +235,7 @@ struct
 										(print (error(l,"Read argument is forbidden",line));raise SYNTAX "")
 										
 								val assert_no_s = ((w <> "$s") andalso (w <> "$s")) orelse  
-										(print (error(l,"Forbidden argument",line));raise SYNTAX "")
+										(print (error(l,"Can't use stack as pointer",line));raise SYNTAX "")
 										
 								val instruction = Inter.addToken(i,Ic(Resolve.mnemonic(m) + Resolve.write(w)+Resolve.read(r)))
 								
@@ -239,7 +244,7 @@ struct
 									(SOME(a),NONE) => Inter.addToken(instruction,Option.valOf(resolveToken(w)))
 									|(NONE,SOME(a)) => Inter.addToken(instruction,Option.valOf(resolveToken(r)))
 									|(NONE,NONE) => instruction
-									|(_,_) => (print (error(l,"Forbidden argument",line));raise SYNTAX "")
+									|(_,_) => (print (error(l,"Cant use two arbitrary arguments",line));raise SYNTAX "")
 									
 							end
 						|_ => raise ASSEMBLER "OMG SERIOUSLY!?!?!?!?!"
@@ -254,7 +259,7 @@ struct
 	fun scanList([],i,n) = i
 	|scanList(x::xs,i,n) =scanList(xs,scanLine(x,i,n),n+1) 
 	
-	fun resolveAddresses(i) =
+	fun resolveAddresses(i,base_address) =
 		let
 			
 			val token_list = List.rev(Inter.getTokenList(i))
@@ -319,7 +324,7 @@ struct
 			|secondPass(resolved_values,(addr,Ref(name)) :: rest) =
 				let
 					val value_address = getPointerAddress(Option.valOf(List.find (fn x => (name = getPointerName(x))) resolved_values))
-					handle Option => raise ASSEMBLER ("Couldnt find token" ^ name)
+					handle Option => raise ASSEMBLER ("Couldnt find token " ^ name)
 				in
 					(addr,Ic(value_address)) :: secondPass(resolved_values,rest)
 				end
@@ -344,44 +349,35 @@ struct
 			in
 				start_address :: finalize'(token_list)
 			end
-end
+			
+		fun assemble(input_file,output_file,base_address,verbose)=
+			let
+				fun msg(true,m) = print(m)
+				|msg(false,_) = ()
+			
+				(*read input*)
+				val input_list = IO_Handler.fileToLineList(input_file)
+				val verb = msg(verbose,"Read input file.\n")
+				
+				(*do tokenization*)
+				val intermediate_state = scanList(input_list,initial,1);
+				val verb = msg(verbose,"Did lexical analysis completed.\n")
+				val dump = 
+					case verbose of
+					true => dumpTokenList(intermediate_state)
+					|false => ()
+					
+				(*resolve adresses*)
+				val resolved_code = resolveAddresses(intermediate_state,base_address)
+				val verb = msg(verbose,"Resloved addresses like a boss.\n")
+				
+				(*finalize*)
+				val finalized_code = finalize(resolved_code)
+				val verb = msg(verbose,"finalized code!.\n")
+				(*output*)
+			in
+				IO_Handler.writeIntListFile(output_file,finalized_code)
+			end
+end;
 
-val asm_code = [
-"% This is just a comment",
-"% Here we have a label specifying that",
-"% all the instructions from here on should lie",
-"% after the adress wich will be assigned",
-"% to the #start pointer",
-"",
-"",
-"",
-"",
-"#start",
-"MOV 10 x",
-":99999",
-"",
-"MOV 189 y",
-"% This declares a adress pointer.",
-"@result",
-"ADD x y",
-"MOV s $result",
-"% Here we place a new label.",
-"#loop",
-"MOV $result x",
-"INC x",
-"JEQ 1000 s",
-"JMP loop",
-"MOV $result s",
-"HLT",
-"#troll",
-"MOV $result x",
-"@Another_test",
-"INC x",
-"JEQ 1000 s",
-"JMP loop",
-"MOV $result s",
-"HLT"
-];
-val intermediate_state = Assembler.scanList(asm_code,Assembler.initial,1);
-(*Assembler.dumpTokenList(intermediate_state)*)
-val fitta = Assembler.finalize(Assembler.resolveAddresses(intermediate_state));
+Assembler.assemble("in.asm","out.fml",0,true);

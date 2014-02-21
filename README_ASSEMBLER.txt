@@ -7,3 +7,6 @@ Data is entered :nnn
 
 Labels are initialized by being written on a single line as are values.
 Move operations are on the form MOVE <from> <to>
+
+As of now the assembler reads a file called "in.asm" and outputs the
+data to "out.fml"

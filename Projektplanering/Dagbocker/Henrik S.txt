@@ -1,10 +1,35 @@
 20/2 14:00
 	Started working on the address resolution for the VM.
+	
 20/2 16:50
 	Assembler now does address resolution for labels.
+	
 21/2 10:30
 	Added support for empty lines to the Assembler.
+	Finalized the specs.
+	Wrote specification regarding the implementation of the VM.
+	
 21/2 11:15
-	Assembler now does full address resolution
+	Assembler now does full address resolution.
+	
 21/2 17:00
 	Added support for raw data entry.
+	
+21/2 21:58
+	Created a Utilities structure for handling I/O.
+	Encountered severe problems writing text to files.
+		Posted stack exchange question about it but
+		being a rookie i then found the answer on my
+		own.
+		The online documentation for TEXT_IO is very vague
+		and slightly misleading. But i answered my own question
+		and detailed the solution here:
+		http://stackoverflow.com/questions/21945019/textio-outputsubstr-does-not-write-anything
+		
+21/2 23:05
+	Whilst the other kids are out getting drunk and having sex
+	I just finished the assembler :P
+		There is room for some improvement still.
+	Also took backup of entire project in case someone screws up with git.
+	Did some changes to the VM specs. Renamed the conditional jumping to
+	branching. Its what I'm used to from the C64.

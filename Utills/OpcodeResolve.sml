@@ -2,7 +2,7 @@ use "StringUtills.sml";
 structure Resolve =
 struct
 	exception SYNTAX of string
-	exception ASSEMBLER of string
+	exception RESOLVE of string
 	
 	(*
 		¡MUY IMPORTANTE!
@@ -43,7 +43,7 @@ struct
 		
 		|mnemonic("HLT") = 100000
 		|mnemonic("SEM") = 200000
-		|mnemonic(_) = raise ASSEMBLER "Unknown mnemonic!\n"
+		|mnemonic(_) = raise RESOLVE "Unknown mnemonic!\n"
 	
 	(*
 		This function is here to aid the assembler. 
@@ -92,7 +92,7 @@ struct
 	fun resolveExpression([m]) = mnemonic(m)
 	|resolveExpression([m,a1]) = mnemonic(m)+read(a1)
 	|resolveExpression([m,a1,a2]) = mnemonic(m)+read(a1)+write(a2)
-	|resolveExpression(_) = raise ASSEMBLER "Tried to parse an malformed expression\n"
+	|resolveExpression(_) = raise RESOLVE "Tried to parse an malformed expression\n"
 	
 	fun numberOfArgs("NOP") = 0
 		|numberOfArgs("MOV") = 2
@@ -124,7 +124,7 @@ struct
 		
 		|numberOfArgs("HLT") = 0
 		|numberOfArgs("SEM") = 0
-		|numberOfArgs(_) = raise ASSEMBLER "Tried to parse an malformed expression\n"
+		|numberOfArgs(_) = raise RESOLVE "Tried to parse an malformed expression\n"
 		
 fun validReadArguments("NOP") = [] 
 		|validReadArguments("MOV") = [0,1,2,3,4,5,6]
@@ -156,7 +156,7 @@ fun validReadArguments("NOP") = []
 		
 		|validReadArguments("HLT") = []
 		|validReadArguments("SEM") = []
-		|validReadArguments(_) = raise ASSEMBLER "Tried to parse an malformed expression\n"
+		|validReadArguments(_) = raise RESOLVE "Tried to parse an malformed expression\n"
 
 
 		fun validWriteArguments("NOP") = []
@@ -189,7 +189,7 @@ fun validReadArguments("NOP") = []
 		
 		|validWriteArguments("HLT") = []
 		|validWriteArguments("SEM") = []
-		|validWriteArguments(_) = raise ASSEMBLER "Tried to parse an malformed expression\n"
+		|validWriteArguments(_) = raise RESOLVE "Tried to parse an malformed expression\n"
 		
 		local
 			fun find([],a) = false

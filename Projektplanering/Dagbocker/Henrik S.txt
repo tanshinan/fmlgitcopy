@@ -2,3 +2,5 @@
 	Started working on the address resolution for the VM.
 20/2 16:50
 	Assembler now does address resolution for labels.
+21/2 10:30
+	Added support for empty lines to the Assembler.

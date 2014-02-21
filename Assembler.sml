@@ -22,6 +22,13 @@ struct
 	val address_flag = 36 (*Char.ord(#"$")*) 
 	val base_adress = 0
 	
+	fun getTokenName(Ref(name)) = name
+	|getTokenName(_) = raise ASSEMBLER "Token is not a Reference"
+	
+	fun getTokenValue(Arg(a)) = a
+	|getTokenValue(Ic(a)) = a
+	|getTokenValue(_) = raise ASSEMBLER "Cant get value from a refference"
+	
 	fun getPointerName(Label(name,_)) = name
 	|getPointerName(Value(name,_)) = name
 	|getPointerName(NULL) = raise ASSEMBLER "Got NULL???\n"
@@ -124,33 +131,41 @@ struct
 	fun scanLine(line, i, l)  =
 		let
 			val line = StringUtills.trim(line)
-			val line_head = Char.ord(List.hd(String.explode(line)))
-			val line_tail = String.implode(List.tl(String.explode(line)))
-			
-				fun resolveToken("x") = NONE
-				|resolveToken("y") = NONE
-				|resolveToken("s") = NONE
-				|resolveToken("$x") = NONE
-				|resolveToken("$y") = NONE
-				|resolveToken("q1") = NONE
-				|resolveToken("q2") = NONE
-				|resolveToken(a) =
-					let
-						val char_list = String.explode(a)
-						val assert_length = 
-							if Char.ord(List.hd(char_list)) = address_flag then
-								(List.length(char_list) >= 2) orelse (print (error(l,"Mallformed argument",line));raise SYNTAX "")
-							else
-								(List.length(char_list) >= 1) orelse (print (error(l,"Mallformed argument",line));raise SYNTAX "")
-					in
-						if (List.all (fn x => Char.isDigit(x)) char_list) then
-							SOME(Arg(Option.valOf(Int.fromString(a))))
-						else 
-							if Char.ord(List.hd(char_list)) = address_flag then
-								SOME(Ref(String.implode(List.tl(char_list))))
-							else
-								SOME(Ref(String.implode(char_list)))
-					end
+			val line_head = 
+				if String.explode(line) <> [] then
+					Char.ord(List.hd(String.explode(line)))
+				else
+					comment_flag
+			val line_tail = 
+				if line <> "" then
+					String.implode(List.tl(String.explode(line)))
+				else
+					""
+				
+			fun resolveToken("x") = NONE
+			|resolveToken("y") = NONE
+			|resolveToken("s") = NONE
+			|resolveToken("$x") = NONE
+			|resolveToken("$y") = NONE
+			|resolveToken("q1") = NONE
+			|resolveToken("q2") = NONE
+			|resolveToken(a) =
+				let
+					val char_list = String.explode(a)
+					val assert_length = 
+						if Char.ord(List.hd(char_list)) = address_flag then
+							(List.length(char_list) >= 2) orelse (print (error(l,"Mallformed argument",line));raise SYNTAX "")
+						else
+							(List.length(char_list) >= 1) orelse (print (error(l,"Mallformed argument",line));raise SYNTAX "")
+				in
+					if (List.all (fn x => Char.isDigit(x)) char_list) then
+						SOME(Arg(Option.valOf(Int.fromString(a))))
+					else 
+						if Char.ord(List.hd(char_list)) = address_flag then
+							SOME(Ref(String.implode(List.tl(char_list))))
+						else
+							SOME(Ref(String.implode(char_list)))
+				end
 
 		in
 		(
@@ -256,6 +271,8 @@ struct
 
 			(*
 				Resolves any label pointer to its adress.
+				
+				returns a list of (adress,token).
 			*)
 			fun firstPass(resolved_labels,[]) =[] 
 			|firstPass(resolved_labels,((label_name,offs,Ref(name)) :: token_rest)) = 
@@ -279,11 +296,42 @@ struct
 			val pass1 = firstPass(resolved_labels,token_list)
 			
 			val max_address = #1(List.last(pass1)) 
+			
+			fun resolveValues([],address) = []
+			|resolveValues(value :: rest,address) =
+			setPointerAddress(value,address) :: resolveValues(rest,address+1)
+			
+			val resolved_values = resolveValues(value_list,max_address)
+			
+			fun secondPass(resolved_values,[]) = []
+			|secondPass(resolved_values,(addr,Ref(name)) :: rest) =
+				let
+					val value_address = getPointerAddress(Option.valOf(List.find (fn x => (name = getPointerName(x))) resolved_values))
+					handle Option => raise ASSEMBLER ("Couldnt find token" ^ name)
+				in
+					(addr,Ic(value_address)) :: secondPass(resolved_values,rest)
+				end
+			|secondPass(resolved_values,(addr,t) :: rest) =
+				(addr,t) :: secondPass(resolved_values,rest)
+			
+			val pass2 = secondPass(resolved_values,pass1)
+			
 		in
-			(*resolved_labels*)
-			List.last(pass1)
+			pass2
 		end
-
+		
+		fun finalize(token_list) = 
+			let
+				val start_address = #1(List.hd(token_list))
+				
+				fun finalize'([]) = []
+				|finalize'((_,Ref(_)) ::rest) = raise ASSEMBLER "Not all refferences where resolved"
+				|finalize'((_,tok) ::rest) = getTokenValue(tok) :: finalize'(rest)
+	
+				
+			in
+				start_address :: finalize'(token_list)
+			end
 end
 
 val asm_code = [
@@ -292,8 +340,13 @@ val asm_code = [
 "% all the instructions from here on should lie",
 "% after the adress wich will be assigned",
 "% to the #start pointer",
+"",
+"",
+"",
+"",
 "#start",
 "MOV 10 x",
+"",
 "MOV 189 y",
 "% This declares a adress pointer.",
 "@result",
@@ -309,6 +362,7 @@ val asm_code = [
 "HLT",
 "#troll",
 "MOV $result x",
+"@Another_test",
 "INC x",
 "JEQ 1000 s",
 "JMP loop",
@@ -316,5 +370,5 @@ val asm_code = [
 "HLT"
 ];
 val intermediate_state = Assembler.scanList(asm_code,Assembler.initial,1);
-Assembler.dumpTokenList(intermediate_state);
-val fitta = Assembler.resolveAddresses(intermediate_state);
+(*Assembler.dumpTokenList(intermediate_state)*)
+val fitta = Assembler.finalize(Assembler.resolveAddresses(intermediate_state));

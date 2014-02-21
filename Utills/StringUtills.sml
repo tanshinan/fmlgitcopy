@@ -34,7 +34,8 @@ struct
 		Removes all leading and trailing spaces characters and also runns of spaces.
 		This might get changed to remove all whitespace characters.
 	*)
-	fun trim(s) = 
+	fun trim("") = ""
+	|trim(s) = 
 		let
 			fun trim'([],A1,A2,1) = List.rev(A2)
 			|trim'([],A1,A2,0) = List.rev(List.rev(A1)::A2)

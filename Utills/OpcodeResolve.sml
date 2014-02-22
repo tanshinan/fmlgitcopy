@@ -43,7 +43,7 @@ struct
 		
 		|mnemonic("HLT") = 100000
 		|mnemonic("SEM") = 200000
-		|mnemonic("POP") = 200000
+		|mnemonic("POP") = 300000
 		|mnemonic(_) = raise RESOLVE "Unknown mnemonic!\n"
 	
 	(*

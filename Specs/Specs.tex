@@ -115,7 +115,7 @@ Logic &  &  $=$ & $<$ & $>$ & $<<$ & $>>$ & and & or & xor & not\\
 
 Jump & & J & B_{=} & B_{<} & B_{>} & J_{SR} & Ret & & & \\
 
-Special & & H & Se &  &  &  &  &  &  &  \\	
+Special & & H & Se & \V+POP+ &  &  &  &  &  &  \\	
 \end{tabular}
 \end{center}
 Here \mx , \my and \ma is to be read as address of \x , \y \ and \A.  All
@@ -200,10 +200,11 @@ should be raised.\\
 
 
 \subsubsection{Special}
-The two special operations exist. The Halt operation which just stops the VM and
-raises an exception.
-An the Se or Stack empty operation which returns 1 if the stack is empty and 0
-else.
+TThe Halt operation which just stops the VM and
+raises an exception.//
+And the \V+SEM+ or Stack empty operation which returns 1 if the stack is empty
+and 0 else.
+The \V+POP+ just pops the stack. I.e removing the top object.
 
 \subsection{Opcodes}
 
@@ -243,6 +244,7 @@ Args
 \hline
 \V+HLT+ & HALT& x & x & x & x & x & x & x & 0 \\
 \V+SEM+ & Stack Empty& x & x & w & x & x & x & x & 0 \\
+\V+POP+ & Pop Stack& x & x & w & x & x & x & x & 0 \\
 \end{tabular}
  
 

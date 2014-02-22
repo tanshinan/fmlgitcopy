@@ -43,6 +43,7 @@ struct
 		
 		|mnemonic("HLT") = 100000
 		|mnemonic("SEM") = 200000
+		|mnemonic("POP") = 200000
 		|mnemonic(_) = raise RESOLVE "Unknown mnemonic!\n"
 	
 	(*
@@ -124,6 +125,7 @@ struct
 		
 		|numberOfArgs("HLT") = 0
 		|numberOfArgs("SEM") = 0
+		|numberOfArgs("POP") = 0
 		|numberOfArgs(_) = raise RESOLVE "Tried to parse an malformed expression\n"
 		
 fun validReadArguments("NOP") = [] 
@@ -156,6 +158,7 @@ fun validReadArguments("NOP") = []
 		
 		|validReadArguments("HLT") = []
 		|validReadArguments("SEM") = []
+		|validReadArguments("POP") = []
 		|validReadArguments(_) = raise RESOLVE "Tried to parse an malformed expression\n"
 
 
@@ -189,6 +192,7 @@ fun validReadArguments("NOP") = []
 		
 		|validWriteArguments("HLT") = []
 		|validWriteArguments("SEM") = []
+		|validWriteArguments("POP") = []
 		|validWriteArguments(_) = raise RESOLVE "Tried to parse an malformed expression\n"
 		
 		local

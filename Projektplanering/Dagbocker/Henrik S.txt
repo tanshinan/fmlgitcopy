@@ -33,3 +33,6 @@
 	Also took backup of entire project in case someone screws up with git.
 	Did some changes to the VM specs. Renamed the conditional jumping to
 	branching. Its what I'm used to from the C64.
+
+22/2 13:56
+	Assembler now checks for duplicate pointers	

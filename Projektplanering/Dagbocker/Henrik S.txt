@@ -35,4 +35,9 @@
 	branching. Its what I'm used to from the C64.
 
 22/2 13:56
-	Assembler now checks for duplicate pointers	
+	Assembler now checks for duplicate pointers
+	
+22/2 03:00
+	Wrote signatures for the specific components of the VM in order to help the other get on with
+	the implementation. Although ran in to some confusing and annoying problems with the module system.
+	Another reason why SML rhymes with FML

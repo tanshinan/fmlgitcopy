@@ -28,7 +28,8 @@ struct
 	|hasBabies(_,_) = false
 end
 
-(*This doesn't since hasBabies is not defined*)
+(
+*This doesn't since hasBabies is not defined*)
 (*
 structure Porn :> TEST =
 struct
@@ -45,5 +46,6 @@ end
 
 (*
 This does not work! To make use of nested structures like this require some annoying crap!
+Wich i have not figured out. 
 val utter = Sex. i_hide_in_the_closet.good_idea;
 *)

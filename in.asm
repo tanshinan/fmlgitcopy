@@ -8,6 +8,7 @@
 % increasing values :)
 #start
 MOV 0 x
+#loop
 @result
 INC x
 MOV 1 s
@@ -15,6 +16,6 @@ ADD s result
 MOV s y
 MOV x $y
 BEQ x 1000
-JMP start
+JMP loop
 MOV $y s
 HLT

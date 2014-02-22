@@ -32,13 +32,16 @@ struct
 	|getTokenValue(Ic(a)) = a
 	|getTokenValue(_) = raise ASSEMBLER "Cant get value from a refference"
 	
+	
 	fun getPointerName(Label(name,_)) = name
 	|getPointerName(Value(name,_)) = name
 	|getPointerName(NULL) = raise ASSEMBLER "Got NULL???\n"
 	
+	
 	fun getPointerAddress(Label(_,a)) = Option.valOf(a)
 	|getPointerAddress(Value(_,a)) = Option.valOf(a)
-	|getPointerAddress(NULL) = raise ASSEMBLER "Got NULL???\n"
+	|getPointerAddress(_) = raise ASSEMBLER "Got NULL???\n"
+	
 	
 	fun setPointerAddress(Label(name,_),a) = Label(name,SOME(a))
 	|setPointerAddress(Value(name,_),a) = Value(name,SOME(a))
@@ -89,6 +92,14 @@ struct
 			fun getTokenPointer(I(label_list,value_list,(name,offs,tok) :: token_list ,current_label,address)) = name
 			(*|getTokenPointer(I(label_list,value_list,[(name,offs,tok)],current_label,address)) = name*)
 			|getTokenPointer(I(label_list,value_list,[],current_label,address)) = raise ASSEMBLER "Tried to get name from empty token list"
+			
+			fun dumpPointerList([]) = ()
+			|dumpPointerList(pointer :: rest) = 
+			let
+				val address = Int.toString(getPointerAddress(pointer)) handle Option.Option => "NONE"
+			in
+				(print ("(" ^ getPointerName(pointer) ^ "," ^ address ^ ")\n"); dumpPointerList(rest))
+			end
 			
 			fun dumpTokenList(i) = 
 				let
@@ -259,6 +270,40 @@ struct
 	fun scanList([],i,n) = i
 	|scanList(x::xs,i,n) =scanList(xs,scanLine(x,i,n),n+1) 
 	
+	(*
+		Searches trough a intermediate structure in order assert that there are no
+		duplicate refernces.
+		
+		returns () if all is well.
+	*)
+	fun duplicateSearch(i) =
+		let
+			val concattenation = (List.map (fn x => getPointerName(x)) (Inter.getLabelList(i))) @ (List.map getPointerName (Inter.getValueList(i)))
+				(*
+				fun detectValueLabelDuplicate([]) = ()
+				|detectValueLabelDuplicate(label :: rest) =
+						case (List.find label value_names) of
+						NONE => detectDuplicate(rest)
+						|SOME(A) => raise ASSEMBLER (label ^ " exists as both a label and a value")
+				*)
+			
+			fun count(a,[]) = 0
+			|count(a,x::xs) = 
+				if a  = x then
+					1 + count(a,xs)
+				else
+					count(a,xs)
+			
+			fun detectPointerCollision([]) = ()
+			|detectPointerCollision(pointer :: rest) =
+				if count(pointer,concattenation) = 1 then
+					detectPointerCollision(rest)
+				else
+					raise ASSEMBLER (pointer ^ "is not unique")
+		in
+			detectPointerCollision(concattenation)
+		end
+	
 	fun resolveAddresses(i,base_address) =
 		let
 			
@@ -305,7 +350,7 @@ struct
 			|firstPass(resolved_labels,((label_name,offs,a) :: token_rest)) = 
 				let
 					val label_address = getPointerAddress(Option.valOf(List.find (fn x => (label_name = getPointerName(x))) resolved_labels))
-					handle Option => raise ASSEMBLER ("Couldnt find label    " ^ label_name)
+					handle Option => raise ASSEMBLER ("Couldnt find label: " ^ label_name)
 				in
 					(label_address+offs,a : token) :: firstPass(resolved_labels,token_rest) 
 				end
@@ -362,10 +407,8 @@ struct
 				(*do tokenization*)
 				val intermediate_state = scanList(input_list,initial,1);
 				val verb = msg(verbose,"Did lexical analysis completed.\n")
-				val dump = 
-					case verbose of
-					true => dumpTokenList(intermediate_state)
-					|false => ()
+				val duplicates = duplicateSearch(intermediate_state)  
+				handle ASSEMBLER msg => (Inter.dumpPointerList(Inter.getLabelList(intermediate_state) @ Inter.getValueList(intermediate_state));raise ASSEMBLER "")
 					
 				(*resolve adresses*)
 				val resolved_code = resolveAddresses(intermediate_state,base_address)

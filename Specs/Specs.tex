@@ -2,6 +2,7 @@
 \usepackage{amsmath}
 \usepackage{listings}  
 \usepackage{verbatim}
+\usepackage[bottom]{footmisc}
 \newcommand{\x}{$\textbf{X}$}
 \newcommand{\y}{$\textbf{Y}$}
 \newcommand{\s}{$\textbf{S}$}
@@ -197,9 +198,10 @@ memmory cells.\\
 
 A $J_{SR}$ (subroutine jump) will take a argument in \A \ and move the \pc \
 there and it will also put its current value on \J.\\
-A return jump will jump to the address at the top of \J \ and then pop the
-stack.If the jump where to be empty the VM should crash and an exception
-should be raised.\\
+A return jump will jump to the address at the top of \J \ + 2 \footnote{If the
+return jump where to return to the value at the top of the stack it where to
+return to the address where the subroutine jump is and thus get stuck in a loop}
+and then pop the stack.If the jump where to be empty the VM should crash and an exception should be raised.\\
 
 
 \subsubsection{Special}

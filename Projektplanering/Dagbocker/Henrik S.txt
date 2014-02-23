@@ -46,3 +46,9 @@
 	Did some formating for the Specs file.
 	Rewrote some of the Componenets.sml
 	Created a VM.sml file containing signatures.
+
+23/2 17:56
+	Started work on the assembler documentation.
+	Started writing a more complicated test assembler case and found some bugs in the assembler.
+		Those bugs have now been fixed.
+	Found a serious case of ambiguity in the VM specification. Clarified things.

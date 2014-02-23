@@ -109,11 +109,14 @@ Read & \x & \y & \s  &\mx & \my & \ma & \A & & & \\
 
 Write & \x & \y & \s  &\mx & \my & \ma & \q& \qq & \A &\\
 
-Arit &  & $++$ & $--$ & $+$ & $-$ & $\star$ & $\div$ & \%  &  & \\
+Arit &  & \V+INC+ & \V+DEC+ & \V+ADD+ & \V+SUB+ & \V+MUL+ & \V+DIV+ & \V+MOD+  & 
+&
+\\
 
-Logic &  &  $=$ & $<$ & $>$ & $<<$ & $>>$ & and & or & xor & not\\
+Logic &  &  \V+EQL+ & \V+GRT+ & \V+LES+ & \V+BRL+ & \V+BRR+ & \V+AND+ & \V+ORR+
+& \V+XOR+ & \V+NOT+\\
 
-Jump & & J & B_{=} & B_{<} & B_{>} & J_{SR} & Ret & & & \\
+Jump & & \V+JMP+ & \V+BEQ+ & \V+BLE+ & \V+BGR+ & \V+JSR+ & \V+RET+ & & & \\
 
 Special & & H & Se & \V+POP+ &  &  &  &  &  &  \\	
 \end{tabular}

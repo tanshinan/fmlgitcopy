@@ -26,41 +26,70 @@ sig
 	val pop : stack -> stack								(*Pops a value off the stack*)
 	val top : stack -> int									(*returns the value from the top of the stack*)
 	val isEmpty : stack -> bool							(*returns true if the stack is empty*)
-	val dumpStack : stack -> string					(**)
+	val dumpStack : stack -> string					(*returns a pretty string of what is on the stack*)
 end;
 
 signature RAM =
 sig 
-	exception MEMMORY of string
-	type memmory = int array
-	val mem : memmory
-	val specialAddresses : int list
-	val specialMemmory : int list
-	val size : int
-	val write : (memmory * int * int ) -> memmory
-	val read : (memmory * int) -> int
-	val load : (int list * int) -> memmory
-	val writeChunk : (memmory * int * int * (int array)) -> memmory
-	val readChunk : (memmory * int * int) -> int array
-	
-	val dump : memmory -> string
+	exception memory of string
+	type memory = int array								
+	val mem : memory															(*The actual memory*)
+	val specialAddresses : int list								(*List of special "negative" addresses*)
+	val specialmemory : int list									(*List containing the values of the special addresses*)
+	val size : int																(*Size of the memory. Not counting special addresses*)
+	val write : (memory * int * int ) -> memory	  (*Wrties to memory*)
+	val read : (memory * int) -> int							(*Reads to memory*)
+	val load : (int list * int) -> memory					(*Loads a list of integers into the memory*)
+	val writeChunk : (memory * int * int * (int array)) -> memory	(*Writes a "chunk" of memory. To be used by prepherials"*)
+	val readChunk : (memory * int * int) -> int array							(*Retrives a "chunk" of memory. To be used by prepherials"*)
+	val dump : memory -> string										(*Dumps the memory into a pretty string*)
+end
+
+(*These are just place holders. Here to make sure that the PROMGAM_COUNTER signature can use the correct datatypes  
+Your code can go in here if you want to. Just remeber to uncomment the :> and then add the correct data type.
+*)
+
+structure Register (*:> REGISTER*)=
+struct
+	datatype reg = unit
+end
+
+structure Stack (*:> STACK*)=
+struct
+	datatype stack = unit
+end
+
+structure Ram (*:> RAM*) =
+struct
+	datatype memory = unit
 end
 
 
+
 (*
-		Due to horrible and annoying reasons this cant be uncommented. There must be structures using the above signatures before this can be used :(
+	You cant really start working on this untill the Register and Stack structures are completed.
 *)
-(*
 signature PROGRAM_COUNTER =
 sig
 	exception COUNTER of string
-	include STACK
-	datatype pc = Pc of (int * Stack.stack * Register.reg * Register.reg * Register.reg) 	(*pointer, jump stack, argument register, IRQ1, IRQ2*)
+	datatype pc = Pc of (int * Stack.stack * Register.reg * Register.reg) 	(*pointer, jump stack,  IRQ1, IRQ2*)
 	val incrementPointer : (pc * int) -> pc 							(*increments the pointer by an arbitrary integer*)
 	val jump : (pc * int) -> pc														(*changes the pointer*)
 	val subroutineJump : (pc * int) -> pc 								(*performs a subroutine jump*)
 	val return : pc -> pc 																(*returns from subroutine jump*)
 	val interupt : (pc * int) -> pc 											(*performs a interupt jump. The integer specifys wich IRQ register to be used. *)
-	val getArg : (pc) -> int															(*returns the value of the argument register*)
 end
+
+structure ProgramCounter (*:> PROGRAM_COUNTER*) =
+struct
+	datatype pc = unit
+end
+
+
+(*
+The reason for using the placeholder structures Register and Stack is because signatures can't "inherit" from eachother.
+I can not write say REGISTER.reg in the PROGRAM_COUNTER signature.
+There is the include keyword but that just adds all of the declarations from another signature. Thus specifying that the 
+signature containing the include must when its used in a structure allso include all of the functions and values in the included
+signature. 
 *)

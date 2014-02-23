@@ -271,7 +271,8 @@ struct
 		Scans and tokenizes a list of strings. Creates the intermediate structure to be assembled.
 	*)
 	fun scanList([],i,n) = i
-	|scanList(x::xs,i,n) =scanList(xs,scanLine(x,i,n),n+1) 
+	|scanList(x::xs,i,n) =scanList(xs,scanLine(x,i,n),n+1)
+	handle Resolve.RESOLVE msg => (print (error(n,msg,x));raise ASSEMBLER "";i)
 	
 	(*
 		Searches trough a intermediate structure in order assert that there are no
@@ -302,7 +303,7 @@ struct
 				if count(pointer,concattenation) = 1 then
 					detectPointerCollision(rest)
 				else
-					raise ASSEMBLER (pointer ^ "is not unique")
+					raise ASSEMBLER (pointer ^ " is not unique")
 		in
 			detectPointerCollision(concattenation)
 		end
@@ -409,9 +410,9 @@ struct
 				
 				(*do tokenization*)
 				val intermediate_state = scanList(input_list,initial,1);
-				val verb = msg(verbose,"Did lexical analysis completed.\n")
+				val verb = msg(verbose,"Lexical analysis completed.\n")
 				val duplicates = duplicateSearch(intermediate_state)  
-				handle ASSEMBLER msg => (Inter.dumpPointerList(Inter.getLabelList(intermediate_state) @ Inter.getValueList(intermediate_state));raise ASSEMBLER "")
+				(*handle ASSEMBLER msg => (Inter.dumpPointerList(Inter.getLabelList(intermediate_state) @ Inter.getValueList(intermediate_state));raise ASSEMBLER "")*)
 					
 				(*resolve adresses*)
 				val resolved_code = resolveAddresses(intermediate_state,base_address)

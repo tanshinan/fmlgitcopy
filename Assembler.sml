@@ -174,7 +174,7 @@ struct
 						else
 							(List.length(char_list) >= 1) orelse (print (error(l,"Mallformed argument",line));raise SYNTAX "")
 				in
-					if (List.all (fn x => Char.isDigit(x)) char_list) then
+					if (List.hd(char_list) = #"-") orelse (List.all (fn x => Char.isDigit(x)) char_list)  then
 						SOME(Arg(Option.valOf(Int.fromString(a))))
 					else 
 						if Char.ord(List.hd(char_list)) = address_flag then
@@ -223,7 +223,9 @@ struct
 						
 					in
 						case expression of
+						(*SINGLE ARGUMENT*)
 						[m] => Inter.addToken(i,Ic(Resolve.mnemonic(m)))
+						(*TWO ARGUMENTS*)
 						|[m,w] => 
 							let
 								val assert_argument = Resolve.isValidWrite(m,Resolve.write(w)) orelse  (print (error(l,"Forbidden write argument",line));raise SYNTAX "")
@@ -237,6 +239,7 @@ struct
 									Inter.addToken(instruction,Option.valOf(resolveToken(w)))
 							end
 						
+						(*THRE ARGUMENTS*)
 						|[m,r,w] => 
 							let
 								val assert_argument_write = Resolve.isValidWrite(m,Resolve.write(w)) orelse 

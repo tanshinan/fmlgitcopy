@@ -1,0 +1,167 @@
+ 
+\documentclass{article}
+\newcommand{\V}{\verb}
+\newcommand{\x}{$\textbf{X}$}
+\newcommand{\y}{$\textbf{Y}$}
+\newcommand{\s}{$\textbf{S}$}
+\newcommand{\A}{$\textbf{A}$}
+\newcommand{\mx}{$\textbf{M}_{\textbf{X}}$}
+\newcommand{\my}{$\textbf{M}_{\textbf{Y}}$}
+\newcommand{\ma}{$\textbf{M}_{\textbf{A}}$}
+\newcommand{\q}{$\textbf{Q}_{\textbf{1}}$}
+\newcommand{\qq}{$\textbf{Q}_{\textbf{2}}$}
+\newcommand{\pc}{$\textbf{PC}$}
+\newcommand{\J}{$\textbf{J}$}
+
+
+\begin{document}
+\title{Assembler documentation}
+
+\section{General}
+The VM features a very basic assembler capable of little more than adress
+resolution. But yet it gives us an ability to create some neat little programs.
+\section{Syntax}
+The syntax for the assembly code is pretty straight forward. Each declaration is
+written on a single line. There are a few reserved identifiers:
+
+\begin{tabular}{|c | c| c |}
+\hline
+Indentifier & Name & Description\\
+\hline
+\V+%text+ & Comment  & Will be ignored by the assembler\\
+\hline
+\V+#<name>+ & Label & Declares a label called \V+<name>+ \\
+\hline
+\V+@<name>+ & Value & Declares a value called \V+<name>+\\
+\hline
+\V+:<data>+ & Raw input & Returns \V+<data>+ as is \\
+\hline
+\verb+$+ & Address & Treats \V+a+ as a address \\
+\hline
+\V+x+ & x & The \x \ register \\
+\hline
+\V+y+ & y & The \y \ register \\
+\hline
+\V+s+ & s & The stack \s \\
+\hline
+\V+q1+ & IRQ1 & The \q \ register\\
+\hline
+\V+q2+ & IRQ2 & The \qq \ register\\
+\hline
+\end{tabular}
+\\
+\\
+The names given to labels and values can contain any characters except for
+whitespace ones.\\
+Operations are declared in a straightforward approach as:\\
+\V+<opcode> <arg1> <arg2>+ \\
+Wich arguments are allowed are dependent upon the opcode.\\
+
+
+\section{Usage}
+\subsection{Registers}
+The useage of the registers is pretty straight forward. One has to remeber that
+\V+q1+ and \V+q2+ are write only registers and that \V+s+ cant be used for
+addressing so \verb+$s+ is not allowed and will generate a \verb+syntax+ error.
+It is also good to keep in mind that all operations reading from the stack will
+consume what is on top of the stack.
+
+\subsection{Pointers}
+Using pointers is fairly straight forward. Alltough one has to keep in mind how
+the addresses are resolved. All pointers will be resolved afterr the
+tokenazation fo the code. First the labels will be resolved and then the values.
+This means that the first value will lie after the last line of code. Since the
+address of a label depends on where in the code their addresses are easy to
+reason about. However for values things are bit different. Since vlues will be
+given addresses wich are ``independent'' of where in the code they appear it is
+hard to reason about the address of a value. Although the value pointers are
+resolved in order the first value declared whill lie intermediatley after the
+last line of code and the last value declared will lie ``at the end'' of the
+memmory used by the program. This can be exploited to use rellative addressing.
+Allthoug great care has to be taken.
+
+Its important to remember that all pointers are reffered to troughout the entire
+program therefor it's not allowed to define two pointers with the same name. If
+this where to be allowed it would generate unpredictable behaviour so instead
+the assembler will return a \V+assembler+ error.
+
+Labels and values are interchangable. Since opcodes takes pointers as arguments
+and has no idea weather or not they are labels or values. From this the need for
+caution arises. Since one can use value pointers as arguments to jump operation
+like this:
+\begin{verbatim}
+... LOTS OF CODE ...
+
+@bad_idea
+ADD x y
+MOV s x
+MUL x y
+JMP bad_idea
+
+... LOTS OF CODE ...
+\end{verbatim}
+Since it is not known what where \V+bad_idea+ points jumping to it is suicidal.
+
+Since pointers are just numbers under the hood one needs to take into account
+weather or not one uses them for their adress orr for their values. Here is some
+examples
+\begin{verbatim}
+@pointer
+% This stores x in pointer
+MOV x value
+% This stroes x in the address wich is
+% stored at pointer
+MOV x $value
+% This adds one to the value stored at 
+% pointer
+ADD $pointer 1
+% This adds one to the address of pointer
+ADD pointer 1
+\end{verbatim}
+
+Pointers are imutable and once they has been declared they can not be changed.
+One has to do some tricking to achive relative addressing using labels or
+values.
+
+
+\subsubsection{Labels}
+Labels are declared using the \V+#+ identifier.
+Labels are resolved first and their addresses
+correspond to location in the code where they are written. For example:
+\begin{verbatim}
+MOV x y
+#loop
+INC x
+MOV x s
+JMP loop
+\end{verbatim}
+In this code \V+loop+ points to the address where \V+INC x+ is stored. In the
+tokenization of the assembly code the lines where a pointer is defined will be
+ignored and the address where the next instruction or raw entry occurs. This can
+lead to that poorly written code becomes ambigous. For example:
+\begin{verbatim}
+MOV x y
+#loop
+#silly
+INC y
+\end{verbatim}
+Here \V+loop+ and \V+silly+ will both point to the same address wich is silly.
+
+Because tokenaization of the code happens before the address resolving a label
+will be ``in scope'' troughout the enitre code. So this code is perfectly valid:
+
+\begin{verbatim}
+MOV x y
+JMP ahead
+INC x
+ADD x y
+#ahead
+ADD s x
+\end{verbatim}
+The \V+JMP ahead+ will jump to \V+ADD s x+ even though the \V+ahead+ flag is
+defined after the jump. This was not a concious design choise but it is actually
+quite usefull since one can define subroutines anywhere in the code wich can be
+accesed form anywhere in the code.
+
+
+\end{document}

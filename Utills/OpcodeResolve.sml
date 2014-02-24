@@ -6,7 +6,7 @@ struct
 	
 	(*
 		¡MUY IMPORTANTE!
-		All these functions MUST addhere to the VM specifications	
+		All these functions MUST add here to the VM specifications	
 	*)
 	
 	

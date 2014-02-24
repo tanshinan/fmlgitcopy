@@ -52,3 +52,6 @@
 	Started writing a more complicated test assembler case and found some bugs in the assembler.
 		Those bugs have now been fixed.
 	Found a serious case of ambiguity in the VM specification. Clarified things.
+	
+24/2 12:54
+	Had a little meting with the crew. Discussed VM implementation, and some misc stuuf.

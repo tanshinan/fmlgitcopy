@@ -68,6 +68,7 @@ end
 
 (*
 	You cant really start working on this untill the Register and Stack structures are completed.
+	You shold choose how to implement
 *)
 signature PROGRAM_COUNTER =
 sig

@@ -1,9 +1,17 @@
+(*
+	This is the code for the assembler.
+	I know its not the prettiest one.
+	I have found some inconsistent use of the word "token" in this code.
+	So one should read trough it carefully. A token is not neccesarily a
+	object of the token type. I should have paid more carfull attention to
+	this when i first wrote the code.
+*)
+
 val current_dir = OS.FileSys.getDir();
 OS.FileSys.chDir("Utills");
 use "OpcodeResolve.sml"; (*allso imports StringUtills.sml*)
 use "IO.sml";
 OS.FileSys.chDir(current_dir);
-
 
 structure Assembler = 
 struct
@@ -78,10 +86,10 @@ struct
 			fun addLabel(I(label_list,value_list,token_list,current_label,address), a) =I(a::label_list,value_list,token_list,current_label,address)
 			fun addValue(I(label_list,value_list,token_list,current_label,address), a) =I(label_list,a::value_list,token_list,current_label,address)
 			
+			
 			fun addToken(I(label_list,value_list,token_list,NULL,address), a) = raise SYNTAX "Cant use NULL pointer\n"
 			|addToken(I(label_list,value_list,[],Label(current_pointer_name,i),address), a) = (*When list is empty*)
 				I(label_list,value_list, [(current_pointer_name,0,a)], Label(current_pointer_name,i),address+1)
-				
 			|addToken(I(label_list,value_list,(pointer_name,n,t) :: rest,Label(current_pointer_name,i),address), a) =
 				if current_pointer_name <> pointer_name then
 					I(label_list,value_list, (current_pointer_name,0,a) :: ((pointer_name,n,t) :: rest), Label(current_pointer_name,i),address+1) (*if we change pointer*)
@@ -243,12 +251,12 @@ struct
 						|[m,r,w] => 
 							let
 								val assert_argument_write = Resolve.isValidWrite(m,Resolve.write(w)) orelse 
-										(print (error(l,"Write argument is forbidden",line));raise SYNTAX "")
+										(print (error(l,"First argument is forbidden",line));raise SYNTAX "")
 										
 								val assert_argument_read = Resolve.isValidRead(m,Resolve.read(r)) orelse  
-										(print (error(l,"Read argument is forbidden",line));raise SYNTAX "")
+										(print (error(l,"Second argument is forbidden",line));raise SYNTAX "")
 										
-								val assert_no_s = ((w <> "$s") andalso (w <> "$s")) orelse  
+								val assert_no_s = ((w <> "$s") andalso (r <> "$s")) orelse  
 										(print (error(l,"Can't use stack as pointer",line));raise SYNTAX "")
 										
 								val instruction = Inter.addToken(i,Ic(Resolve.mnemonic(m) + Resolve.write(w)+Resolve.read(r)))
@@ -337,17 +345,17 @@ struct
 
 			(*
 				Resolves any label pointer to its adress.
-				
 				returns a list of (adress,token).
 			*)
-			fun firstPass(resolved_labels,[]) =[] 
+			fun firstPass(resolved_labels,[]) =[]
 			|firstPass(resolved_labels,((label_name,offs,Ref(name)) :: token_rest)) = 
+				(*This is the case where the token is a ponter*)
 				let
 					val label_address = getPointerAddress(Option.valOf(List.find (fn x => (label_name = getPointerName(x))) resolved_labels))
 					val arg_address = (List.find (fn x => (name = getPointerName(x))) resolved_labels)
 					handle Option => raise ASSEMBLER ("Couldnt find label: " ^ label_name ^ " or " ^ name)
 				in
-					case arg_address of
+					case arg_address of (*check if pointer has been resolved.*)
 					NONE => (label_address+offs,Ref(name)) :: firstPass(resolved_labels,token_rest)
 					|SOME(a) => (label_address+offs,Ic(getPointerAddress(a))) :: firstPass(resolved_labels,token_rest) 
 				end
@@ -363,17 +371,19 @@ struct
 			
 			val max_address = #1(List.last(pass1)) 
 			
+			(*returns a list of value tokens with resolved addresses*)
 			fun resolveValues([],address) = []
 			|resolveValues(value :: rest,address) =
 			setPointerAddress(value,address) :: resolveValues(rest,address+1)
 			
 			val resolved_values = resolveValues(value_list,max_address)
 			
+			(*Replaces occurences of values with their adress*)
 			fun secondPass(resolved_values,[]) = []
 			|secondPass(resolved_values,(addr,Ref(name)) :: rest) =
 				let
 					val value_address = getPointerAddress(Option.valOf(List.find (fn x => (name = getPointerName(x))) resolved_values))
-					handle Option => raise ASSEMBLER ("Couldnt find token " ^ name)
+					handle Option => raise ASSEMBLER ("Couldnt find value " ^ name)
 				in
 					(addr,Ic(value_address)) :: secondPass(resolved_values,rest)
 				end
@@ -386,45 +396,49 @@ struct
 			pass2
 		end
 		
-		fun finalize(token_list) = 
-			let
-				val start_address = #1(List.hd(token_list))
-				
-				fun finalize'([]) = []
-				|finalize'((_,Ref(_)) ::rest) = raise ASSEMBLER "Not all refferences where resolved"
-				|finalize'((_,tok) ::rest) = getTokenValue(tok) :: finalize'(rest)
+	(*Resolves all of the tokens into their numerical value
+		returns a (address,token) list
+	*)
+	fun finalize(token_list) = 
+		let
+			val start_address = #1(List.hd(token_list))
+			
+			fun finalize'([]) = []
+			|finalize'((_,Ref(_)) ::rest) = raise ASSEMBLER "Not all refferences where resolved"
+			|finalize'((_,tok) ::rest) = getTokenValue(tok) :: finalize'(rest)
+
+			
+		in
+			start_address :: finalize'(token_list)
+		end
 	
-				
-			in
-				start_address :: finalize'(token_list)
-			end
+	(*Does complete assembling of a assembly fiel.*)
+	fun assemble(input_file,output_file,base_address,verbose)=
+		let
+			fun msg(true,m) = print(m)
+			|msg(false,_) = ()
+		
+			(*read input*)
+			val input_list = IO_Handler.fileToLineList(input_file)
+			val verb = msg(verbose,"Read input file.\n")
 			
-		fun assemble(input_file,output_file,base_address,verbose)=
-			let
-				fun msg(true,m) = print(m)
-				|msg(false,_) = ()
+			(*do tokenization*)
+			val intermediate_state = scanList(input_list,initial,1);
+			val verb = msg(verbose,"Lexical analysis completed.\n")
+			val duplicates = duplicateSearch(intermediate_state)  
+			(*handle ASSEMBLER msg => (Inter.dumpPointerList(Inter.getLabelList(intermediate_state) @ Inter.getValueList(intermediate_state));raise ASSEMBLER "")*)
+				
+			(*resolve adresses*)
+			val resolved_code = resolveAddresses(intermediate_state,base_address)
+			val verb = msg(verbose,"Resloved addresses like a boss.\n")
 			
-				(*read input*)
-				val input_list = IO_Handler.fileToLineList(input_file)
-				val verb = msg(verbose,"Read input file.\n")
-				
-				(*do tokenization*)
-				val intermediate_state = scanList(input_list,initial,1);
-				val verb = msg(verbose,"Lexical analysis completed.\n")
-				val duplicates = duplicateSearch(intermediate_state)  
-				(*handle ASSEMBLER msg => (Inter.dumpPointerList(Inter.getLabelList(intermediate_state) @ Inter.getValueList(intermediate_state));raise ASSEMBLER "")*)
-					
-				(*resolve adresses*)
-				val resolved_code = resolveAddresses(intermediate_state,base_address)
-				val verb = msg(verbose,"Resloved addresses like a boss.\n")
-				
-				(*finalize*)
-				val finalized_code = finalize(resolved_code)
-				val verb = msg(verbose,"finalized code!.\n")
-				(*output*)
-			in
-				IO_Handler.writeIntListFile(output_file,finalized_code)
-			end
+			(*finalize*)
+			val finalized_code = finalize(resolved_code)
+			val verb = msg(verbose,"finalized code!.\n")
+			(*output*)
+		in
+			IO_Handler.writeIntListFile(output_file,finalized_code)
+		end
 end;
 
 Assembler.assemble("in.asm","out.fml",0,true);

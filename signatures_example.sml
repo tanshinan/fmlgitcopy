@@ -28,8 +28,7 @@ struct
 	|hasBabies(_,_) = false
 end
 
-(
-*This doesn't since hasBabies is not defined*)
+(*This doesn't since hasBabies is not defined*)
 (*
 structure Porn :> TEST =
 struct

@@ -67,11 +67,5 @@ struct
 
 
 end
-(*
-val test1 = StringUtills.spaceSplit("ABDSA ADSF @kesofitta [hamsterballe]");
-val test2 = StringUtills.spaceSplit("NOP");
-val test3 = StringUtills.spaceSplit("MOV [x] x");
-val test4 = StringUtills.trim("   hej pa          dig     du lol");
-*)
-(*val test  = StringUtills.removeNewLine("snopp i kopp\n")*)
+
 

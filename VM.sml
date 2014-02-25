@@ -8,7 +8,7 @@ signature VIRTUAL_MACHINE =
 sig
 	exception RUNTIME
 	datatype flag = HALT | INTERRUPT of int | OVERFLOW | RUNNING
-	datatype vm = Vm of (ProgramCounter.pc * Register.reg * Stack.stack * Register.reg * Register.Reg * Ram.memory * flag)
+	datatype vm = Vm of (ProgramCounter.pc * Register.reg * Stack.stack * Register.reg * Register.reg * Ram.memory * flag)
 	
 	val init : (int list * int) -> vm	(*Creates an initialized VM. Loads int list into the memory and makes the memory have a size of the second int*)
 	val step : vm -> vm								(*Takes one vm and returns the next vm. I.e it runns the virtual machine for one step.*)

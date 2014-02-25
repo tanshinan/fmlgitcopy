@@ -138,13 +138,9 @@ struct
 	
 	fun error(line_number,message,cause) = "\nSYNTAX ERROR!\n" ^ message ^ " at line: " ^ Int.toString(line_number) ^ "\n"
 				^ "Caused by: "  ^ cause ^"\n"
-	
 
-
-
-	(* scanLine
+	(*
 	Scans one line and adds it to an intermediate structure
-	
 	Arguments:
 		line = 	Line to be scanned
 		l = 		Current line number
@@ -406,8 +402,6 @@ struct
 			fun finalize'([]) = []
 			|finalize'((_,Ref(_)) ::rest) = raise ASSEMBLER "Not all refferences where resolved"
 			|finalize'((_,tok) ::rest) = getTokenValue(tok) :: finalize'(rest)
-
-			
 		in
 			start_address :: finalize'(token_list)
 		end

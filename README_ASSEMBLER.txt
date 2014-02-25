@@ -10,3 +10,5 @@ Move operations are on the form MOVE <from> <to>
 
 As of now the assembler reads a file called "in.asm" and outputs the
 data to "out.fml"
+
+The base adress of the program is the first line in the *.fml file

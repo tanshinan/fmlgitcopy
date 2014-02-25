@@ -1,4 +1,13 @@
-Get working on the VM! You have the specs! Get started!
+:::::::::::::::CODING STANDARD:::::::::::::
+This entire project is to be written in English!
+Use TABS instead of spaces. http://lea.verou.me/2012/01/why-tabs-are-clearly-superior/
+Use descriptive names for functions, types etc.
+Always use a catch all clause if applicable.
+Always leave an empty line between functions.
+Use encapsulation when appropriate.
+And the general philosophy should to avoid ambiguity.
+:::::::::::::::::::::::::::::::::::::::::::
+
 
 Dudes the Assembler is now fully functional! 
 Some details and fancypantsy things left.

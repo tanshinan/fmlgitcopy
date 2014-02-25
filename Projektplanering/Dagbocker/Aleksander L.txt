@@ -1,4 +1,8 @@
 2014-02-24
 
 meeting about the assembler part that is done and assiging the rest of the work to the rest of the group
-will start codeing with the assigend part tomorrow 2014-02-25 
+will start codeing with the assigend part tomorrow 
+
+2014-02-25 
+
+Codeing the componets with Alexander and creating the strucktors in ram aswell some other things

@@ -28,7 +28,7 @@ written on a single line. There are a few reserved identifiers:
 \hline
 Indentifier & Name & Description\\
 \hline
-\V+%text+ & Comment  & Will be ignored by the assembler\\
+\V+%<text>+ & Comment  & Will be ignored by the assembler\\
 \hline
 \V+#<name>+ & Label & Declares a label called \V+<name>+ \\
 \hline
@@ -68,7 +68,7 @@ consume what is on top of the stack.
 
 \subsection{Pointers}
 Using pointers is fairly straight forward. Alltough one has to keep in mind how
-the addresses are resolved. All pointers will be resolved afterr the
+the addresses are resolved. All pointers will be resolved after the
 tokenazation fo the code. First the labels will be resolved and then the values.
 This means that the first value will lie after the last line of code. Since the
 address of a label depends on where in the code their addresses are easy to
@@ -90,15 +90,11 @@ and has no idea weather or not they are labels or values. From this the need for
 caution arises. Since one can use value pointers as arguments to jump operation
 like this:
 \begin{verbatim}
-... LOTS OF CODE ...
-
 @bad_idea
 ADD x y
 MOV s x
 MUL x y
 JMP bad_idea
-
-... LOTS OF CODE ...
 \end{verbatim}
 Since it is not known what where \V+bad_idea+ points jumping to it is suicidal.
 
@@ -161,7 +157,42 @@ ADD s x
 The \V+JMP ahead+ will jump to \V+ADD s x+ even though the \V+ahead+ flag is
 defined after the jump. This was not a concious design choise but it is actually
 quite usefull since one can define subroutines anywhere in the code wich can be
-accesed form anywhere in the code.
-
+accesed form anywhere in the code.\\
+One possible piffall arises due to the fact that the assembler does not know the
+difference between a label and a value after their adresses has been resolved.
+So this code is valid assembly code:
+\begin{verbatim}
+#loop
+ADD s x
+MOV s $loop
+JMP loop
+\end{verbatim}
+Allthough what this will do is that it will change what is at the address of
+\V+loop+. But there \V+ADD s x+ lies! This is what is known as self-modifiying
+code and it's the spawn of satan and should be avoided like one avoids Miami
+beach during spring break. Allthough in some cases the interchangability of
+value and label can be verry usefull if one wants to have ``arrays'' in ones
+code. This is easily achived like this:
+\begin{verbatim}
+#array
+:0
+:1
+:2
+:3
+\end{verbatim}
+Here \V+array+ can be used as a pointer to the array. One can then manipulate
+the array trough using rellative arressing of \V+array+ like this:
+\begin{verbatim}
+ADD 2 array
+MOV s y
+MOV 5 $y
+#array
+:0
+:1
+:2
+:3
+\end{verbatim}
+This code would change the 2 into a 5. But great care needs to be taken since
+one could easily end up outside of the ``array'' and corrupt the program.
 
 \end{document}

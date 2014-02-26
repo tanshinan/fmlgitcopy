@@ -1,4 +1,4 @@
-exception RUNTIME
+exception RUNTIME of string
 
 (*
 	This is the signature describing the workings of the registers
@@ -20,7 +20,7 @@ end;
 signature STACK =
 sig
 	exception STACK of string
-	datatype stack = Stack of (int list) | Empty
+	datatype stack = Stack of (int list)
 	val push : stack * int -> stack					(*Pushes a value onto the stack*)
 	val pop : stack -> stack								(*Pops a value off the stack*)
 	val top : stack -> int									(*returns the value from the top of the stack*)
@@ -33,7 +33,7 @@ sig
 	exception memory of string
 	type memory = int array								
 	val mem : memory							(*The actual memory*)
-	val initialize : int -> memmory 							(*Creates a memmory of size specified by the integer*)
+	val initialize : int -> memory 							(*Creates a memmory of size specified by the integer*)
 	val getSize : (memory) -> int 								(*Returns the size of the memory.*)
 	val write : (memory * int * int ) -> memory	  (*Wrties to memory*)
 	val read : (memory * int) -> int							(*Reads to memory*)
@@ -50,87 +50,77 @@ Your code can go in here if you want to. Just remeber to uncomment the :> and th
 structure Register :> REGISTER=
 struct
 	exception REGISTER
-	type reg = int
+	datatype reg = Reg of int
 	
 	fun setData (Reg(_), new) = Reg(new)
 
-	fun getData Reg(i) = a
+	fun getData (Reg(i)) = i
 	
-	(*
-		Guys. seriously this is what you had writen:
-			increment (WRITE, int) = (WRITE, int+1)
-		You cant use "int" as a name for an argument. Even though the compiler doesn't care its
-		verry innapropriate to mix things like this and it should be avoided at all costs.
-		int is a type! and should for ever and always be nothing more than just that.
-	*)
-	fun increment Reg(i) = Reg(i+1)
+	fun increment (Reg(i)) = Reg(i+1)
 	handle Overflow => raise RUNTIME "Register overflow"
 	
-	fun decrement Reg(i) = Reg(i-1)
+	fun decrement (Reg(i)) = Reg(i-1)
 	handle Overflow => raise RUNTIME "Register underflow"
 	
-	fun dumpRegister Reg(i) = Int.toString(int)
+	fun dumpRegister (Reg(i)) = Int.toString(i)^"\n"
 end
 
 structure Stack :> STACK=
 struct
 	exception STACK of string
-	datatype stack = Stack of (int list) | Empty
+	datatype stack = Stack of (int list)
 	
-	fun push (Empty, inp) = Stack([inp])
-	|push (Stack(stack), inp) = Stack(inp::stack)
+	fun push (Stack(s), inp) = Stack(inp::s)
 	
-	(*This function should return a new stack without the top stackframe*)
-	fun pop (Stack(stack)) = Stack(stack)                        
-	|pop (Empty) = raise STACK "Can't pop an empty stack"
+	(*This function should return a new stack without the top stackframe*) (* you mean like this, I hope *)
+	fun pop (Stack([])) = raise STACK "Can't pop an empty stack"
+	  | pop (Stack(x::xs)) = Stack(xs)                        
 		
-	fun top (Stack(x::xs)) = x
-	|top (Empty) = raise STACK "Can't read an empty stack"
+	fun top (Stack([])) = raise STACK "Can't read an empty stack"
+	  | top (Stack(x::xs)) = x
 	
-	fun isEmpty (stack) = stack = Empty
+	fun isEmpty (s) = s = Stack([])
 	
-	fun dumpStack (Empty) = "Empty"
-	|dumpStack (Stack(stack)) = concat(map Int.toString (stack))
+	fun dumpStack (Stack([])) = "Empty\n"
+	  |dumpStack (Stack(s)) = String.concatWith "," (map Int.toString (s))^"\n"
 end
 
 structure Ram (*:> RAM*) =
 struct
-	exception memory of string
-	type memory = int array								
 
-	fun write (ram, address, int) = Array.update(ram, address, int)
+	exception memory of string
+
+	type memory = int array
+
+	fun initialize (i) = Array.array (i, 0)
+
+	fun write (ram, address, i) = Array.update(ram, address, i)
 	
-	fun read (ram, int) = Array.sub(ram, int)
+	fun read (ram, i) = Array.sub(ram, i)
+
+	fun rlist (length) = List.tabulate (length, (fn x => x))
+
+	fun reader (ram,[]) = []
+	  |reader (ram,x::xs) = Array.sub(ram, x)::reader(ram,xs)
+
+	fun load (ram, []) = ram
+	  | load (ram,x::xs) = load'(ram, xs, x)
+	and load' (ram,[], _) = ram
+	  | load' (ram, x::xs, i) = (Array.update(ram, i, x); load'(ram, xs, i+1))   (* heh, update with side-effect, then recursion *)
 	
-	(*
-		The int should not have been there in the first place. But i was unclear in the specifications and forgott to add an important thing.
-		The first number in the list to be loaded is the adress in the memmory where the list is to be loaded.
-		The first number in the list is the "base adress" and should not be loaded into the memmory.
-	*)
-	fun load (list) = Array.fromList (list)
+	fun writeChunk (ram, adress, i, sorc) = Array.copy{src = sorc, dst = ram, di = adress} (* There is an int in the signature, but what should it do *)
 	
-	fun writeChunk (ram, adress, int, sorc) = Array.copy{src = sorc, dst = ram, di = adress}  (* vad ska int g�ra *)
+	fun readChunk (ram, address, length) = Array.fromList(reader (ram, map (fn x => x+address) (rlist(length))))  
 	
-	fun reader (ram, []) = []
-	|reader (ram, x::xs) = Array.sub(ram, x)::reader(ram,xs)
-	
-	fun readChunk (ram, adress, length) =
+	fun dump (ram) = 
 		let
-			val rlist = List.tabulate (length, (fn x => x+adress))
+			val dumpList = List.tabulate (Array.length(ram), (fn x => x))
+			fun dumpString ([],[]) = ""
+			  | dumpString (x::xs, y::ys) = (Int.toString(x) ^ ":" ^ Int.toString(y) ^ "\n" ^ dumpString(xs,ys))
 		in
-			Array.fromList(reader (ram, rlist))
-		end 
-	
-	
-	(*Please use descriptive names for all functions and values.*)
-	fun dump (*hahahaha*) (ram) = 
-		let
-			val dicklist = List.tabulate (Array.length(ram), (fn x => x))
-			fun ful ([],[]) = ""
-			| ful (x::xs,y::ys) = (Int.toString(x) ^ ":" ^ Int.toString(y) ^ "," ^ ful(xs,ys))
-		in
-			ful(dicklist, (reader (ram, dicklist)))
+			"RAM:\n"^dumpString(dumpList, (reader (ram,dumpList)))
 		end
+
 end
 
 
@@ -143,16 +133,18 @@ signature PROGRAM_COUNTER =
 sig
 	exception COUNTER of string
 	datatype pc = Pc of (int * Stack.stack * Register.reg * Register.reg) 	(*pointer, jump stack,  IRQ1, IRQ2*)
-	val incrementPointer : (pc * int) -> pc 							(*increments the pointer by an arbitrary integer*)
-	val jump : (pc * int) -> pc														(*changes the pointer*)
-	val subroutineJump : (pc * int) -> pc 								(*performs a subroutine jump*)
-	val return : pc -> pc 																(*returns from subroutine jump*)
-	val interupt : (pc * int) -> pc 											(*performs a interupt jump. The integer specifys wich IRQ register to be used. *)
+	val incrementPointer : (pc * int) -> pc 			(*increments the pointer by an arbitrary integer*)
+	val jump : (pc * int) -> pc					(*changes the pointer*)
+	val subroutineJump : (pc * int) -> pc 				(*performs a subroutine jump*)
+	val return : pc -> pc 						(*returns from subroutine jump*)
+	val interupt : (pc * int) -> pc 				(*performs a interupt jump. The integer specifys wich IRQ register to be used. *)
 end
 
 structure ProgramCounter (*:> PROGRAM_COUNTER*) =
 struct
-	datatype pc = unit
+	datatype pc = Pc of (int * Stack.stack * Register.reg * Register.reg)
+	fun incrementPointer (i,stack,irq1,irq2) = (i+1,stack,irq1,irq2)
+	fun jump ((i,stack,irq1,irq2),jump) = (jump,stack,irq1,irq2)
 end
 
 

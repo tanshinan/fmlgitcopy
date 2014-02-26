@@ -10,3 +10,7 @@ will start codeing with the assigend part tomorrow 2014-02-25
 
 2014-02-25
 Codeing the componets with Alexander and creating the strucktors in ram aswell some other things
+
+2014-02-26
+Codeing the componets with Alexander, done with impimation of Stacks , Ram, and started with ProgramCounter
+

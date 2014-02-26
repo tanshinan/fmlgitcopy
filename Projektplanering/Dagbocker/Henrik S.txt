@@ -54,4 +54,11 @@
 	Found a serious case of ambiguity in the VM specification. Clarified things.
 	
 24/2 12:54
-	Had a little meting with the crew. Discussed VM implementation, and some misc stuuf.
+	Had a little meting with the crew. Discussed VM implementation, and some misc stuff.
+
+25/2 18:17
+	Looked trough the changes made to the Components.sml file and made some changes and commented on some things.
+	Continued working on the assembler documentation.
+	
+26/2 18:17
+	Read trough the Components.sml. Made some minor changes and commented on some things.

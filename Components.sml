@@ -32,13 +32,12 @@ signature RAM =
 sig 
 	exception memory of string
 	type memory = int array								
-	val mem : memory							(*The actual memory*)
 	val initialize : int -> memory 							(*Creates a memmory of size specified by the integer*)
 	val getSize : (memory) -> int 								(*Returns the size of the memory.*)
 	val write : (memory * int * int ) -> memory	  (*Wrties to memory*)
 	val read : (memory * int) -> int							(*Reads to memory*)
-	val load : (int list) -> memory								(*Loads a list of integers into the memory*)
-	val writeChunk : (memory * int * int * (int array)) -> memory	(*Writes a "chunk" of memory. To be used by prepherials"*)
+	val load : (memory* int list) -> memory								(*Loads a list of integers into the memory*)
+	val writeChunk : (memory * int * (int array)) -> memory	 (*Writes a "chunk" of memory. To be used by prepherials"*)
 	val readChunk : (memory * int * int) -> int array				(*Retrives a "chunk" of memory. To be used by prepherials"*)
 	val dump : memory -> string										(*Dumps the memory into a pretty string*)
 end
@@ -72,7 +71,7 @@ struct
 	
 	fun push (Stack(s), inp) = Stack(inp::s)
 	
-	(*This function should return a new stack without the top stackframe*) (* you mean like this, I hope *)
+	(*This function should return a new stack without the top stackframe*) (* you mean like this, I hope *) (*Yes just like this!*)
 	fun pop (Stack([])) = raise STACK "Can't pop an empty stack"
 	  | pop (Stack(x::xs)) = Stack(xs)                        
 		
@@ -85,7 +84,7 @@ struct
 	  |dumpStack (Stack(s)) = String.concatWith "," (map Int.toString (s))^"\n"
 end
 
-structure Ram (*:> RAM*) =
+structure Ram :> RAM =
 struct
 
 	exception memory of string
@@ -93,8 +92,11 @@ struct
 	type memory = int array
 
 	fun initialize (i) = Array.array (i, 0)
-
-	fun write (ram, address, i) = Array.update(ram, address, i)
+	
+	fun getSize(ram) = Array.length(ram)
+	
+	(*Not the slight but vital difference here. And contemplate upon it.*)
+	fun write (ram, address, i) = (Array.update(ram, address, i); ram)
 	
 	fun read (ram, i) = Array.sub(ram, i)
 
@@ -102,13 +104,16 @@ struct
 
 	fun reader (ram,[]) = []
 	  |reader (ram,x::xs) = Array.sub(ram, x)::reader(ram,xs)
-
-	fun load (ram, []) = ram
-	  | load (ram,x::xs) = load'(ram, xs, x)
-	and load' (ram,[], _) = ram
-	  | load' (ram, x::xs, i) = (Array.update(ram, i, x); load'(ram, xs, i+1))   (* heh, update with side-effect, then recursion *)
 	
-	fun writeChunk (ram, adress, i, sorc) = Array.copy{src = sorc, dst = ram, di = adress} (* There is an int in the signature, but what should it do *)
+	fun load (ram, []) = ram
+	|load (ram,x::xs) = load'(ram, xs, x)
+	and load' (ram,[], _) = ram
+	|load' (ram, x::xs, i) = (Array.update(ram, i, x); load'(ram, xs, i+1))   (* heh, update with side-effect, then recursion*)(*Yupp! Thats the way to go!*)
+	
+	(*I removed the integer. It was supposed to be write from here to there but the there was stupid
+		Allso added the vital and magic ingredient.
+	*)
+	fun writeChunk (ram, adress, sorc) = (Array.copy{src = sorc, dst = ram, di = adress}; ram)
 	
 	fun readChunk (ram, address, length) = Array.fromList(reader (ram, map (fn x => x+address) (rlist(length))))  
 	
@@ -143,8 +148,16 @@ end
 structure ProgramCounter (*:> PROGRAM_COUNTER*) =
 struct
 	datatype pc = Pc of (int * Stack.stack * Register.reg * Register.reg)
-	fun incrementPointer (i,stack,irq1,irq2) = (i+1,stack,irq1,irq2)
-	fun jump ((i,stack,irq1,irq2),jump) = (jump,stack,irq1,irq2)
+	
+	(*
+	Guys remeber that you have to return the correct datatype nut just a tuple.
+	This is very important. (i,stack,irq1,irq2) is not the same thing as Pc(i,stack,irq1,irq2)
+	*)
+	
+	(*You missed the int. You will want to be able to increment the pointer with an arbitrary number*)
+	fun incrementPointer (Pc(i,stack,irq1,irq2),a) = Pc(i+a,stack,irq1,irq2)
+	
+	fun jump (Pc(i,stack,irq1,irq2),jump) = Pc(jump,stack,irq1,irq2)
 end
 
 

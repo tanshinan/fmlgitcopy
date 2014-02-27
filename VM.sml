@@ -1,6 +1,5 @@
 use "Components.sml";
 
-
 (*
 	create the structures in the Componenets file before you start working on this.
 *)
@@ -31,19 +30,25 @@ struct
 (*
 	fun step (Vm()) =  
 *)
-	fun flagComprehension (fl: flag) = case fl of HALT => "HALT"
-					      | OVERFLOW => "OVERFLOW"
-					      | RUNNING => "RUNNING"
-					      | INTERRUPT(a) =>  Int.toString (a)
+	
+	(*Odd name!?*)
+	fun flagComprehension (fl: flag) = 
+		case fl of HALT => "HALT"
+		| OVERFLOW => "OVERFLOW"
+		| RUNNING => "RUNNING"
+		| INTERRUPT(a) =>  Int.toString (a)
 
 			 (* when we tried to use stdOut it crashed poly *)
-	fun dump (Vm(pc, a, s, x, y, ram, fl)) = 
-	    let
-		val dumpstream = TextIO.openOut "vm_dump"
-	    in
-		(TextIO.output (dumpstream, (ProgramCounter.dumpPc(pc) ^ "\n" ^ (Register.dumpRegister(a))^ ", " ^(Stack.dumpStack(s))^ ", " ^ (Register.dumpRegister(x))^ ", " ^ (Register.dumpRegister(y))^ "\n" ^ (Ram.dump(ram)) ^ "\n" ^ flagComprehension(fl) ^ "\n")); TextIO.closeOut dumpstream)
-	    end
-
+	
+	fun dumpToFile (Vm(pc, a, s, x, y, ram, fl)) = 
+		let
+			val dumpstream = TextIO.openOut "vm_dump"
+		in
+			(TextIO.output (dumpstream, (ProgramCounter.dumpPc(pc) ^ "\n" ^ (Register.dumpRegister(a))^ ", " ^(Stack.dumpStack(s))^ ", " ^ (Register.dumpRegister(x))^ ", " ^ (Register.dumpRegister(y))^ "\n" ^ (Ram.dump(ram)) ^ "\n" ^ flagComprehension(fl) ^ "\n")); TextIO.closeOut dumpstream)
+		end
+	
+	fun dump (Vm(pc, a, s, x, y, ram, fl)) = print  ((ProgramCounter.dumpPc(pc) ^ "\n" ^ (Register.dumpRegister(a))^ ", " ^(Stack.dumpStack(s))^ ", " ^ (Register.dumpRegister(x))^ ", " ^ (Register.dumpRegister(y))^ "\n" ^ (Ram.dump(ram)) ^ "\n" ^ flagComprehension(fl) ^ "\n"))
+	
 end
 
 (*

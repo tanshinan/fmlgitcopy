@@ -101,7 +101,7 @@ struct
 	
 	fun read (ram, i) = Array.sub(ram, i)
 
-	fun rlist (length) = List.tabulate (length, (fn x => x))
+	fun rlist (length) = List.tabulate (length, (fn x => x)) (*What does this funtion do??*)
 
 	fun reader (ram,[]) = []
 	  |reader (ram,x::xs) = Array.sub(ram, x)::reader(ram,xs)
@@ -164,9 +164,11 @@ struct
 	(* raises STACK when empty stack *)
 	fun return (Pc(i, s, q1, q2)) = Pc(Stack.top(s), Stack.pop(s), q1, q2)
 
-	fun interrupt (Pc(i, s, irq1 as Register.Reg(q1), irq2 as Register.Reg(q2)), x) = case x of 1 => Pc(q1, Stack.push(s, i), irq1, irq2)
-												  | 2 => Pc(q2, Stack.push(s, i), irq1, irq2)
-												  | _ => raise COUNTER "Can't use nonexistent IRQ"
+	fun interrupt (Pc(i, s, irq1 as Register.Reg(q1), irq2 as Register.Reg(q2)), x) = 
+		case x of 
+			1 => Pc(q1, Stack.push(s, i), irq1, irq2)
+		  | 2 => Pc(q2, Stack.push(s, i), irq1, irq2)
+		  | _ => raise COUNTER "Can't use nonexistent IRQ"
 
 	fun dumpPc (Pc(i, stack, q1, q2)) = "PC: " ^ (Int.toString(i)) ^ ", " ^ (Stack.dumpStack(stack)) ^ ", " ^ (Register.dumpRegister(q1)) ^ ", " ^ (Register.dumpRegister(q2))
 

@@ -21,6 +21,7 @@ signature STACK =
 sig
 	exception STACK of string
 	datatype stack = Stack of (int list)
+	val empty : stack
 	val push : stack * int -> stack					(*Pushes a value onto the stack*)
 	val pop : stack -> stack								(*Pops a value off the stack*)
 	val top : stack -> int									(*returns the value from the top of the stack*)
@@ -70,6 +71,8 @@ struct
 	datatype stack = Stack of (int list)
 	
 	fun push (Stack(s), inp) = Stack(inp::s)
+	
+	val empty = Stack([])
 	
 	(*This function should return a new stack without the top stackframe*) (* you mean like this, I hope *) (*Yes just like this!*)
 	fun pop (Stack([])) = raise STACK "Can't pop an empty stack"
@@ -121,9 +124,9 @@ struct
 		let
 			val dumpList = List.tabulate (Array.length(ram), (fn x => x))
 			fun dumpString ([],[]) = ""
-			  | dumpString (x::xs, y::ys) = (Int.toString(x) ^ ":" ^ Int.toString(y) ^ "\n" ^ dumpString(xs,ys))
+			  | dumpString (x::xs, y::ys) = (Int.toString(x) ^ ":" ^ Int.toString(y) ^ "," ^ dumpString(xs,ys))
 		in
-			"RAM:\n"^dumpString(dumpList, (reader (ram,dumpList)))
+			"RAM: \n " ^ dumpString(dumpList, (reader (ram,dumpList)))
 		end
 
 end
@@ -168,3 +171,5 @@ There is the include keyword but that just adds all of the declarations from ano
 signature containing the include must when its used in a structure allso include all of the functions and values in the included
 signature. 
 *)
+
+

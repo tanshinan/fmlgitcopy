@@ -3,6 +3,7 @@
 
 #start
 
+MOV $x $y
 #get_exp
 MOV s y
 DIV y 100

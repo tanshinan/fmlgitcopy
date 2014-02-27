@@ -36,7 +36,7 @@ Indentifier & Name & Description\\
 \hline
 \V+:<data>+ & Raw input & Returns \V+<data>+ as is \\
 \hline
-\verb+$+ & Address & Treats \V+a+ as a address \\
+\verb+$<a>+ & Address & Derefferences \V+a+\\
 \hline
 \V+x+ & x & The \x \ register \\
 \hline
@@ -51,7 +51,7 @@ Indentifier & Name & Description\\
 \end{tabular}
 \\
 \\
-The names given to labels and values can contain any characters except for
+The names given to \emph{label}s and \emph{value}s can contain any characters except for
 whitespace ones.\\
 Operations are declared in a straightforward approach as:\\
 \V+<opcode> <arg1> <arg2>+ \\
@@ -59,6 +59,23 @@ Wich arguments are allowed are dependent upon the opcode.\\
 
 
 \section{Usage}
+
+\subsection{General}
+One noteworthy thing to point out is the limitations on the arguments. Due to
+limitations in the VM only one ``none registry'' argument can be used for any
+operation. A ``non registry'' argument is one wich is either a number or a
+a pointer. Derefferencing a pointer is a registry operations so they are valid.
+Below follows some examples:
+\begin{verbatim}
+#label
+@value
+MOV label value    This is not accepted
+MOV $label $value  This is perfectly fine
+ADD 1 10           This is invalid
+ADD $1 $10         This is valid
+ADD 1 $1           So is this
+\end{verbatim}
+
 \subsection{Registers}
 The useage of the registers is pretty straight forward. One has to remeber that
 \V+q1+ and \V+q2+ are write only registers and that \V+s+ cant be used for
@@ -69,14 +86,15 @@ consume what is on top of the stack.
 \subsection{Pointers}
 Using pointers is fairly straight forward. Alltough one has to keep in mind how
 the addresses are resolved. All pointers will be resolved after the
-tokenazation fo the code. First the labels will be resolved and then the values.
-This means that the first value will lie after the last line of code. Since the
-address of a label depends on where in the code their addresses are easy to
-reason about. However for values things are bit different. Since vlues will be
-given addresses wich are ``independent'' of where in the code they appear it is
-hard to reason about the address of a value. Although the value pointers are
-resolved in order the first value declared whill lie intermediatley after the
-last line of code and the last value declared will lie ``at the end'' of the
+tokenazation fo the code. First the \emph{labels} will be resolved and then the
+\emph{values}.
+This means that the first \emph{value} will lie after the last line of code. Since the
+address of a \emph{label} depends on where in the code their addresses are easy to
+reason about. However for \emph{values} things are bit different. Since vlues
+will be given addresses wich are ``independent'' of where in the code they appear it is
+hard to reason about the address of a \emph{value}. Although the \emph{value} pointers are
+resolved in order the first \emph{value} declared whill lie intermediatley after the
+last line of code and the last \emph{value} declared will lie ``at the end'' of the
 memmory used by the program. This can be exploited to use rellative addressing.
 Allthoug great care has to be taken.
 
@@ -85,9 +103,9 @@ program therefor it's not allowed to define two pointers with the same name. If
 this where to be allowed it would generate unpredictable behaviour so instead
 the assembler will return a \V+assembler+ error.
 
-Labels and values are interchangable. Since opcodes takes pointers as arguments
-and has no idea weather or not they are labels or values. From this the need for
-caution arises. Since one can use value pointers as arguments to jump operation
+\emph{label}s and \emph{value}s are interchangable. Since opcodes takes pointers as arguments
+and has no idea weather or not they are \emph{label}s or \emph{value}s. From this the need for
+caution arises. Since one can use \emph{value} pointers as arguments to jump operation
 like this:
 \begin{verbatim}
 @bad_idea
@@ -99,7 +117,7 @@ JMP bad_idea
 Since it is not known what where \V+bad_idea+ points jumping to it is suicidal.
 
 Since pointers are just numbers under the hood one needs to take into account
-weather or not one uses them for their adress orr for their values. Here is some
+weather or not one uses them for their adress orr for their \emph{value}s. Here is some
 examples
 \begin{verbatim}
 @pointer
@@ -116,13 +134,13 @@ ADD pointer 1
 \end{verbatim}
 
 Pointers are imutable and once they has been declared they can not be changed.
-One has to do some tricking to achive relative addressing using labels or
-values.
+One has to do some tricking to achive relative addressing using \emph{labels} or
+\emph{values}.
 
 
 \subsubsection{Labels}
-Labels are declared using the \V+#+ identifier.
-Labels are resolved first and their addresses
+\emph{Labels} are declared using the \V+#+ identifier.
+\emph{Labels} are resolved first and their addresses
 correspond to location in the code where they are written. For example:
 \begin{verbatim}
 MOV x y
@@ -143,7 +161,7 @@ INC y
 \end{verbatim}
 Here \V+loop+ and \V+silly+ will both point to the same address wich is silly.
 
-Because tokenaization of the code happens before the address resolving a label
+Because tokenaization of the code happens before the address resolving a \emph{label}
 will be ``in scope'' troughout the enitre code. So this code is perfectly valid:
 
 \begin{verbatim}
@@ -159,7 +177,7 @@ defined after the jump. This was not a concious design choise but it is actually
 quite usefull since one can define subroutines anywhere in the code wich can be
 accesed form anywhere in the code.\\
 One possible piffall arises due to the fact that the assembler does not know the
-difference between a label and a value after their adresses has been resolved.
+difference between a \emph{label} and a \emph{value} after their adresses has been resolved.
 So this code is valid assembly code:
 \begin{verbatim}
 #loop
@@ -171,7 +189,7 @@ Allthough what this will do is that it will change what is at the address of
 \V+loop+. But there \V+ADD s x+ lies! This is what is known as self-modifiying
 code and it's the spawn of satan and should be avoided like one avoids Miami
 beach during spring break. Allthough in some cases the interchangability of
-value and label can be verry usefull if one wants to have ``arrays'' in ones
+\emph{value} and \emph{label} can be verry usefull if one wants to have ``arrays'' in ones
 code. This is easily achived like this:
 \begin{verbatim}
 #array
@@ -194,5 +212,10 @@ MOV 5 $y
 \end{verbatim}
 This code would change the 2 into a 5. But great care needs to be taken since
 one could easily end up outside of the ``array'' and corrupt the program.
+
+\subsubsection{Values}
+\emph{Value}s are far more straight forward than \emph{label}. One only has to
+take into account that what address a \emph{value} is given is somewhat
+independet of where in the code it gets defined.
 
 \end{document}

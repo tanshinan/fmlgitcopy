@@ -40,16 +40,13 @@ struct
 	|getTokenValue(Ic(a)) = a
 	|getTokenValue(_) = raise ASSEMBLER "Cant get value from a refference"
 	
-	
 	fun getPointerName(Label(name,_)) = name
 	|getPointerName(Value(name,_)) = name
 	|getPointerName(NULL) = raise ASSEMBLER "Got NULL???\n"
 	
-	
 	fun getPointerAddress(Label(_,a)) = Option.valOf(a)
 	|getPointerAddress(Value(_,a)) = Option.valOf(a)
 	|getPointerAddress(_) = raise ASSEMBLER "Got NULL???\n"
-	
 	
 	fun setPointerAddress(Label(name,_),a) = Label(name,SOME(a))
 	|setPointerAddress(Value(name,_),a) = Value(name,SOME(a))
@@ -85,7 +82,6 @@ struct
 			
 			fun addLabel(I(label_list,value_list,token_list,current_label,address), a) =I(a::label_list,value_list,token_list,current_label,address)
 			fun addValue(I(label_list,value_list,token_list,current_label,address), a) =I(label_list,a::value_list,token_list,current_label,address)
-			
 			
 			fun addToken(I(label_list,value_list,token_list,NULL,address), a) = raise SYNTAX "Cant use NULL pointer\n"
 			|addToken(I(label_list,value_list,[],Label(current_pointer_name,i),address), a) = (*When list is empty*)
@@ -190,8 +186,8 @@ struct
 		in
 		(
 			case line_head of
-				37 => i	(*This is a comment*)
-				|35 => (*This is a label*)(
+				37 => i	(*Line is a comment*)
+				|35 => (*Line is a label*)(
 					let
 						val assert_length = (StringUtills.words(line_tail) = 1) orelse (print (error(l,"Mallformed label assignemnt",line));raise SYNTAX "")
 					in
@@ -199,7 +195,7 @@ struct
 					end
 					
 				)
-				|64 => (*this is a value*)(
+				|64 => (*Line is a value*)(
 					let
 						val assert_length = (StringUtills.words(line_tail) = 1) orelse (print (error(l,"Mallformed value assignment",line));raise SYNTAX "")
 					in
@@ -207,7 +203,7 @@ struct
 					end
 				)
 				
-				|58 => (*this is data*)(
+				|58 => (*Line is data*)(
 					let
 						val assert_length = (StringUtills.words(line_tail) = 1) orelse (print (error(l,"Mallformed value assignment",line));raise SYNTAX "")
 						val data = Int.fromString(line_tail)
@@ -217,7 +213,7 @@ struct
 						|NONE => (print (error(l,"Data is not an integer",line));raise SYNTAX "")
 					end
 				)
-				|_ =>  (*this is magic*)(
+				|_ =>  (*Line is magic*)(
 					let
 						(*<operation> <write> <read>*)
 						val expression = StringUtills.spaceSplit(line)
@@ -262,7 +258,7 @@ struct
 									(SOME(a),NONE) => Inter.addToken(instruction,Option.valOf(resolveToken(w)))
 									|(NONE,SOME(a)) => Inter.addToken(instruction,Option.valOf(resolveToken(r)))
 									|(NONE,NONE) => instruction
-									|(_,_) => (print (error(l,"Cant use two arbitrary arguments",line));raise SYNTAX "")
+									|(_,_) => (print (error(l,"Cant use two non register arguments",line));raise SYNTAX "")
 									
 							end
 						|_ => raise ASSEMBLER "OMG SERIOUSLY!?!?!?!?!"
@@ -282,19 +278,13 @@ struct
 		Searches trough a intermediate structure in order assert that there are no
 		duplicate refernces.
 		
+		i is the intermediate structure.
 		returns () if all is well.
 	*)
 	fun duplicateSearch(i) =
 		let
 			val concattenation = (List.map (fn x => getPointerName(x)) (Inter.getLabelList(i))) @ (List.map getPointerName (Inter.getValueList(i)))
-				(*
-				fun detectValueLabelDuplicate([]) = ()
-				|detectValueLabelDuplicate(label :: rest) =
-						case (List.find label value_names) of
-						NONE => detectDuplicate(rest)
-						|SOME(A) => raise ASSEMBLER (label ^ " exists as both a label and a value")
-				*)
-			
+
 			fun count(a,[]) = 0
 			|count(a,x::xs) = 
 				if a  = x then
@@ -308,6 +298,7 @@ struct
 					detectPointerCollision(rest)
 				else
 					raise ASSEMBLER (pointer ^ " is not unique")
+					
 		in
 			detectPointerCollision(concattenation)
 		end
@@ -323,19 +314,19 @@ struct
 				Assigns each label pointer its correct adress
 			*)
 			fun resolveLabels([],[],current_label,current_adress) = []
-				|resolveLabels(label_list,[],current_label,current_adress) = []
-				|resolveLabels(label_list as (label :: rest_label),token_list as ((token as (name,offs,tok)) :: rest_token),NULL,current_adress) = 
-					setPointerAddress(label,current_adress) :: resolveLabels(rest_label,rest_token,label,current_adress+1)
-				|resolveLabels([],token_list as ((token as (name,offs,tok)) :: rest_token),current_label,current_adress) =
-					if getPointerName(current_label) = name then
-							resolveLabels(label_list,rest_token,current_label,current_adress+1)
-						else 
-							raise ASSEMBLER "Found un initialized label :("
-				|resolveLabels(label_list as (label :: rest_label),token_list as ((token as (name,offs,tok)) :: rest_token),current_label,current_adress) =
-					if getPointerName(current_label)  =  name then
+			|resolveLabels(label_list,[],current_label,current_adress) = []
+			|resolveLabels(label_list as (label :: rest_label),token_list as ((token as (name,offs,tok)) :: rest_token),NULL,current_adress) = 
+				setPointerAddress(label,current_adress) :: resolveLabels(rest_label,rest_token,label,current_adress+1)
+			|resolveLabels([],token_list as ((token as (name,offs,tok)) :: rest_token),current_label,current_adress) =
+				if getPointerName(current_label) = name then
 						resolveLabels(label_list,rest_token,current_label,current_adress+1)
 					else 
-						setPointerAddress(label,current_adress) :: resolveLabels(rest_label,rest_token,label,current_adress+1)
+						raise ASSEMBLER ("Found uninitialized label " ^ name) 
+			|resolveLabels(label_list as (label :: rest_label),token_list as ((token as (name,offs,tok)) :: rest_token),current_label,current_adress) =
+				if getPointerName(current_label)  =  name then
+					resolveLabels(label_list,rest_token,current_label,current_adress+1)
+				else 
+					setPointerAddress(label,current_adress) :: resolveLabels(rest_label,rest_token,label,current_adress+1)
 						
 			val resolved_labels = resolveLabels(label_list,token_list,NULL,base_adress)
 
@@ -429,8 +420,9 @@ struct
 			(*finalize*)
 			val finalized_code = finalize(resolved_code)
 			val verb = msg(verbose,"finalized code!.\n")
-			(*output*)
+			
 		in
+			(*output*)
 			IO_Handler.writeIntListFile(output_file,finalized_code)
 		end
 end;

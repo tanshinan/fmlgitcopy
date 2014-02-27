@@ -71,6 +71,8 @@ Below follows some examples:
 @value
 MOV label value    This is not accepted
 MOV $label $value  This is perfectly fine
+MOV 10 value       This is invalid
+MOV 10 $value      But this is
 ADD 1 10           This is invalid
 ADD $1 $10         This is valid
 ADD 1 $1           So is this

@@ -51,7 +51,7 @@ structure Register :> REGISTER=
 struct
 	exception REGISTER
 	datatype reg = Reg of int
-	
+
 	fun setData (Reg(_), new) = Reg(new)
 
 	fun getData (Reg(i)) = i
@@ -62,19 +62,18 @@ struct
 	fun decrement (Reg(i)) = Reg(i-1)
 	handle Overflow => raise RUNTIME "Register underflow"
 	
-	fun dumpRegister (Reg(i)) = Int.toString(i)^"\n"
+	fun dumpRegister (Reg(i)) = Int.toString(i)
 end
 
 structure Stack :> STACK=
 struct
 	exception STACK of string
 	datatype stack = Stack of (int list)
-	
+
+	val empty = Stack([])	
+
 	fun push (Stack(s), inp) = Stack(inp::s)
 	
-	val empty = Stack([])
-	
-	(*This function should return a new stack without the top stackframe*) (* you mean like this, I hope *) (*Yes just like this!*)
 	fun pop (Stack([])) = raise STACK "Can't pop an empty stack"
 	  | pop (Stack(x::xs)) = Stack(xs)                        
 		
@@ -83,8 +82,8 @@ struct
 	
 	fun isEmpty (s) = s = Stack([])
 	
-	fun dumpStack (Stack([])) = "Empty\n"
-	  |dumpStack (Stack(s)) = String.concatWith "," (map Int.toString (s))^"\n"
+	fun dumpStack (Stack([])) = "Empty"
+	  |dumpStack (Stack(s)) = String.concatWith "," (map Int.toString (s))
 end
 
 structure Ram :> RAM =
@@ -95,10 +94,9 @@ struct
 	type memory = int array
 
 	fun initialize (i) = Array.array (i, 0)
+
+	fun getSize (ram) = Array.length(ram)
 	
-	fun getSize(ram) = Array.length(ram)
-	
-	(*Not the slight but vital difference here. And contemplate upon it.*)
 	fun write (ram, address, i) = (Array.update(ram, address, i); ram)
 	
 	fun read (ram, i) = Array.sub(ram, i)
@@ -111,11 +109,8 @@ struct
 	fun load (ram, []) = ram
 	|load (ram,x::xs) = load'(ram, xs, x)
 	and load' (ram,[], _) = ram
-	|load' (ram, x::xs, i) = (Array.update(ram, i, x); load'(ram, xs, i+1))   (* heh, update with side-effect, then recursion*)(*Yupp! Thats the way to go!*)
-	
-	(*I removed the integer. It was supposed to be write from here to there but the there was stupid
-		Allso added the vital and magic ingredient.
-	*)
+	|load' (ram, x::xs, i) = (Array.update(ram, i, x); load'(ram, xs, i+1))   
+
 	fun writeChunk (ram, adress, sorc) = (Array.copy{src = sorc, dst = ram, di = adress}; ram)
 	
 	fun readChunk (ram, address, length) = Array.fromList(reader (ram, map (fn x => x+address) (rlist(length))))  
@@ -126,7 +121,7 @@ struct
 			fun dumpString ([],[]) = ""
 			  | dumpString (x::xs, y::ys) = (Int.toString(x) ^ ":" ^ Int.toString(y) ^ "," ^ dumpString(xs,ys))
 		in
-			"RAM: \n " ^ dumpString(dumpList, (reader (ram,dumpList)))
+			"RAM =>> " ^ dumpString(dumpList, (reader (ram,dumpList)))
 		end
 
 end
@@ -145,11 +140,13 @@ sig
 	val jump : (pc * int) -> pc					(*changes the pointer*)
 	val subroutineJump : (pc * int) -> pc 				(*performs a subroutine jump*)
 	val return : pc -> pc 						(*returns from subroutine jump*)
-	val interupt : (pc * int) -> pc 				(*performs a interupt jump. The integer specifys wich IRQ register to be used. *)
+	val interrupt : (pc * int) -> pc 				(*performs an interrupt jump. The integer specifys wich IRQ register to be used. *)
+	val dumpPc : pc -> string
 end
 
-structure ProgramCounter (*:> PROGRAM_COUNTER*) =
+structure ProgramCounter :> PROGRAM_COUNTER =
 struct
+	exception COUNTER of string
 	datatype pc = Pc of (int * Stack.stack * Register.reg * Register.reg)
 	
 	(*
@@ -158,9 +155,21 @@ struct
 	*)
 	
 	(*You missed the int. You will want to be able to increment the pointer with an arbitrary number*)
-	fun incrementPointer (Pc(i,stack,irq1,irq2),a) = Pc(i+a,stack,irq1,irq2)
+	fun incrementPointer (Pc(i,s,q1,q2),a) = Pc(i+a,s,q1,q2)
 	
-	fun jump (Pc(i,stack,irq1,irq2),jump) = Pc(jump,stack,irq1,irq2)
+	fun jump (Pc(i,s,q1,q2),jump) = Pc(jump,s,q1,q2)
+
+	fun subroutineJump (Pc(i, s, q1, q2), jump) = Pc(jump, Stack.push(s, i), q1, q2)
+
+	(* raises STACK when empty stack *)
+	fun return (Pc(i, s, q1, q2)) = Pc(Stack.top(s), Stack.pop(s), q1, q2)
+
+	fun interrupt (Pc(i, s, irq1 as Register.Reg(q1), irq2 as Register.Reg(q2)), x) = case x of 1 => Pc(q1, Stack.push(s, i), irq1, irq2)
+												  | 2 => Pc(q2, Stack.push(s, i), irq1, irq2)
+												  | _ => raise COUNTER "Can't use nonexistent IRQ"
+
+	fun dumpPc (Pc(i, stack, q1, q2)) = "PC: " ^ (Int.toString(i)) ^ ", " ^ (Stack.dumpStack(stack)) ^ ", " ^ (Register.dumpRegister(q1)) ^ ", " ^ (Register.dumpRegister(q2))
+
 end
 
 
@@ -171,5 +180,3 @@ There is the include keyword but that just adds all of the declarations from ano
 signature containing the include must when its used in a structure allso include all of the functions and values in the included
 signature. 
 *)
-
-

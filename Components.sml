@@ -101,7 +101,8 @@ struct
 	
 	fun read (ram, i) = Array.sub(ram, i)
 
-	fun rlist (length) = List.tabulate (length, (fn x => x)) (*What does this funtion do??*)
+	fun rlist (length) = List.tabulate (length, (fn x => x)) (*What does this funtion do??*) 
+				(*Creates a list of n length with the elements [0,1,2..n-1,n]. Only used in readChunk now, but though of using it elsewhere *)
 
 	fun reader (ram,[]) = []
 	  |reader (ram,x::xs) = Array.sub(ram, x)::reader(ram,xs)

@@ -36,6 +36,10 @@ struct
 	fun getTokenName(Ref(name)) = name
 	|getTokenName(_) = raise ASSEMBLER "Token is not a Reference"
 	
+	fun getTokenType(Ref(_)) = "Pointer"
+	|getTokenType(Arg(_)) = "Argument"
+	|getTokenType(Ic(_)) = "Instruction"
+	
 	fun getTokenValue(Arg(a)) = a
 	|getTokenValue(Ic(a)) = a
 	|getTokenValue(_) = raise ASSEMBLER "Cant get value from a refference"
@@ -261,7 +265,7 @@ struct
 									|(_,_) => (print (error(l,"Cant use two non register arguments",line));raise SYNTAX "")
 									
 							end
-						|_ => raise ASSEMBLER "OMG SERIOUSLY!?!?!?!?!"
+						|_ => raise ASSEMBLER "This hould not have happened....."
 					end
 				)
 		)
@@ -311,7 +315,8 @@ struct
 			val label_list = List.rev(Inter.getLabelList(i))
 			
 			(*
-				Assigns each label pointer its correct adress
+				Assigns each label pointer its correct adress.
+				Returns a list of labels with their addresses resolved.
 			*)
 			fun resolveLabels([],[],current_label,current_adress) = []
 			|resolveLabels(label_list,[],current_label,current_adress) = []
@@ -351,12 +356,12 @@ struct
 					val label_address = getPointerAddress(Option.valOf(List.find (fn x => (label_name = getPointerName(x))) resolved_labels))
 					handle Option => raise ASSEMBLER ("Couldnt find label: " ^ label_name)
 				in
-					(label_address+offs,a : token) :: firstPass(resolved_labels,token_rest) 
+					(label_address+offs, a : token) :: firstPass(resolved_labels,token_rest) 
 				end
 			
 			val pass1 = firstPass(resolved_labels,token_list)
 			
-			val max_address = #1(List.last(pass1)) 
+			val max_address = #1(List.last(pass1)) + 1 (* Without the +1 the values would lie within the program.*)
 			
 			(*returns a list of value tokens with resolved addresses*)
 			fun resolveValues([],address) = []
@@ -379,6 +384,7 @@ struct
 			
 			val pass2 = secondPass(resolved_values,pass1)
 			
+
 		in
 			pass2
 		end

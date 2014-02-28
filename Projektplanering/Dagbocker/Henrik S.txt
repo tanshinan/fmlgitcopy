@@ -65,3 +65,7 @@
 
 26/2 22:48
 	Some work on assembler documentation.
+	
+28/2 23:30
+	Kept writing assembler documentation.
+	Found some bugs in the assembler which i ironed out.

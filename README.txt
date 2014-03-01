@@ -5,7 +5,7 @@ Use descriptive names for functions, types etc.
 Always use a catch all clause if applicable.
 Always leave an empty line between functions.
 Use encapsulation when appropriate.
-And the general philosophy should to avoid ambiguity.
+Avoid ambiguity.
 :::::::::::::::::::::::::::::::::::::::::::
 
 

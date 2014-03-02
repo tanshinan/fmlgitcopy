@@ -58,6 +58,7 @@ whitespace ones.\\
 Operations are declared in a straightforward approach as:\\
 \V+<opcode> <arg1> <arg2>+ \\
 Wich arguments are allowed are dependent upon the opcode.\\
+Any non whitespace character can be used for names of labels and values. 
 
 \section{Inner Workings}
 The assembler works in a fairly straight forward way. The first step in the
@@ -95,7 +96,8 @@ After all the adress has been resolved the assembler runns trough the list of
 tokens and replaces every pointer token with its correct adress.
 
 After this is completed the assembler finalizes the code by converting
-everything into a list of integers wich then gets outputed to a file.
+everything into a list of integers wich then gets outputed to a file. And that
+children is how assembly code gets turned in to machine code.
 
 \section{Usage}
 \subsection{General}
@@ -257,5 +259,21 @@ one could easily end up outside of the ``array'' and corrupt the program.
 \emph{Value}s are far more straight forward than \emph{label}. One only has to
 take into account that what address a \emph{value} is given is somewhat
 independet of where in the code it gets defined.
+
+\subsection{Jumping}
+Doing oridary jumps using the \V+JMP+ operatioon is very straight forward. The
+machine will just jump to the address given to the \V+JMP+ operator.
+
+But for conditional branching things become a little bit less obvious. If the
+test given to a conditional test fails the machine will skip the next
+instruction. Letts illustrate this with a few examples:
+\begin{verbatim}
+MOV 10 x
+BLE x 2
+JMP this_does_not_happen
+BGR x 2
+JMP this_happens
+\end{verbatim}
+
 
 \end{document}

@@ -1,23 +1,25 @@
 use "Components.sml";
 
 (*
-	create the structures in the Componenets file before you start working on this.
+	create the structures in the Components file before you start working on this.
 *)
 signature VIRTUAL_MACHINE =
 sig
 	exception RUNTIME
+	(*DATATYPE*)
 	datatype flag = HALT | INTERRUPT of int | OVERFLOW | RUNNING
 	datatype vm = Vm of (ProgramCounter.pc * Register.reg * Stack.stack * Register.reg * Register.reg * Ram.memory * flag)
 	
-	val init : (int list * int) -> vm (*Creates an initialized VM. Loads int list into the memory and makes the memory have a size of the second int*)
-	val step : vm -> vm				(*Takes one vm and returns the next vm. I.e it runns the virtual machine for one step.*)
+	val init : (int list * int) -> vm 	(*Creates an initialized VM. Loads int list into the memory and makes the memory have a size of the second int*)
+	val step : vm -> vm					(*Takes one vm and returns the next vm. I.e it runns the virtual machine for one step.*)
 	val dump : vm -> unit				(*Prints the VM to stdOut. The output should be really pretty to make debugging easy.*)
 	
 end
-
-structure Vm (*:> VIRTUAL_MACHINE*) =
+(*This is the functions of the signature Virtual_Machine*)
+structure Vm (*:> VIRTUAL_MACHINE *)=
 struct
 	exception RUNTIME
+	(*DATATYPE*)
 	datatype flag = HALT | INTERRUPT of int | OVERFLOW | RUNNING
 	datatype vm = Vm of (ProgramCounter.pc * Register.reg * Stack.stack * Register.reg * Register.reg * Ram.memory * flag)
 

@@ -8,84 +8,159 @@ sig
 	exception REGISTER
 	datatype reg = Reg of int 
 	val setData : (reg * int) -> reg 				(*Set data*)
-	val getData : reg -> int								(*gets data*)
-	val increment : reg -> reg							(*increments register*)
-	val decrement : reg -> reg							(*decrements register*)
-	val dumpRegister : reg -> string				(*dumnps register to a nice formatted string*)
+	val getData : reg -> int						(*gets data*)
+	val increment : reg -> reg						(*increments register*)
+	val decrement : reg -> reg						(*decrements register*)
+	val dumpRegister : reg -> string				(*dumps register to a nice formatted string*)
 end;
 
 (*
 	This signature describes the workings of the stacks
 *)
+
 signature STACK =
 sig
 	exception STACK of string
 	datatype stack = Stack of (int list)
 	val empty : stack
 	val push : stack * int -> stack					(*Pushes a value onto the stack*)
-	val pop : stack -> stack								(*Pops a value off the stack*)
-	val top : stack -> int									(*returns the value from the top of the stack*)
-	val isEmpty : stack -> bool							(*returns true if the stack is empty*)
+	val pop : stack -> stack						(*Pops a value off the stack*)
+	val top : stack -> int							(*returns the value from the top of the stack*)
+	val isEmpty : stack -> bool						(*returns true if the stack is empty*)
 	val dumpStack : stack -> string					(*returns a pretty string of what is on the stack*)
 end;
+(*
+	This signature describes the workings of the ram
+*)
 
 signature RAM =
 sig 
 	exception memory of string
 	type memory = int array								
-	val initialize : int -> memory 							(*Creates a memmory of size specified by the integer*)
+	val initialize : int -> memory 								(*Creates a memory of size specified by the integer*)
 	val getSize : (memory) -> int 								(*Returns the size of the memory.*)
-	val write : (memory * int * int ) -> memory	  (*Wrties to memory*)
+	val write : (memory * int * int ) -> memory	  				(*Writes to memory*)
 	val read : (memory * int) -> int							(*Reads to memory*)
-	val load : (memory* int list) -> memory								(*Loads a list of integers into the memory*)
-	val writeChunk : (memory * int * (int array)) -> memory	 (*Writes a "chunk" of memory. To be used by prepherials"*)
-	val readChunk : (memory * int * int) -> int array				(*Retrives a "chunk" of memory. To be used by prepherials"*)
-	val dump : memory -> string										(*Dumps the memory into a pretty string*)
+	val load : (memory* int list) -> memory						(*Loads a list of integers into the memory*)
+	val writeChunk : (memory * int * (int array)) -> memory		(*Writes a "chunk" of memory. To be used by peripherals"*)
+	val readChunk : (memory * int * int) -> int array			(*Retrieves a "chunk" of memory. To be used by peripherals"*)
+	val dump : memory -> string									(*Dumps the memory into a pretty string*)
 end
 
-(*These are just place holders. Here to make sure that the PROMGAM_COUNTER signature can use the correct datatypes  
-Your code can go in here if you want to. Just remeber to uncomment the :> and then add the correct data type.
+(*
+These are just place holders. Here to make sure that the PROMGAM_COUNTER signature can use the correct data types  
+Your code can go in here if you want to. Just remember to uncomment the :> and then add the correct data type.
 *)
-
+(*
+This is the structures of the register. Where we assign the functions for the signature Register.
+*)
 structure Register :> REGISTER=
 struct
 	exception REGISTER
 	datatype reg = Reg of int
-
+(*
+setData
+TYPE: Reg * int -> reg
+PRE:()
+POST: gets a new Register
+EXAMPLE:
+*)
 	fun setData (Reg(_), new) = Reg(new)
-
+(*
+getData i
+TYPE: Reg -> int
+PRE:()
+POST: 
+EXAMPLE:
+*)
 	fun getData (Reg(i)) = i
-	
+(*
+increment i
+TYPE: Reg -> reg
+PRE:()
+POST: 
+EXAMPLE:
+*)	
 	fun increment (Reg(i)) = Reg(i+1)
 	handle Overflow => raise RUNTIME "Register overflow"
-	
+(*
+decrement i
+TYPE: Reg -> reg
+PRE:()
+POST: 
+EXAMPLE:
+*)	
 	fun decrement (Reg(i)) = Reg(i-1)
 	handle Overflow => raise RUNTIME "Register underflow"
-	
+(*
+dumpRegister i
+TYPE: Reg -> string
+PRE:()
+POST: 
+EXAMPLE:
+*)	
 	fun dumpRegister (Reg(i)) = Int.toString(i)
 end
-
+(*
+This is the functions of the stack signatures 
+*)
 structure Stack :> STACK=
 struct
 	exception STACK of string
+(*DATATYPE*)
 	datatype stack = Stack of (int list)
-
+(* assigns empty to a Stack *)
 	val empty = Stack([])	
-
+(*
+push s
+TYPE: stack * int -> stack
+PRE:()
+POST: 
+EXAMPLE:
+*)
 	fun push (Stack(s), inp) = Stack(inp::s)
-	
+(*
+pop 
+TYPE: stack -> stack
+PRE:()
+POST: 
+EXAMPLE:
+*)
 	fun pop (Stack([])) = raise STACK "Can't pop an empty stack"
 	  | pop (Stack(x::xs)) = Stack(xs)                        
-		
+
+(*
+top 
+TYPE: stack -> int
+PRE:()
+POST: 
+EXAMPLE:
+*)
+	  
 	fun top (Stack([])) = raise STACK "Can't read an empty stack"
 	  | top (Stack(x::xs)) = x
-	
+(*
+isEmpty 
+TYPE: stack -> bool
+PRE:()
+POST: 
+EXAMPLE:
+*)	
 	fun isEmpty (s) = s = Stack([])
-	
+
+(*
+dumpStack
+TYPE: stack -> string
+PRE:()
+POST: 
+EXAMPLE:
+*)	
 	fun dumpStack (Stack([])) = "Empty"
 	  |dumpStack (Stack(s)) = String.concatWith "," (map Int.toString (s))
 end
-
+(*
+This is the functions of the ram signatures  
+*)
 structure Ram :> RAM =
 struct
 
@@ -93,28 +168,112 @@ struct
 
 	type memory = int array
 
+(*
+initialize i
+TYPE: int -> memory
+PRE:()
+POST: gives a ram of size i
+EXAMPLE:
+*)	
+
+	
 	fun initialize (i) = Array.array (i, 0)
 
+(*
+getSize 
+TYPE: memory -> int
+PRE:()
+POST: gets the size of the ram 
+EXAMPLE:
+*)	
+
 	fun getSize (ram) = Array.length(ram)
+
+(*
+write 
+TYPE: memory * int * int -> memory
+PRE:()
+POST: writs a new value to the memory
+EXAMPLE:
+*)	
 	
 	fun write (ram, address, i) = (Array.update(ram, address, i); ram)
+
+(*
+read ram, i
+TYPE: memory * int -> int
+PRE:()
+POST: reads the memory form ram at position of i 
+EXAMPLE:
+*)	
 	
 	fun read (ram, i) = Array.sub(ram, i)
 
+(*
+rlist 
+TYPE:
+PRE:()
+POST: 
+EXAMPLE:
+*)	
+	
 	fun rlist (length) = List.tabulate (length, (fn x => x)) (*What does this funtion do??*) 
 				(*Creates a list of n length with the elements [0,1,2..n-1,n]. Only used in readChunk now, but though of using it elsewhere *)
 
+(*
+reader 
+TYPE: 
+PRE:()
+POST: writs a new value to the memory
+EXAMPLE:
+*)	
+
+				
 	fun reader (ram,[]) = []
 	  |reader (ram,x::xs) = Array.sub(ram, x)::reader(ram,xs)
-	
+
+(*
+load 
+TYPE:
+PRE:()
+POST:
+EXAMPLE:
+*)	
+	  
 	fun load (ram, []) = ram
 	|load (ram,x::xs) = load'(ram, xs, x)
 	and load' (ram,[], _) = ram
 	|load' (ram, x::xs, i) = (Array.update(ram, i, x); load'(ram, xs, i+1))   
 
-	fun writeChunk (ram, adress, sorc) = (Array.copy{src = sorc, dst = ram, di = adress}; ram)
+(*
+writeChunk ram, address, sorc
+TYPE: memory *int *int array -> memory
+PRE:()
+POST: inserts the sorc in the ram at the start of address 
+EXAMPLE:
+*)	
+
+	
+	fun writeChunk (ram, address, sorc) = (Array.copy{src = sorc, dst = ram, di = address}; ram)
+
+(*
+readChunk ram, address, length 
+TYPE: memory * int * int -> int arry
+PRE:()
+POST: reads the ram from address and to the length
+EXAMPLE:
+*)	
 	
 	fun readChunk (ram, address, length) = Array.fromList(reader (ram, map (fn x => x+address) (rlist(length))))  
+
+(*
+dump ram
+TYPE: ram -> string
+PRE:()
+POST: dumps the content of the memory.
+EXAMPLE:
+*)	
+
 	
 	fun dump (ram) = 
 		let
@@ -130,41 +289,92 @@ end
 
 
 (*
-	You cant really start working on this untill the Register and Stack structures are completed.
-	You shold choose how to implement
+	You cant really start working on this until the Register and Stack structures are completed.
+	You should choose how to implement
 *)
+
+(*
+This is the description of the PROGRAM_COUNTER
+*)
+
 signature PROGRAM_COUNTER =
 sig
 	exception COUNTER of string
 	datatype pc = Pc of (int * Stack.stack * Register.reg * Register.reg) 	(*pointer, jump stack,  IRQ1, IRQ2*)
-	val incrementPointer : (pc * int) -> pc 			(*increments the pointer by an arbitrary integer*)
-	val jump : (pc * int) -> pc					(*changes the pointer*)
-	val subroutineJump : (pc * int) -> pc 				(*performs a subroutine jump*)
-	val return : pc -> pc 						(*returns from subroutine jump*)
-	val interrupt : (pc * int) -> pc 				(*performs an interrupt jump. The integer specifys wich IRQ register to be used. *)
+	val incrementPointer : (pc * int) -> pc 								(*increments the pointer by an arbitrary integer*)
+	val jump : (pc * int) -> pc												(*changes the pointer*)
+	val subroutineJump : (pc * int) -> pc 									(*performs a subroutine jump*)
+	val return : pc -> pc 													(*returns from subroutine jump*)
+	val interrupt : (pc * int) -> pc 										(*performs an interrupt jump. The integer specifys wich IRQ register to be used. *)
 	val dumpPc : pc -> string
 end
+
+
+(*
+This is the functions of the PROGRAM_COUNTER signatures 
+*)
 
 structure ProgramCounter :> PROGRAM_COUNTER =
 struct
 	exception COUNTER of string
+(*DATATYPE*)
 	datatype pc = Pc of (int * Stack.stack * Register.reg * Register.reg)
 	
 	(*
-	Guys remeber that you have to return the correct datatype nut just a tuple.
+	Guys remember that you have to return the correct datatype nut just a tuple.
 	This is very important. (i,stack,irq1,irq2) is not the same thing as Pc(i,stack,irq1,irq2)
 	*)
-	
 	(*You missed the int. You will want to be able to increment the pointer with an arbitrary number*)
+
+(*
+incrementPointer  
+TYPE: pc * int -> pc
+PRE:()
+POST: 
+EXAMPLE:
+*)	
+	
 	fun incrementPointer (Pc(i,s,q1,q2),a) = Pc(i+a,s,q1,q2)
+
+(*
+jump 
+TYPE: pc *int -> pc
+PRE:()
+POST: 
+EXAMPLE:
+*)	
 	
 	fun jump (Pc(i,s,q1,q2),jump) = Pc(jump,s,q1,q2)
 
+(*
+subroutineJump 
+TYPE: pc *int -> pc
+PRE:()
+POST: 
+EXAMPLE:
+*)	
+	
 	fun subroutineJump (Pc(i, s, q1, q2), jump) = Pc(jump, Stack.push(s, i), q1, q2)
+
+(*
+return  
+TYPE: pc -> pc
+PRE:()
+POST: dumps the content of the memory.
+EXAMPLE:
+*)	
 
 	(* raises STACK when empty stack *)
 	fun return (Pc(i, s, q1, q2)) = Pc(Stack.top(s), Stack.pop(s), q1, q2)
 
+(*
+interrupt  
+TYPE: pc *int -> pc
+PRE:()
+POST: 
+EXAMPLE:
+*)	
+		
 	fun interrupt (Pc(i, s, irq1 as Register.Reg(q1), irq2 as Register.Reg(q2)), x) = 
 		case x of 
 			1 => Pc(q1, Stack.push(s, i), irq1, irq2)

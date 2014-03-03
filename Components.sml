@@ -48,15 +48,12 @@ sig
 end
 
 (*
-These are just place holders. Here to make sure that the PROMGAM_COUNTER signature can use the correct data types  
-Your code can go in here if you want to. Just remember to uncomment the :> and then add the correct data type.
-*)
-(*
 This is the structures of the register. Where we assign the functions for the signature Register.
 *)
 structure Register :> REGISTER=
 struct
 	exception REGISTER
+(*DATATYPE*)
 	datatype reg = Reg of int
 (*
 setData
@@ -70,7 +67,7 @@ EXAMPLE:
 getData i
 TYPE: Reg -> int
 PRE:()
-POST: 
+POST: Get the data from the Register.
 EXAMPLE:
 *)
 	fun getData (Reg(i)) = i
@@ -78,7 +75,7 @@ EXAMPLE:
 increment i
 TYPE: Reg -> reg
 PRE:()
-POST: 
+POST: Moves the place of the Register Pointer to next register 
 EXAMPLE:
 *)	
 	fun increment (Reg(i)) = Reg(i+1)
@@ -87,7 +84,7 @@ EXAMPLE:
 decrement i
 TYPE: Reg -> reg
 PRE:()
-POST: 
+POST: Move the pointer to the previous register pointer
 EXAMPLE:
 *)	
 	fun decrement (Reg(i)) = Reg(i-1)
@@ -96,7 +93,7 @@ EXAMPLE:
 dumpRegister i
 TYPE: Reg -> string
 PRE:()
-POST: 
+POST: gives a string of the Reg of i
 EXAMPLE:
 *)	
 	fun dumpRegister (Reg(i)) = Int.toString(i)
@@ -107,7 +104,7 @@ This is the functions of the stack signatures
 structure Stack :> STACK=
 struct
 	exception STACK of string
-(*DATATYPE*)
+(*------------------------DATATYPE------------------------*)
 	datatype stack = Stack of (int list)
 (* assigns empty to a Stack *)
 	val empty = Stack([])	
@@ -115,44 +112,44 @@ struct
 push s
 TYPE: stack * int -> stack
 PRE:()
-POST: 
+POST: adds a value to the stack
 EXAMPLE:
 *)
 	fun push (Stack(s), inp) = Stack(inp::s)
 (*
-pop 
+pop s
 TYPE: stack -> stack
 PRE:()
-POST: 
+POST: Removes the first element of the stack s, until its empty
 EXAMPLE:
 *)
 	fun pop (Stack([])) = raise STACK "Can't pop an empty stack"
 	  | pop (Stack(x::xs)) = Stack(xs)                        
 
 (*
-top 
+top s
 TYPE: stack -> int
 PRE:()
-POST: 
+POST: takes the first element of stack s.
 EXAMPLE:
 *)
 	  
 	fun top (Stack([])) = raise STACK "Can't read an empty stack"
 	  | top (Stack(x::xs)) = x
 (*
-isEmpty 
+isEmpty s
 TYPE: stack -> bool
 PRE:()
-POST: 
+POST: Checks if stack s is empty
 EXAMPLE:
 *)	
 	fun isEmpty (s) = s = Stack([])
 
 (*
-dumpStack
+dumpStack s
 TYPE: stack -> string
 PRE:()
-POST: 
+POST: Gives stack s as strings where the elements are divided by ,
 EXAMPLE:
 *)	
 	fun dumpStack (Stack([])) = "Empty"
@@ -180,20 +177,20 @@ EXAMPLE:
 	fun initialize (i) = Array.array (i, 0)
 
 (*
-getSize 
+getSize i
 TYPE: memory -> int
 PRE:()
-POST: gets the size of the ram 
+POST: gets the size of memory i 
 EXAMPLE:
 *)	
 
 	fun getSize (ram) = Array.length(ram)
 
 (*
-write 
+write ram, address, i
 TYPE: memory * int * int -> memory
 PRE:()
-POST: writs a new value to the memory
+POST: Gives a ram with a new element of i at address 
 EXAMPLE:
 *)	
 	
@@ -203,17 +200,17 @@ EXAMPLE:
 read ram, i
 TYPE: memory * int -> int
 PRE:()
-POST: reads the memory form ram at position of i 
+POST: Gives a int from ram at i 
 EXAMPLE:
 *)	
 	
 	fun read (ram, i) = Array.sub(ram, i)
 
 (*
-reader 
-TYPE: 
+reader ram,[] 
+TYPE: 'a array * int list -> 'a list 
 PRE:()
-POST: writs a new value to the memory
+POST: 
 EXAMPLE:
 *)	
 
@@ -222,10 +219,10 @@ EXAMPLE:
 	  |reader (ram,x::xs) = Array.sub(ram, x)::reader(ram,xs)
 
 (*
-load 
-TYPE:
+load (ram, l)
+TYPE:  memory * int list -> memory
 PRE:()
-POST:
+POST: Adds l to ram
 EXAMPLE:
 *)	
 	  
@@ -264,7 +261,7 @@ EXAMPLE:
 dump ram
 TYPE: ram -> string
 PRE:()
-POST: dumps the content of the memory.
+POST: dumps the content of the memory to a string.
 EXAMPLE:
 *)	
 
@@ -299,7 +296,7 @@ sig
 	val jump : (pc * int) -> pc												(*changes the pointer*)
 	val subroutineJump : (pc * int) -> pc 									(*performs a subroutine jump*)
 	val return : pc -> pc 													(*returns from subroutine jump*)
-	val interrupt : (pc * int) -> pc 										(*performs an interrupt jump. The integer specifys wich IRQ register to be used. *)
+	val interrupt : (pc * int) -> pc 										(*performs an interrupt jump. The integer specifies wich IRQ register to be used. *)
 	val dumpPc : pc -> string
 end
 
@@ -311,50 +308,50 @@ This is the functions of the PROGRAM_COUNTER signatures
 structure ProgramCounter :> PROGRAM_COUNTER =
 struct
 	exception COUNTER of string
-(*DATATYPE*)
+(*------------------DATATYPE---------------*)
 	datatype pc = Pc of (int * Stack.stack * Register.reg * Register.reg)
-	
+(*	
 	(*
-	Guys remember that you have to return the correct datatype nut just a tuple.
+	Guys remember that you have to return the correct datatype not just a tupel.
 	This is very important. (i,stack,irq1,irq2) is not the same thing as Pc(i,stack,irq1,irq2)
 	*)
 	(*You missed the int. You will want to be able to increment the pointer with an arbitrary number*)
-
+*)
 (*
-incrementPointer  
+incrementPointer (Pc(i,s q1,q2),a)
 TYPE: pc * int -> pc
 PRE:()
-POST: 
+POST: Adds 1 to the pointer i
 EXAMPLE:
 *)	
 	
 	fun incrementPointer (Pc(i,s,q1,q2),a) = Pc(i+a,s,q1,q2)
 
 (*
-jump 
+jump (Pc(i,s q1,q2),jump)
 TYPE: pc *int -> pc
 PRE:()
-POST: 
+POST: Jumps the Pc pointer i to the value of Jump
 EXAMPLE:
 *)	
 	
 	fun jump (Pc(i,s,q1,q2),jump) = Pc(jump,s,q1,q2)
 
 (*
-subroutineJump 
+subroutineJump (Pc(jump,s q1,q2),jump) 
 TYPE: pc *int -> pc
 PRE:()
-POST: 
+POST: jumps the pc pointer i the the value of jump
 EXAMPLE:
 *)	
 	
 	fun subroutineJump (Pc(i, s, q1, q2), jump) = Pc(jump, Stack.push(s, i), q1, q2)
 
 (*
-return  
+return (Pc(i,s q1,q2),a)
 TYPE: pc -> pc
 PRE:()
-POST: dumps the content of the memory.
+POST: Pops the value of í and adds it to s
 EXAMPLE:
 *)	
 
@@ -362,10 +359,10 @@ EXAMPLE:
 	fun return (Pc(i, s, q1, q2)) = Pc(Stack.top(s), Stack.pop(s), q1, q2)
 
 (*
-interrupt  
+interrupt  (Pc(i,s q1,q2),a)
 TYPE: pc *int -> pc
 PRE:()
-POST: 
+POST: if the value of a is 1 or 2, then the value of i is added to s
 EXAMPLE:
 *)	
 		
@@ -381,9 +378,9 @@ end
 
 
 (*
-The reason for using the placeholder structures Register and Stack is because signatures can't "inherit" from eachother.
+The reason for using the place holder structures Register and Stack is because signatures can't "inherit" from each other.
 I can not write say REGISTER.reg in the PROGRAM_COUNTER signature.
 There is the include keyword but that just adds all of the declarations from another signature. Thus specifying that the 
-signature containing the include must when its used in a structure allso include all of the functions and values in the included
+signature containing the include must when its used in a structure also include all of the functions and values in the included
 signature. 
 *)

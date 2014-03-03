@@ -210,17 +210,6 @@ EXAMPLE:
 	fun read (ram, i) = Array.sub(ram, i)
 
 (*
-rlist 
-TYPE:
-PRE:()
-POST: 
-EXAMPLE:
-*)	
-	
-	fun rlist (length) = List.tabulate (length, (fn x => x)) (*What does this funtion do??*) 
-				(*Creates a list of n length with the elements [0,1,2..n-1,n]. Only used in readChunk now, but though of using it elsewhere *)
-
-(*
 reader 
 TYPE: 
 PRE:()
@@ -264,7 +253,12 @@ POST: reads the ram from address and to the length
 EXAMPLE:
 *)	
 	
-	fun readChunk (ram, address, length) = Array.fromList(reader (ram, map (fn x => x+address) (rlist(length))))  
+	fun readChunk (ram, address, length) = 
+		let
+			val rlist = List.tabulate (length, (fn x => x))
+		in
+	Array.fromList(reader (ram, map (fn x => x+address) (rlist))) 
+	end
 
 (*
 dump ram

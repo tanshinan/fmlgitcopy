@@ -58,7 +58,8 @@ whitespace ones.\\
 Operations are declared in a straightforward approach as:\\
 \V+<opcode> <arg1> <arg2>+ \\
 Wich arguments are allowed are dependent upon the opcode.\\
-Any non whitespace character can be used for names of labels and values. 
+Any non whitespace character can be used for names of labels and values.\\
+Each file has to start with a label.
 
 \section{Inner Workings}
 The assembler works in a fairly straight forward way. The first step in the
@@ -98,6 +99,11 @@ tokens and replaces every pointer token with its correct adress.
 After this is completed the assembler finalizes the code by converting
 everything into a list of integers wich then gets outputed to a file. And that
 children is how assembly code gets turned in to machine code.
+
+the assembler runns in linear time with respect to the number of lines in the
+code. This is under the assumption that the number of lines are far greater than
+the number of values and labels in the code. This is a safe assumption for any
+resonably written code.
 
 \section{Usage}
 \subsection{General}
@@ -261,7 +267,7 @@ take into account that what address a \emph{value} is given is somewhat
 independet of where in the code it gets defined.
 
 \subsection{Jumping}
-Doing oridary jumps using the \V+JMP+ operatioon is very straight forward. The
+Doing oridary jumps using the \V+JMP+ operation is very straight forward. The
 machine will just jump to the address given to the \V+JMP+ operator.
 
 But for conditional branching things become a little bit less obvious. If the
@@ -274,6 +280,19 @@ JMP this_does_not_happen
 BGR x 2
 JMP this_happens
 \end{verbatim}
+
+Subroutine jumps work in a very straight forward fashion. You just make a
+subroutine call using \V+JSR <address>+ and then you use the \V+RET+ operations
+to return to the address imediatley after the one from which the jump was
+issued. One has to be carefull not to execute a \V+RET+ jump unless one has
+actually made a subroutine jump. The VM will crash if a return jump is issued
+and the jump stack is empty.
+
+\subsection{Arithmetic and logic operations}
+The arithmetic and logic operations are quite straight forward. The arguments
+given to the operations appear as they would in the normal case. So \V+ADD x y+
+is x+y and \V+MOD x y+ is x mod y. All of these operations (except for \V+INC+
+and \V+DEC+) store their result on the stack.
 
 
 \end{document}

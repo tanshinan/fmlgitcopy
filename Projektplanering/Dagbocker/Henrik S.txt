@@ -72,4 +72,12 @@
 
 01/3 18:49
 	More assembler documentation.
+
+03/3 17:03
+	Wrote some more assembler documentation and started writing the old stupid and annoying funtion specifications.
+		
+03/3 20:27
+	Finished writing annoying function specifications for the Assembler.sml file.
+
+
 	

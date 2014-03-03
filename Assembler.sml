@@ -33,25 +33,61 @@ struct
 	val data_flag = 58 (*Char.ord(#":")*) 
 	val base_adress = 0
 	
+	(* getTokenName token
+		TYPE: token -> string
+		PRE: 	None
+		POST:	Returns the name of the pointer if the token is a reference
+					raises a ASSEMBLER exception otherwise.
+	*)
 	fun getTokenName(Ref(name)) = name
 	|getTokenName(_) = raise ASSEMBLER "Token is not a Reference"
 	
+	(* getTokenType token
+		TYPE: token -> string
+		PRE: 	None
+		POST: Returns a string corresponding to the type of token
+	*)
 	fun getTokenType(Ref(_)) = "Pointer"
 	|getTokenType(Arg(_)) = "Argument"
 	|getTokenType(Ic(_)) = "Instruction"
 	
+	(* getTokenValue  token
+		TYPE:	token -> int
+		PRE: 	None
+		POST:	Returns the value of the token if it is a token of argument type or instruction
+					raises a ASSEMBLER exception otherwise
+	*)
 	fun getTokenValue(Arg(a)) = a
 	|getTokenValue(Ic(a)) = a
 	|getTokenValue(_) = raise ASSEMBLER "Cant get value from a refference"
 	
+	(* getPointerName pointer
+		TYPE:	pointer -> string
+		PRE:	None
+		POST:	Returns the name of the pointer. 
+					Raises an ASSEMBLER exception if pointer is a NULL pointer 
+	*)
 	fun getPointerName(Label(name,_)) = name
 	|getPointerName(Value(name,_)) = name
 	|getPointerName(NULL) = raise ASSEMBLER "Got NULL???\n"
 	
+	(* getPointerAddress pointer
+		TYPE:	pointer -> int
+		PRE:	None
+		POST:	Returns the address of the token. Will rasie a OPTION exception if address is NONE.
+					Will raise a ASSEMBLER exception if pointer is NULL
+	*)
 	fun getPointerAddress(Label(_,a)) = Option.valOf(a)
 	|getPointerAddress(Value(_,a)) = Option.valOf(a)
 	|getPointerAddress(_) = raise ASSEMBLER "Got NULL???\n"
 	
+	 
+	(* setPointerAddress(pointer, address)
+		TYPE: pointer * int -> pointer
+		PRE:	NONE
+		POST:	Will set the address of pointer to the address given as a argument.
+					Will raise an ASSEMBLER if pointer is NULL.
+	*)
 	fun setPointerAddress(Label(name,_),a) = Label(name,SOME(a))
 	|setPointerAddress(Value(name,_),a) = Value(name,SOME(a))
 	|setPointerAddress(NULL,a) = raise ASSEMBLER "Got NULL???\n"
@@ -66,27 +102,84 @@ struct
 		*)
 		structure Inter =
 		struct
-			(*I(label_list,value_list,token_list,curretn_label,address)*)
+			
+			(* 
+				REPRESENTATION CONVENTION: 
+					I(label_list,value_list,token_list,currennt_label,address).
+					label_list is a list of label pointers
+					value_list is a list of value pointers
+					token_list is a list of (pointer_name,offsett,token) tuples
+					current_label is the last label declaration wich the assembler found or it is NULL before any
+						label declaration have been made
+					address is the current rellative adress.
+   			REPRESENTATION INVARIANT:  
+					current_label is the last label declaration wich the assembler found or NULL if no declaration has been found.
+					Address is always greater or equal to zero.
+					No two (pointer_name,offsett,token) ahve the same pointer_name and offsett
+					
+ 			*)
 			datatype inter = I of ((pointer list) * (pointer list) * ((string*int*token) list) * pointer * int)
 			
 			val initial = I([],[],[],NULL,0)
 			
+			(* getLabelList intermediate_structure
+				TYPE: Inter.inter -> pointer list
+				PRE: 	NONE
+				POST:	Returns the label_list from the intermediate_structure
+			*)
 			fun getLabelList(I(label_list,value_list,token_list,current_label,address)) = label_list
+			
+			(* getValueList intermediate_structure
+				TYPE: Inter.inter -> pointer list
+				PRE: 	NONE
+				POST:	Returns the value_list from the intermediate_structure
+			*)
 			fun getValueList(I(label_list,value_list,token_list,current_label,address)) = value_list
+			
+			(* getLabelList intermediate_structure
+				TYPE: Inter.inter -> (string * int * token) list
+				PRE: 	NONE
+				POST:	Returns the token_list from the intermediate_structure
+			*)
 			fun getTokenList(I(label_list,value_list,token_list,current_label,address)) = token_list
+			
+			(* getCurrentLabel intermediate_structure
+				TYPE: Inter.inter -> pointer
+				PRE: 	NONE
+				POST:	Returns the current_label from the intermediate_structure
+			*)
 			fun getCurrentLabel(I(label_list,value_list,token_list,current_label,address)) = current_label
-			fun getAdress(I(label_list,value_list,token_list,current_label,address)) = address
-			
-			fun setLabelList(I(label_list,value_list,token_list,current_label,address), a) = I(a,value_list,token_list,current_label,address)
-			fun setValueList(I(label_list,value_list,token_list,current_label,address), a) = I(label_list,a,token_list,current_label,address)
-			fun setTokenList(I(label_list,value_list,token_list,current_label,address), a) = I(label_list,value_list,a,current_label,address)
+
+
+			(* setCurrentLabel(intermediate_structure,new_label)
+				TYPE: (Inter.inter * pointer) -> Inter.inter
+				PRE:	None
+				POST:	Returns a new intermediate_structure with its current_label changed to new_label
+			*)
 			fun setCurrentLabel(I(label_list,value_list,token_list,current_label,address), a) = I(label_list,value_list,token_list,a,address)
-			
-			fun IncrementAdress(I(label_list,value_list,token_list,current_label,address), a) = I(label_list,value_list,token_list,current_label,address+a)
-			
+
+			(* addLabel (intermediate_structure,label)
+				TYPE: (Inter.inter * pointer ) -> Inter.inter
+				PRE: 	None
+				POST: prepends label to the label_list of the intermediate_structure
+			*)
 			fun addLabel(I(label_list,value_list,token_list,current_label,address), a) =I(a::label_list,value_list,token_list,current_label,address)
+			
+			(* addLabel (intermediate_structure,value)
+				TYPE: (Inter.inter * pointer ) -> Inter.inter
+				PRE: 	None
+				POST: prepends value to the value_list of the intermediate_structure
+			*)
 			fun addValue(I(label_list,value_list,token_list,current_label,address), a) =I(label_list,a::value_list,token_list,current_label,address)
 			
+			(* addToken (intermediate_structure, token)
+				TYPE: (Inter.inter * token ) -> Inter.inter 
+				PRE: 	None
+				POST:	Adds the token to the token_list of intermediate_structure. 
+							Increments the address and allso set the offsett of the the 
+							entry to the token list depinding on weather or not we have encountered a new token.
+							Raises a a SYNTAX error if current_label is NULL.
+			*)
 			fun addToken(I(label_list,value_list,token_list,NULL,address), a) = raise SYNTAX "Cant use NULL pointer\n"
 			|addToken(I(label_list,value_list,[],Label(current_pointer_name,i),address), a) = (*When list is empty*)
 				I(label_list,value_list, [(current_pointer_name,0,a)], Label(current_pointer_name,i),address+1)
@@ -95,12 +188,23 @@ struct
 					I(label_list,value_list, (current_pointer_name,0,a) :: ((pointer_name,n,t) :: rest), Label(current_pointer_name,i),address+1) (*if we change pointer*)
 				else
 					I(label_list,value_list, ((pointer_name,n+1,a) :: ((pointer_name,n,t) :: rest)), Label(current_pointer_name,i),address+1)
-			|addToken(_,_) = raise ASSEMBLER "Something went horribly wrong :("
+			|addToken(_,_) = raise ASSEMBLER "Something went horribly wrong :(" (*This is just a catch all clause. Should never happen.*)
 			
+			(* getTokenPointer intermediate_structure
+				TYPE: Inter.inter -> string
+				PRE:	NONE
+				POST:	Gets the name of the (name,offsett,token) tupen at the head of the token_list.
+							Will raise an ASSEMBLER exception if the token_list is empty.
+			*)
 			fun getTokenPointer(I(label_list,value_list,(name,offs,tok) :: token_list ,current_label,address)) = name
-			(*|getTokenPointer(I(label_list,value_list,[(name,offs,tok)],current_label,address)) = name*)
 			|getTokenPointer(I(label_list,value_list,[],current_label,address)) = raise ASSEMBLER "Tried to get name from empty token list"
 			
+			(* dumpPointerList pointer_list
+				TYPE: pointer list -> unit
+				PRE:	None
+				POST:	Prints the pointer_list in a nicely formatted way.
+				INVARIANT: Length of the pointer_list
+			*)
 			fun dumpPointerList([]) = ()
 			|dumpPointerList(pointer :: rest) = 
 			let
@@ -109,10 +213,21 @@ struct
 				(print ("(" ^ getPointerName(pointer) ^ "," ^ address ^ ")\n"); dumpPointerList(rest))
 			end
 			
+			(* dumpTokenList intermediate_structure
+				TYPE:	Inter.inter -> unit
+				PRE:	None
+				POST:	Prints the token_list of the intermediate_structure in a nicely formatted fashion.
+				INVARIANT: Length of the pointer_list
+			*)
 			fun dumpTokenList(i) = 
 				let
 					val token_list = List.rev(getTokenList(i))
 					
+					(* makePretty s
+						TYPE: string -> string
+						PRE:	None
+						POST:	Padds the string with zeroes on the left to make it length 6 or more.
+					*)
 					fun makePretty(s) = 
 						case String.size(s) of
 						1 => "00000"^s
@@ -122,6 +237,11 @@ struct
 						|5 => "0"^s
 						|_ => s
 					
+					(* printPretty s
+						TYPE: (string * int * token) list -> unit
+						PRE:	NONE
+						POST:	Print a list of (name,offset,token) elements in a nicely formatted way.
+					*)
 					fun printPretty ([]) = ()
 					|printPretty((p,n,Ic(i))::xs) = (print (p ^"+"^ Int.toString(n)^": "^ makePretty(Int.toString(i))  ^"\n"); printPretty(xs))
 					|printPretty((p,n,Ref(s))::xs) = (print (p ^"+"^ Int.toString(n)^": "^ s  ^"\n"); printPretty(xs))
@@ -134,17 +254,24 @@ struct
 	
 	val initial = Inter.initial
 	
+	
+	(* dumpTokenList intermediate_structure
+		TYPE:	Inter.inter -> unit
+		PRE:	None
+		POST:	Prints the token_list of the intermediate_structure in a nicely formatted fashion.
+	*)
 	fun dumpTokenList(i) = Inter.dumpTokenList(i)
 	
 	fun error(line_number,message,cause) = "\nSYNTAX ERROR!\n" ^ message ^ " at line: " ^ Int.toString(line_number) ^ "\n"
 				^ "Caused by: "  ^ cause ^"\n"
 
-	(*
-	Scans one line and adds it to an intermediate structure
-	Arguments:
-		line = 	Line to be scanned
-		l = 		Current line number
-		i = 		Current intermediate structure
+	(* scanLine (line, intermediate_structure,line_lumber)
+		TYPE: string * Inter.inter * int -> Inter.inter
+		PRE: None
+		POST:	Scans one line and resolves it into a token and adds it to the token_list of the intermediate_structure.
+					Allso handles value and label declarations and modifys the intermediate_structure.
+					Increments the line_number accordingly for debuging purposes.
+					Raises SYNTAX or ASSEMBLER if the line is malformed or invalid.
 	*)
 	fun scanLine(line, i, l)  =
 		let
@@ -159,8 +286,12 @@ struct
 					String.implode(List.tl(String.explode(line)))
 				else
 					""
-			(*
-				This odd function makes sure that only references and non register arguments are processed.
+					
+			(* resolveToken string
+				TYPE: string -> pointer option
+				POST: Converts a string into a token. This only works on non register arguments. Returns
+							NONE if the string is registry type argument.
+							raises a SYNTAX exception if the argument is mallformed.
 			*)
 			fun resolveToken("x") = NONE
 			|resolveToken("y") = NONE
@@ -224,7 +355,6 @@ struct
 						val number_of_args = Resolve.numberOfArgs(List.hd(expression))
 						val assert_length = (number_of_args = (List.length(expression)-1)) orelse (print (error(l,"To many arguments",line));raise SYNTAX "")
 
-						
 					in
 						case expression of
 						(*SINGLE ARGUMENT*)
@@ -265,30 +395,43 @@ struct
 									|(_,_) => (print (error(l,"Cant use two non register arguments",line));raise SYNTAX "")
 									
 							end
-						|_ => raise ASSEMBLER "This hould not have happened....."
+						|_ => raise ASSEMBLER "This hould not have happened....." (*Catch all clause*)
 					end
 				)
 		)
 		end
 	
-	(*
-		Scans and tokenizes a list of strings. Creates the intermediate structure to be assembled.
+	(* scanList (line_list,intermediate_structure,line_number)
+		TYPE: string list * Inter.inter * int -> Inter.inter
+		PRE: 	none
+		POST:	Converts a list of strings into an intermediate structure.
+		INVARIANT:	Length of line_list
 	*)
 	fun scanList([],i,n) = i
 	|scanList(x::xs,i,n) =scanList(xs,scanLine(x,i,n),n+1)
 	handle Resolve.RESOLVE msg => (print (error(n,msg,x));raise ASSEMBLER "";i)
 	
-	(*
-		Searches trough a intermediate structure in order assert that there are no
-		duplicate refernces.
-		
-		i is the intermediate structure.
-		returns () if all is well.
+	
+	
+	(* duplicateSearch intermediate_structure
+		TYPE: Inter.inter -> unit
+		PRE:	None
+		POST:	Asserts that there are no duplicate references.
+					Returns unit if all is well
+					Raises an ASSEMBLER exception otherwise.
+		INVARIANT: length of label_list and value_list
 	*)
+
 	fun duplicateSearch(i) =
 		let
 			val concattenation = (List.map (fn x => getPointerName(x)) (Inter.getLabelList(i))) @ (List.map getPointerName (Inter.getValueList(i)))
 
+			(* count (a,l)
+				TYPE: (a'' * a'' list)
+				PRE:	None
+				POST:	counts the number of times a appears in l
+				INVARIANT: Length of l
+			*)
 			fun count(a,[]) = 0
 			|count(a,x::xs) = 
 				if a  = x then
@@ -296,6 +439,14 @@ struct
 				else
 					count(a,xs)
 			
+			(* detectPointerCollision pointer_list
+				TYPE: pointer list -> ()  
+				PRE: 	None
+				POST:	Asserts that there are no duplicate references.
+							Returns unit if all is well
+							Raises an ASSEMBLER exception otherwise.
+				INVARIANT: length of pointer_list
+			*)
 			fun detectPointerCollision([]) = ()
 			|detectPointerCollision(pointer :: rest) =
 				if count(pointer,concattenation) = 1 then
@@ -307,6 +458,12 @@ struct
 			detectPointerCollision(concattenation)
 		end
 	
+	(* resolveAddresses(intermediate_structure,base_address)
+		TYPE: Inter.inter * a' -> (int * token) list
+		PRE:	None
+		POST:	Resolves all of the labels and values in the intermediate structure.
+					The first label wil be at base_address. 
+	*)
 	fun resolveAddresses(i,base_address) =
 		let
 			
@@ -314,9 +471,13 @@ struct
 			val value_list = List.rev(Inter.getValueList(i))
 			val label_list = List.rev(Inter.getLabelList(i))
 			
-			(*
-				Assigns each label pointer its correct adress.
-				Returns a list of labels with their addresses resolved.
+			
+			(* resolveLabels(label_list,token_list,current_label,current_address)
+				TYPE: pointer_list *  (string * int * token) * pointer * int -> pointer list
+				PRE:	Current label should be NULL at the start, current_address should be the base_address at start.
+				POST:	Returns a list of all the labels in the label_list with all their addresses resolved.
+							Raises a ASSEMBLER exception if there are unresolved addresses when the funtion terminates.
+				INVARIANT: Length of label_list.
 			*)
 			fun resolveLabels([],[],current_label,current_adress) = []
 			|resolveLabels(label_list,[],current_label,current_adress) = []
@@ -335,9 +496,11 @@ struct
 						
 			val resolved_labels = resolveLabels(label_list,token_list,NULL,base_adress)
 
-			(*
-				Resolves any label pointer to its adress.
-				returns a list of (adress,token).
+			(* firstPass(resolved_labels,token_list)
+				TYPE: pointer list * (string * int * token) list -> (int * token) list  
+				PRE: 	None
+				POST:	Returns a list of (address,token) tupels 
+				INVARIANT: Length of resolved_labels.
 			*)
 			fun firstPass(resolved_labels,[]) =[]
 			|firstPass(resolved_labels,((label_name,offs,Ref(name)) :: token_rest)) = 
@@ -363,39 +526,54 @@ struct
 			
 			val max_address = #1(List.last(pass1)) + 1 (* Without the +1 the values would lie within the program.*)
 			
-			(*returns a list of value tokens with resolved addresses*)
+			(* resolveValues(value_list,address)
+				TYPE: pointer list * int -> pointer list
+				PRE:	Base address must lie after the last instruction
+				POST:	Returns a list of all the values with their addresses resolved.
+				INVARIANT: Length of value_list
+			*)
 			fun resolveValues([],address) = []
 			|resolveValues(value :: rest,address) =
 			setPointerAddress(value,address) :: resolveValues(rest,address+1)
 			
 			val resolved_values = resolveValues(value_list,max_address)
 			
-			(*Replaces occurences of values with their adress*)
+			(* secondPass (resolved_values,token_list)
+				TYPE: (pointer list  * (int * token) list ) -> (int * token) list
+				PRE:	None
+				POST:	Returns a list where all tokens of reference types have been replaced with
+							have been replaced with a token of argument type with the correct address as the argument.
+							Will raise ASSEMBLER if a unresolved pointer is encoutered
+				INVARIANT:
+			*)
 			fun secondPass(resolved_values,[]) = []
 			|secondPass(resolved_values,(addr,Ref(name)) :: rest) =
 				let
 					val value_address = getPointerAddress(Option.valOf(List.find (fn x => (name = getPointerName(x))) resolved_values))
 					handle Option => raise ASSEMBLER ("Couldnt find value " ^ name)
 				in
-					(addr,Ic(value_address)) :: secondPass(resolved_values,rest)
+					(addr,Arg(value_address)) :: secondPass(resolved_values,rest)
 				end
 			|secondPass(resolved_values,(addr,t) :: rest) =
 				(addr,t) :: secondPass(resolved_values,rest)
 			
 			val pass2 = secondPass(resolved_values,pass1)
-			
 
 		in
 			pass2
 		end
-		
-	(*Resolves all of the tokens into their numerical value
-		returns a (address,token) list
+	
+	(* finalize token_list
+		TYPE: (int * token) list -> int list
+		PRE:	None
+		POST:	Returns a list off integers with the first element being the starting address of the program and all consecutive
+					elements are the numerical values corresponding to the instructions and arguments given by the values of the token_list.
+					Will raise an ASSEMBLER exception if it finds unresolved pointers.
+		INVARIANT:Length of token list
 	*)
 	fun finalize(token_list) = 
 		let
 			val start_address = #1(List.hd(token_list))
-			
 			fun finalize'([]) = []
 			|finalize'((_,Ref(_)) ::rest) = raise ASSEMBLER "Not all refferences where resolved"
 			|finalize'((_,tok) ::rest) = getTokenValue(tok) :: finalize'(rest)
@@ -403,7 +581,15 @@ struct
 			start_address :: finalize'(token_list)
 		end
 	
-	(*Does complete assembling of a assembly fiel.*)
+	(* assemble(input_file,output_file,base_address,verbose)
+		TYPE:	string * string * 'a * bool -> unit
+		PRE:	base_address must be >= 0
+		POST:	Reads a assembly file, assembles that and prints the
+					assembled code to  output_file.
+					The base_address will be the starting adress of the program.
+					If verbose is true the assembler will produce output about what its doing.
+		SIDE-EFFECTS: Reads and writes to files.
+	*)
 	fun assemble(input_file,output_file,base_address,verbose)=
 		let
 			fun msg(true,m) = print(m)

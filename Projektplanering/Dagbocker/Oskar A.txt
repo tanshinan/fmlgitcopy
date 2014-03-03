@@ -1,6 +1,5 @@
 2014-02-20
 Kontroll av kod samt genomläsning av spces samt skapade filer för loggnig av arbete, och planering samt flöde.
-
 2014-02-23
 Reading the Speccs and assambler code.
 2014-02-24
@@ -12,3 +11,7 @@ Codeing the componets with Alexander and creating the strucktors in ram aswell s
 Codeing the componets with Alexander, done with impimation of Stacks , Ram, and started with ProgramCounter
 2014-02-27
 Codeing the componets with Alexander, done with components and starting with the Vm impimnation 
+2014-02-02
+Reading thrue new material
+2014-03-03
+Going thrue the fils and adding Functions Speccs.

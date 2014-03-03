@@ -11,7 +11,7 @@ sig
 	datatype vm = Vm of (ProgramCounter.pc * Register.reg * Stack.stack * Register.reg * Register.reg * Ram.memory * flag)
 	
 	val init : (int list * int) -> vm 	(*Creates an initialized VM. Loads int list into the memory and makes the memory have a size of the second int*)
-	val step : vm -> vm					(*Takes one vm and returns the next vm. I.e it runns the virtual machine for one step.*)
+	val step : vm -> vm					(*Takes one vm and returns the next vm. I.e it runns the virtual machine for one step.*) (*shouldn't step take more than just the vm? So we can know if it's going to move the pointer 1 or 2? *)
 	val dump : vm -> unit				(*Prints the VM to stdOut. The output should be really pretty to make debugging easy.*)
 	
 end

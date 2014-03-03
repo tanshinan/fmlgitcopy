@@ -347,8 +347,8 @@ PRE:()
 POST: 
 EXAMPLE:
 *)	
-	
-	fun subroutineJump (Pc(i, s, q1, q2), jump) = Pc(jump, Stack.push(s, i), q1, q2)
+	(*need to fix to handle when making subroutine jumps with argument *)
+	fun subroutineJump (Pc(i, s, q1, q2), jump) = Pc(jump, Stack.push(s, i+1), q1, q2)
 
 (*
 return  

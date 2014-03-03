@@ -23,17 +23,37 @@ struct
 	datatype flag = HALT | INTERRUPT of int | OVERFLOW | RUNNING
 	datatype vm = Vm of (ProgramCounter.pc * Register.reg * Stack.stack * Register.reg * Register.reg * Ram.memory * flag)
 
+(* init (intlist, integ)
+TYPE: (int list * int) -> vm
+PRE: length(intlist) < int
+POST: A VM loaded with intlist
+EXAMPLE: init ([1,2,3],5) = Vm(ProgramCounter.Pc(0, Stack.Stack([]), Register.Reg(0), Register.Reg(0)), Register.Reg(0), Stack.Stack([]), Register.Reg(0), Register.Reg(0), Ram(Array.fromList [0,2,3,0,0]), RUNNING)
+*)
 	fun init (ilist, i) = 
 	    let 
 		val mem = Ram.initialize (i)
 	    in 
 		Vm(ProgramCounter.Pc(0, Stack.Stack([]), Register.Reg(0), Register.Reg(0)), Register.Reg(0), Stack.Stack([]), Register.Reg(0), Register.Reg(0), (Ram.load (mem, ilist); mem), RUNNING)
 	    end
+(* step vm
+TYPE: vm -> vm
+PRE: true
+POST: VM ran one cycle
+EXAMPLE: here be dragons (meaning, I'll fill it in later)
+*)
 (*
 	fun step (Vm()) =  
 *)
 	
 	(*Odd name!?*)
+(*flagComprehension flag
+TYPE: flag -> string
+PRE: true
+POST: string corresponding to flag
+EXAMPLE: HALT = "HALT"
+	INTERRUPT(4) = "4"
+*)
+
 	fun flagComprehension (fl: flag) = 
 		case fl of HALT => "HALT"
 		| OVERFLOW => "OVERFLOW"
@@ -41,14 +61,24 @@ struct
 		| INTERRUPT(a) =>  Int.toString (a)
 
 			 (* when we tried to use stdOut it crashed poly *)
-	
+(* dumpToFile vm
+TYPE: vm -> unit
+PRE: true
+POST: file with the state of vm written in easily readable text
+EXAMPLE: here be dragons (oh god, how the hell do you write how it creates a file)
+*)	
 	fun dumpToFile (Vm(pc, a, s, x, y, ram, fl)) = 
 		let
 			val dumpstream = TextIO.openOut "vm_dump"
 		in
 			(TextIO.output (dumpstream, (ProgramCounter.dumpPc(pc) ^ "\n" ^ (Register.dumpRegister(a))^ ", " ^(Stack.dumpStack(s))^ ", " ^ (Register.dumpRegister(x))^ ", " ^ (Register.dumpRegister(y))^ "\n" ^ (Ram.dump(ram)) ^ "\n" ^ flagComprehension(fl) ^ "\n")); TextIO.closeOut dumpstream)
 		end
-	
+(* dump vm
+TYPE: vm -> unit
+PRE: true
+POST: state of vm printed in prompt in easily readable text
+EXAMPLE: here be dragons
+*)	
 	fun dump (Vm(pc, a, s, x, y, ram, fl)) = print  ((ProgramCounter.dumpPc(pc) ^ "\n" ^ (Register.dumpRegister(a))^ ", " ^(Stack.dumpStack(s))^ ", " ^ (Register.dumpRegister(x))^ ", " ^ (Register.dumpRegister(y))^ "\n" ^ (Ram.dump(ram)) ^ "\n" ^ flagComprehension(fl) ^ "\n"))
 	
 end

@@ -1,0 +1,40 @@
+\documentclass{article}
+%\usepackage[bottom]{footmisc}
+\newcommand{\V}{\verb}
+\newcommand{\x}{$\textbf{X}$}
+\newcommand{\y}{$\textbf{Y}$}
+\newcommand{\s}{$\textbf{S}$}
+\newcommand{\A}{$\textbf{A}$}
+\newcommand{\mx}{$\textbf{M}_{\textbf{X}}$}
+\newcommand{\my}{$\textbf{M}_{\textbf{Y}}$}
+\newcommand{\ma}{$\textbf{M}_{\textbf{A}}$}
+\newcommand{\q}{$\textbf{Q}_{\textbf{1}}$}
+\newcommand{\qq}{$\textbf{Q}_{\textbf{2}}$}
+\newcommand{\pc}{$\textbf{PC}$}    
+\newcommand{\J}{$\textbf{J}$}
+\title{FML a VM implemented in SML}
+\author{Henrik Sommerland, Oskar Ahlberg, Aleksander Lunqvist}
+\date
+
+\begin{document}
+\maketitle
+\section{Introduction}
+For our project we have decided to build a virtual machine(VM) in SML. The name
+FML is just an arbitrary thre letter name and has no meaning or interpertation.
+The VM is a RISC machine using a Von-Neuman architecture. It has a very
+minimalistic instruction set. The design of FML resembles those of older 8-bit
+architectures such as the MOS 6510 and the Z80 microprocessors commonly in use
+during the late 70s and early 80s. The FML machine has no ``bus width'' and
+works exclusivley with signed integers\footnote{The details of the integers
+used are dependent on which SML implementation is used}. The lack of a physical
+bus enables the VM to do things wich an ordinary CPU could not achive such as
+reading from two registers at the same time. Even though the cpu have very few
+operations (only 27) a very effective instruction set architecture
+makes these operations very flexibels and there are roughly 600 accepted 
+instructions.
+
+So even though FML is a very minimalistic machine it is quite powerfull.
+
+We have allso built a fully featured assembler for the FML machine.
+
+\end{document}

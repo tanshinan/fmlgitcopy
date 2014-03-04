@@ -1,14 +1,14 @@
 #TeXlipse project settings
-#Fri Feb 21 09:41:22 UTC 2014
+#Tue Mar 04 16:51:41 UTC 2014
 markTmpDer=true
 builderNum=2
-outputDir=Specs/
+outputDir=Documentation/
 makeIndSty=
 bibrefDir=
 outputFormat=pdf
-tempDir=Specs
-mainTexFile=Specs.tex
-outputFile=Specs.pdf
+tempDir=Documentation
+mainTexFile=Documentation.tex
+outputFile=Documentation.pdf
 langSpell=
 markDer=true
-srcDir=Specs/
+srcDir=Documentation/

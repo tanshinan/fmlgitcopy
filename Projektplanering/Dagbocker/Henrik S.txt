@@ -78,6 +78,15 @@
 		
 03/3 20:27
 	Finished writing annoying function specifications for the Assembler.sml file.
+	
+04/3 14:00
+	Had meting
+
+04/3 17:30
+	Started work on final Documentation
+
+04/3 23:59
+	Wrote more docuemntation.
 
 
 	

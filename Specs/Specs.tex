@@ -78,15 +78,8 @@ value of the \pc \ will be pushed onto \J.
 
 \subsection{RAM}
 The RAM in this machine works pretty much like any other random access
-memory.\\
-The RAM is devided into three part. There are some special cells with negative
-addresses. These addresses are read only and contain information regarding the
-layout of the memory. Any write to these special locations will result in the
-VM crashing. The main part of the RAM is then sectioned in two two parts. One
-``ordinary'' part and one external part. Prepherial components such as I/O
-handlers and such can only accsess the external memory.\\
-The two special addresses are -1 where the size of the entire memory is stored
-and -2 stores the address at which the external memory starts.
+memory. If any instruction tries to wrtie or read from addresses lying outisde
+of the size of the ram the VM should crash.
 
 \section{ISA}
 Every opcode is represented by a integer where each digit provides
@@ -207,20 +200,20 @@ depending on weather a non register argument is used.
 
 
 \subsubsection{Special}
-TThe Halt operation which just stops the VM and
-raises an exception.//
+The Halt operation which just stops the VM and
+raises an exception.\\
 And the \V+SEM+ or Stack empty operation which returns 1 if the stack is empty
 and 0 else.
 The \V+POP+ just pops the stack. I.e removing the top object.
 
 \subsection{Opcodes}
 
-\begin{tabular}{l || c | *{7}{c|} | r}
+\begin{tabular}{l || c | *{7}{c|} | r}     
 \textbf{Mnemonic} & \textbf{Description} & \x & \y& \s & \A &\ma & \mx & \my &
 Args
 \\
 \hline
-\V+NOP+ & No Operation & x & x & x & x & x & x & x & 0  \\
+\V+NOP+ & No Operation & x & x & x & x & x & x & x & 0  \\ 
 \hline
 \V+MOV+ & Move operations & b & b & b & r & b & b & b & 1 \\
 \hline

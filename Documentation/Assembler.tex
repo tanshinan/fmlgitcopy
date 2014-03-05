@@ -61,50 +61,6 @@ Wich arguments are allowed are dependent upon the opcode.\\
 Any non whitespace character can be used for names of labels and values.\\
 Each file has to start with a label.
 
-\section{Inner Workings}
-The assembler works in a fairly straight forward way. The first step in the
-process of asemblying is the lexiographical analysis in wich the lines in the
-text file gets tokenized. In this tage an ``intermediate structure''
-\footnote{The use of the word structure here is a bit ambigous since it
-actually is a structure in sml. But in this text it will reffere to an abstract
-structure of data.} gets constructed.
-This is an object wich contains all of the labels, values and alist of the tokenized lines. The list of 
-the tokens contains tupels of
-\verb+(label,offsett,token)+ wherer the lable is the last initialized label and
-the offset is how many addresses away from that line the current token is. Allof
-the labels and values will not be assigned an adress in this phase. It is in
-theis phase where the opcodes and their arguments gets converted in to there
-corresponding numerical instruction code. It is also during this phase in wich
-the syntax gets checked. If a syntax error is encountered the assembler will
-stop emideatly. When the lexiographical analysis has been completed a check for
-duplicate pointer declaration is performed.
-
-The next phase in the assembly is the address resolution phase. This is done in
-two phases, in the first one the labels gets resolved and in the second the
-values gets  resolved. It begins by first resolving the labels.
-This is done by first giving the assembler a \enph{base address} wich is the adress of the first label. As of now the first
-non comment line in the input file has to be a label since every line has to
-have a label assigned to it. Then the address resolution function continues down
-the intermediate sturcture and remebering wich line it is at and what its last
-read label was. When it runns into a new label token it will sett the new label
-to its current address and then continue on untill it has gone trough the entire
-intermediate structure. After the labels have been resolved the assembler starts
-to resolve the values. This is done in a very straightforward way. The assembler
-just looks at the last address of the last entry in the output of the firsst
-pass and looks at the last address, adds one to it and the just places the all
-the values in after that address in the same order as they appeared in the file.
-After all the adress has been resolved the assembler runns trough the list of
-tokens and replaces every pointer token with its correct adress.
-
-After this is completed the assembler finalizes the code by converting
-everything into a list of integers wich then gets outputed to a file. And that
-children is how assembly code gets turned in to machine code.
-
-the assembler runns in linear time with respect to the number of lines in the
-code. This is under the assumption that the number of lines are far greater than
-the number of values and labels in the code. This is a safe assumption for any
-resonably written code.
-
 \section{Usage}
 \subsection{General}
 One noteworthy thing to point out is the limitations on the arguments. Due to

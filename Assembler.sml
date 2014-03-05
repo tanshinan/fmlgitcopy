@@ -17,6 +17,16 @@ structure Assembler =
 struct
 
 	datatype pointer = Label of (string * (int option)) | Value of (string * (int option)) | NULL;
+	
+	(* 
+	REPRESENTATION CONVENTION: 
+		Ic is a token representing an instruction code.
+		Arg is a token representing an arbitrary data.
+		Ref is a token reffering to a pointer
+	REPRESENTATION INVARIANT:  
+		Ic is always a valid instruction in accordance with the VM specifications
+		Ref is alway a pointer wich is declared somwhere within the file.
+	*)
 	datatype token = Ic of int | Ref of string | Arg of int;
 	
 	exception SYNTAX of string
@@ -116,7 +126,6 @@ struct
 					current_label is the last label declaration wich the assembler found or NULL if no declaration has been found.
 					Address is always greater or equal to zero.
 					No two (pointer_name,offsett,token) ahve the same pointer_name and offsett
-					
  			*)
 			datatype inter = I of ((pointer list) * (pointer list) * ((string*int*token) list) * pointer * int)
 			

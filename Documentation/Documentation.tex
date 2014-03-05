@@ -104,7 +104,158 @@ descriptions are given in the appendix.
 \end{description}
 
 \subsection{Instruction Set Architecture}
-The
+The ISA of the VM is built in a special but simple fashion. Each instruction
+corresponds to a six digit integer..
+Where each digit corresponds to specific information regarding different types of opcodes. The digits counting from right
+to left is: 
 
+\begin{description}
+  \item[First] Second argument
+  \item[Second] First argument
+  \item[Third] Arithmetic operations
+  \item[Fourth] Logic operations
+  \item[Fifth] Jump operations
+  \item[Sixth] Special
+\end{description}
+This system of encoding information into each digit of the instruction makes the
+implementyation of the instruction controler and the assembler much easier. It
+allows for all the operation types to be grouped into numerical ranges and it
+gives  a lot of flexibility. Note that some of the instructions may be invalid
+and some might be nonsensical but the instruction controler crashes if a invalid
+instruction is encountered. The assembler is written in such a way that it can
+only generate valid instructions. So an example would be:
+000401.
+Where the 4 tells us that it we should perform a modulo operation, 
+he 0 says that the second argument is the \x register and the last 1 says 
+that the first argument is the \y register. Notice that the order of
+the last two digits is reversed in respect to the order of the arguments in
+the operation.
+This is due to a design choise made early in the design phase. It makes the
+instructions code a bit more confusing to read but it makes the assembly code
+become far more intuitive.\\
+For a more detailed description of the ISA se the VM specifications in the
+appendix.
+
+\section{Assembler}
+\subsection{General}
+The assembler wich we have written for the FMl machine is a very basic yet
+powerfull assembler. The assembler doesnt do much more than catch invalid
+opcodes and arguments. It allso enables the use of both label pointers and value
+pointers. The main tasks of the assembler is the instruction code generation and
+address resolution. The syntax of the assembler is inspired by the syntax for
+the MOS 6510 assembly lanuage and primarily the syntax of the Turbo Assembler
+for the Commodore 64.
+Below a short example of a assembly program will follow:
+\begin{verbatim}
+% This a simple program wich fills a part 
+% of the memmory with 100 consecutive integers
+% trough rellative addressing.
+#start
+MOV 0 x
+@start_address
+MOV start_addres y
+#loop
+MOV x $y
+INC x
+INC y
+BLE x 100
+JMP loop
+HLT
+\end{verbatim}
+A line starting with a \V+#+ declares a label. The address of the label will
+correspond to where in the code the the lebel gets declared.
+A line starting with a \V+@+ declares a value. The address of the label will be
+assigned independent of where in the code it apepars.
+For a more indepth description of how the assembly lanuage se the Assembler part
+of the description.
+
+\subsection{Implementation}
+\subsubsection{General}
+The assembler works in a fairly straight forward way. The first step in the
+process of asemblying is the lexiographical analysis in wich the lines in the
+text file gets tokenized. In this tage an ``intermediate structure''
+\footnote{The use of the word structure here is a bit ambigous since it
+actually is a structure in sml. But in this text it will reffere to an abstract
+structure of data.} gets constructed.
+This is an object wich contains all of the labels, values and alist of the tokenized lines. The list of 
+the tokens contains tupels of
+\verb+(label,offsett,token)+ wherer the lable is the last initialized label and
+the offset is how many addresses away from that line the current token is. Allof
+the labels and values will not be assigned an adress in this phase. It is in
+theis phase where the opcodes and their arguments gets converted in to there
+corresponding numerical instruction code. It is also during this phase in wich
+the syntax gets checked. If a syntax error is encountered the assembler will
+stop emideatly. When the lexiographical analysis has been completed a check for
+duplicate pointer declaration is performed.
+
+The next phase in the assembly is the address resolution phase. This is done in
+two phases, in the first one the labels gets resolved and in the second the
+values gets  resolved. It begins by first resolving the labels.
+This is done by first giving the assembler a \enph{base address} wich is 
+the adress of the first label. As of now the first
+non comment line in the input file has to be a label since every line has to
+have a label assigned to it. Then the address resolution function continues down
+the intermediate sturcture and remebering wich line it is at and what its last
+read label was. When it runns into a new label token it will sett the new label
+to its current address and then continue on untill it has gone trough the entire
+intermediate structure. After the labels have been resolved the assembler starts
+to resolve the values. This is done in a very straightforward way. The assembler
+just looks at the last address of the last entry in the output of the firsst
+pass and looks at the last address, adds one to it and the just places the all
+the values in after that address in the same order as they appeared in the file.
+After all the adress has been resolved the assembler runns trough the list of
+tokens and replaces every pointer token with its correct adress.
+
+After this is completed the assembler finalizes the code by converting
+everything into a list of integers wich then gets outputed to a file. And that
+children is how assembly code gets turned in to machine code.
+
+the assembler runns in linear time with respect to the number of lines in the
+code. This is under the assumption that the number of lines are far greater than
+the number of values and labels in the code. This is a safe assumption for any
+resonably written code.
+
+\subsubsection{Flow chart}
+Below a flow chart will folow for how the assembler assembler the assembles the
+assembly code.
+ 
+\begin{figure}[H]
+\begin{centering}
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{assembler_flow.png}
+\caption{Dataflow diagram of the assembler}
+\end{centering}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\begin{centering}
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{lexicographical_flow.png}
+\caption{Dataflow diagram of the tokenization phase}
+\end{centering}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\begin{centering}
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{address.png}
+\caption{Dataflow diagram of the label address resolution}
+\end{centering}
+\end{figure}
+\newpage
+The i have not included a flowchart for the address resolution of the values or
+the finalization part since these are trivial.
+\subsubsection{Usage}  
+To use the assembler propperly one has to know how to write assembly code and
+understand the detailed workings of the machine. We recomend studying both the
+VM spcifications and the assembler documentation in the appendix before you
+start to write programs for the machine.
+
+The working of the assembler program is very straight forward. just frite your
+assembly code in a file called \V+in.asm+ and run the \V+Assembler.sml+ file in
+the sml interperter of your choosing and if there are no errors encountered during
+the assembling of the program the assembeled program will be outputed to a file
+named \V+out.fml+
 
 \end{document}

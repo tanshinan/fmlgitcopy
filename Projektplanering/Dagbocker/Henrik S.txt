@@ -86,7 +86,7 @@
 	Started work on final Documentation
 
 04/3 23:59
-	Wrote more docuemntation.
+	Wrote more documentation.
 
 
 	

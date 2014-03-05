@@ -36,12 +36,12 @@ For our project we have decided to build a virtual
 machine(VM)\textsuperscript{\cite{Virtual}} in SML.
 The name FML is just an arbitrary thre letter name and has no meaning or interpertation.
 The VM is a RISC\textsuperscript{\cite{risc}} machine using a Von-Neuman
-architecture. It has a very minimalistic instruction set. The design of FML resembles those of older 8-bit
-architectures such as the MOS 6510\textsuperscript{\cite{6510}} and the
+architecture\textsuperscript{\cite{neuman}}. It has a very minimalistic
+instruction set. The design of FML resembles those of older 8-bit architectures such as the MOS 6510\textsuperscript{\cite{6510}} and the
 Z80\textsuperscript{\cite{z80}} microprocessors commonly in use during the late
 70s and early 80s. The FML machine has no ``bus width'' and works exclusivley with signed integers\footnote{The details of the integers
 used are dependent on which SML implementation is used}. The lack of a physical
-bus enables the VM to do things wich an ordinary CPU could not achive such as
+bus enables the VM to do things which an ordinary CPU could not achive such as
 reading from two registers at the same time. Even though
 the cpu have very few opcodes\textsuperscript{\cite{opcode}} (only 27) a very
 effective instruction set architecture\textsuperscript{\cite{ISA}} makes these operations very flexibels
@@ -50,12 +50,13 @@ FML is asycrounous\textsuperscript{\cite{async}} and has now predefined clock
 frequenzy.\footnote{Allthogh for debugging purposues one can use both manual stepping and a fixed update speed.}
 
 There are features in the machine specifications\footnote{Although these are
-not as of yet implemented} wich will enable interfacing the machine with
+not as of yet implemented} which will enable interfacing the machine with
 prepherial components such as I/O, displays, timers and much more.
 
 So even though FML is a very minimalistic machine it is quite powerfull.
 We have allso built a fully featured assembler\textsuperscript{\cite{assembler}}
 for the FML machine.
+\\
 \\
 This document is written in a informal way to facilitate the readers possible
 lack of familiarity with computer architectures and assembly code. Se the
@@ -67,8 +68,8 @@ appenix for more detailed descriptions.
 \section{Our work}
 We have tried to work as independent as possible. This has ofcourse led to some
 difference in how we have commented the code, some slight differnces in naming
-and indentation. The way we have chosen do describe how our programs work
-differes a bit here depending on who wrote the code for the given part of the
+and indentation. The way we have chosen to describe how our programs work
+differes a bit depending on who wrote the code for the given part of the
 VM.
 
 We have not been using any form of unit testing. But instead we have done a
@@ -80,40 +81,41 @@ with our assigned TA\footnote{Our TA has during this project been Tobias Neil}.
 These meetings have primairly been about informing eathother about how the 
 VM works and how the various components of it should be
 implemented. We have then had an ongoing discussion on facebook regarding
-details and problems wich we have encountered.
+details and problems which we have encountered.
 
 We have been using Git\textsuperscript{\cite{git}} as a source code management
-system. We have been using BitBucket\textsuperscript{\cite{bitbucket}} for to
+system. We have been using BitBucket\textsuperscript{\cite{bitbucket}} to
 host the project and troughout all of the development process the repository has 
 been hidden and only we in the group and our TA have had access to the code.\\
 \\
-We are using an array  in the current implementation of the memory for the VM.
-Now i know that it is stated in the project description that the project should
-be written in a functional and pure way. I discussed with both Dave Clarke and
-Tjark Weber about using a ``monad like'' structure to hide the sideffects of the
-array hadling and they said that it was okay. The Signature handling the memory
-is written in such a way that any other part of the program implementing the
-memmory structure will not be able to se that there are any side effects. I.e
-there are no semantically observable side effects of the memory structure. All
-of the code would look exactly the same from ``the outside'' regardles of how we
-implemented the memory. And thus the program is
+We are using an array in the current implementation of the memory for the VM.
+Now we know that it is stated in the project description that the project should
+be written in a functional and pure way and avoid side effects. We discussed
+with both Dave Clarke and Tjark Weber about using a ``monad like'' structure 
+to hide the side effects of the array hadling and they said that it was okay.
+The structure handling the memory is written in such a way that any other part
+of the program implementing the memory structure will not be able to se that there
+are any side effects. I.e there are no semantically observable side effects of 
+the memory structure. All of the code would look exactly the same from ``the
+outside'' regardles of how we implemented the memory. And thus the program is
 pure\textsuperscript{\cite{pure}} dissregarding I/O handling.
 
 \subsection{Personal notes}
 In this section we will give som personal notes regarding our parts in the
-project.
+project and how we have experienced working together.
 \subsubsection{Henrik Sommerland}
 I have been incharge of designing the VM and writing the assembler. I have also
 written some signatures for the others in the group to help them get started. I
 began work very early, as soon as we had gotten permission to start on the
 project. I  began by writing the specifications for the VM.
 
-Even though i have never had any formal education in how computer achitectures
-work I have learnt a lot about it on my own. When i was younger (around 17) i
+Even though I have never had any formal education in how computer achitectures
+work I have learnt a lot about it on my own. When I was younger (around 17) I
 designed a 8-bit cpu from TTL logic chps (the 7400
 series\textsuperscript{\cite{7400}}). It was during this time I learned how to
-build a cpu. So the design of the FML machine was for me very straight forward. 
-I have done all of the design myself and i have not
+build a cpu. So the design of the FML machine was for me very straight forward
+and intuitive.
+I have done all of the design myself and I have not
 copied anything from books or any previous designs. Allthough my way of thinking
 and reasoning about cpu architectures comes primarily from my own work and the
 designs of older 8-bit cpus. The design of the cpu took roughly one or two days
@@ -127,28 +129,29 @@ working assembler.
 
 After I had completed the assembler I sat out to start testing it and to write
 the documentation for it. As I wrote the documentation and did more extensive
-testing of the assembler I worked out the last few bugs and such in the code.
+testing of the assembler I worked out the last few bugs and ambiguities in the
+code.
 
 Then I started to write signature files and such for the others in the group to
 get to work on. I allso started to write on the major report for the entire
 program whilst guiding the others in the group.
 
 In general I have found this project to be increadibly fun and interesting.
-This will sound very sad (wich it is) but doing things like this and climbing
+This will sound very sad (which it is) but doing things like this (and climbing)
 is what makes life worth living. In the beggining I was worried that the others
 in the group where not going to be able to understand how it all woked and even 
-though it's really hard to explain something complex wich is crystal clear in 
+though it's really hard to explain something complex which is crystal clear in 
 my head to other people the others in
-the group have ben very enthusiastic and have really pulled trough this mammoth
-of a project.
+the group have been very enthusiastic and have really pulled trough for this
+mammoth of a project.
 \\
-I know i might have gotten a bit carried away here. I'm actually on medication
-not to do stuff like this.
+I know I might have gotten a bit carried away with this project. I'm actually on
+medication not to do stuff like this.
 
 
 \section{The VM}
-Here a informal description of the workings of the machine. For a more detailed
-description se the VM specifications in the appendix.
+Here is an informal description of the workings of the machine. For a more
+detailed description se the VM specifications in the appendix.
 \subsection{General}
 The FML machine is built up as a very simple von-neuman
 architecture\textsuperscript{\cite{neuman}}. The machine consists ony of a few
@@ -173,7 +176,7 @@ descriptions are given in the appendix.
 \begin{description}
   \item[X and Y] \hfill \\ 
   These are the two general purpose registers\textsuperscript{\cite{register}}
-  wich can be read, written to and used for addressing.
+  which can be read, written to and used for addressing.
   \item[S] \hfill \\
   This is the general purpose stack. It can be both read and
   written to. Everytime some thing gets written to the stack it gets pushed onto the
@@ -182,18 +185,19 @@ descriptions are given in the appendix.
   \item[A] \hfill \\
   This is only a virtual register. It is read only and can be used for
   addressing. This is only used if an instructuion uses a non-register
-  argument\footnote{A non-registry argument is a argument wich is not any of
-  the registers, the stack, or something from the memmory. The value of A will
-  (if used) be at the memmory cell directly folowing the one at wich the
+  argument\footnote{A non-registry argument is a argument which is not any of
+  the registers, the stack, or something from the memory. The value of A will
+  (if used) be at the memory cell directly folowing the one at which the
   program counter is.}.
   \item[Q$^1$ and Q$^2$] \hfill \\
   These are the two interupt registers. These are very special and can only be
-  written to. They will hold the adresses to wich the machine should jump if an
+  written to. They will hold the addresses to which the machine should jump if an
   prepherial component makes a interupt request\textsuperscript{\cite{irq}}.
-  More on this later.
+  
   \item[PC]\hfill \\
-  This is the program counter. It keeps track on where in the memmory the 
-  instructions are being read from. It allso handles the jumping.
+  This is the program counter. It keeps track on where in the memory the 
+  instructions are being read from. It allso handles the both the subroutine
+  jumps and the conditional breaking.
   \item[J]\hfill \\
   This is the jump stack. This stack is used to store the return addresses for
   subroutine jumps. This stack can only be manipulated by the program counter.
@@ -204,14 +208,14 @@ descriptions are given in the appendix.
   All of the results from the arithmetic and logical operations are always put
   on the stack.
   \item[RAM]\hfill \\
-  This is the random access memmory of the machine.
+  This is the random access memory of the machine.
 \end{description}
 
 \subsection{Instruction Set Architecture}
 The ISA\textsuperscript{\cite{ISA}} of the VM is built in a special but simple
-fashion. Each instruction corresponds to a six digit integer..
-Where each digit corresponds to specific information regarding different types of opcodes. The digits counting from right
-to left is: 
+fashion. Each instruction corresponds to a six digit integer 
+where each digit corresponds to specific information regarding different types
+of opcodes. The digits counting from right to left is: 
 
 \begin{description}
   \item[First] Second argument
@@ -222,8 +226,9 @@ to left is:
   \item[Sixth] Special
 \end{description}
 This system of encoding information into each digit of the instruction makes the
-implementation of the instruction decoder and the assembler much easier. It
-allows for all the operation types to be grouped into numerical ranges and it
+implementation of the instruction decoder and the construction of the assembler
+much easier.
+It allows for all the operation types to be grouped into numerical ranges and it
 gives  a lot of flexibility. Note that some of the instructions may be invalid
 and some might be nonsensical but the instruction controler crashes if a invalid
 instruction is encountered. The assembler is written in such a way that it can
@@ -231,8 +236,8 @@ only generate valid instructions\footnote{Allthough with the current
 implementation of  the VM this is not necessairly true}.
 So an example would be:
 000401.
-Where the 4 tells us that it we should perform a modulo operation, 
-he 0 says that the second argument is the \x register and the last 1 says 
+Where the 4 tells us that we should perform a modulo operation, 
+the 0 says that the second argument is the \x register and the last 1 says 
 that the first argument is the \y register. Notice that the order of
 the last two digits is reversed in respect to the order of the arguments in
 the operation.
@@ -253,35 +258,35 @@ an important file since it works \footnote{It was supposed to work like this
 but due to an implemtation fault in the VM it does not.} as a interface for both
 the assembler and the VM. If both the assembler and the VM addheres to this
 structure the assembler will not generate any instructions not accepted by the
-VM. In general the \V+ResolveOpcode+ structure just contains a lot of lookup
-tables in one can find important information regarding the different instructions 
-and opcodes, such as which number corresponds to what type of operation, which 
+VM. In general the \V+ResolveOpcode+ structure just contains a lot of ``lookup
+tables'' in which one can find important information regarding the different
+instructions and opcodes, such as which number corresponds to what type of operation, which 
 arguments are allowed for each operations and so forth.
 Since this structure was not propperly used in the VM implementation there are
 still some things left to write for it, such as a series of reverse lookup
-functions and checking for invalid opcodes.
+functions and checking for invalid instructions.
 
 \section{Assembler}
 \subsection{General}
-The assembler wich we have written for the FMl machine is a very basic yet
-powerfull assembler. The assembler doesnt do much more than catch invalid
-opcodes and arguments. It allso enables the use of both label pointers and value
-pointers. The main tasks of the assembler is the instruction code generation and
+The assembler which we have written for the FMl machine is a very basic yet
+powerfull assembler. The assembler doesn't do much more than address
+resolution, catching invalid opcodes and arguments. It allso enables the use of
+both label pointers and value pointers. The main tasks of the assembler is the instruction code generation and
 address resolution. The syntax of the assembler is inspired by the syntax for
 the MOS 6510 assembly lanuage and primarily the syntax of the Turbo
 Assembler\textsuperscript{\cite{tasm}} for the Commodore
-64\textsuperscript{\cite{c64}}. The assembler is now fully functional and there we dont see any need to augment it or redisgning any spects of it. The assembler should
-only generate valid instructions but due to a major design error in the
+64\textsuperscript{\cite{c64}}. The assembler is now fully functional and  we
+dont see any need to augment it or redisgning any aspects of it. The assembler should only generate valid instructions but due to a major design error in the
 implementation of the VM this is not neccesarily true any more. Below a short
 example of a assembly program will follow:
 \begin{verbatim}
-% This a simple program wich fills a part 
-% of the memmory with 100 consecutive integers
+% This a simple program which fills a part 
+% of the memory with 100 consecutive integers
 % trough rellative addressing.
 #start
 MOV 0 x
 @start_address
-MOV start_addres y
+MOV start_address y
 #loop
 MOV x $y
 INC x
@@ -294,57 +299,60 @@ A line starting with a \V+#+ declares a label. The address of the label will
 correspond to where in the code the the lebel gets declared.
 A line starting with a \V+@+ declares a value. The address of the label will be
 assigned independent of where in the code it apepars.
-For a more indepth description of how the assembly lanuage see the Assembler
-part of the description.
+\\
+\\
+For a more indepth description of the assembly lanuage see the Assembler
+part of the appendix.
 
-\subsubsection{Implementation}
-\paragraph{General}
+\subsection{Implementation}
+\subsubsection{General}
 The assembler works in a fairly straight forward way. The first step in the
-process of asemblying is the lexical
-analysis\textsuperscript{\cite{lexi}} in wich the lines in the text file gets tokenized. In this tage an ``intermediate structure''
-\footnote{The use of the word structure here is a bit ambigous since it
+process of assembling is the lexical
+analysis\textsuperscript{\cite{lexi}} in which the lines in the text file gets
+tokenized. In this stage an ``intermediate structure'' \footnote{The use of the word structure here is a bit ambigous since it
 actually is a structure in sml. But in this text it will reffere to an abstract
 structure of data.} gets constructed.
-This is an object wich contains all of the labels, values and alist of the tokenized lines. The list of 
-the tokens contains tupels of
-\verb+(label,offsett,token)+ wherer the lable is the last initialized label and
-the offset is how many addresses away from that line the current token is. Allof
-the labels and values will not be assigned an adress in this phase. It is in
-theis phase where the opcodes and their arguments gets converted in to there
-corresponding numerical instruction code. It is also during this phase in wich
+This is an object which contains all of the labels, values and a list of the
+tokenized lines. The list of the tokens contains tupels of
+\verb+(label,offsett,token)+ wherer the lable is the last declared label and
+the offset is how many addresses away from that line the current token is. All
+of the labels and values will not be assigned an address in this phase. It is in
+this phase where the opcodes and their arguments gets converted in to there
+corresponding numerical instruction code. It is also during this phase in which
 the syntax gets checked. If a syntax error is encountered the assembler will
 stop emideatly. When the lexical analysis has been completed a check for
-duplicate pointer declaration is performed.
+duplicate pointer declarations is performed.
 
 The next phase in the assembly is the address resolution phase. This is done in
 two phases, in the first one the labels gets resolved and in the second the
 values gets  resolved. It begins by first resolving the labels.
-This is done by first giving the assembler a \emph{base address} wich is 
-the adress of the first label. As of now the first
+This is done by first giving the assembler a \emph{base address} which is 
+the address of the first label. As of now the first
 non comment line in the input file has to be a label since every line has to
-have a label assigned to it. Then the address resolution function continues down
-the intermediate sturcture and remebering wich line it is at and what its last
-read label was. When it runns into a new label token it will sett the new label
-to its current address and then continue on untill it has gone trough the entire
+have a label assigned to it. Then the address resolving function continues
+down the intermediate sturcture and remembers which line it is at and what it's
+last read label was. When it runns into a new label-token it will set the new
+label to it's current address and then continue on untill it has gone trough the entire
 intermediate structure. After the labels have been resolved the assembler starts
 to resolve the values. This is done in a very straightforward way. The assembler
-just looks at the last address of the last entry in the output of the firsst
-pass and looks at the last address, adds one to it and the just places the all
+just looks at the last address of the last entry in the output of the first
+pass and looks at the last address, adds one to it and the just places all the
 the values in after that address in the same order as they appeared in the file.
-After all the adress has been resolved the assembler runns trough the list of
-tokens and replaces every pointer token with its correct adress.
+After all the addresses have been resolved the assembler runns trough the list
+of tokens and replaces every pointer token with it's correct address.
 
 After this is completed the assembler finalizes the code by converting
-everything into a list of integers wich then gets outputed to a file. And that
-children is how assembly code gets turned in to machine code.
+everything into a list of integers which then gets outputed to a file. And that
+is how assembly code gets turned in to machine code.
 
-the assembler runns in linear time with respect to the number of lines in the
+The assembler runns in linear time with respect to the number of lines in the
 code. This is under the assumption that the number of lines are far greater than
 the number of values and labels in the code. This is a safe assumption for any
-resonably written code.
+resonably written code. We se no need to try to optimize the performance of the
+assembler.
 
-\paragraph{Flow chart}
-Below a flow chart will folow for how the assembler assembler the assembles the
+\subsubsection{Flow chart}
+Below a flow chart will folow for how the assembler the assembles the
 assembly code.
  
 \begin{figure}[H]
@@ -372,15 +380,15 @@ assembly code.
 \end{centering}
 \end{figure}
 \newpage
-The i have not included a flowchart for the address resolution of the values or
+We have not included a flowchart for the address resolution of the values or
 the finalization part since these are trivial.
-\paragraph{Usage}  
+\subsection{Usage}  
 To use the assembler propperly one has to know how to write assembly code and
 understand the detailed workings of the machine. We recomend studying both the
 VM spcifications and the assembler documentation in the appendix before you
 start to write programs for the machine.
 
-The working of the assembler program is very straight forward. just frite your
+The working of the assembler program is very straight forward. just write your
 assembly code in a file called \V+in.asm+ and run the \V+Assembler.sml+ file in
 the sml interperter of your choosing and if there are no errors encountered during
 the assembling of the program the assembeled program will be outputed to a file
@@ -389,18 +397,18 @@ named \V+out.fml+.
 \section{Summary}
 In general this project has been a great sucssess considering the scale of the
 project and the time constraints. We have designed a very sleak, efficient and
-minimalistic VM. Even with its minimal set of operations programming for it is
+minimalistic VM. Even with it's minimal set of operations, programming for it is
 much fun and quite straight forward compared to more complicated machine
 lanuages. This is mainly due to the general purpose stack\footnote{Many of the
-older 8-bit micro porcessors did not have a general purpose stack wich made
+older 8-bit micro porcessors did not have a general purpose stack which made
 programming for them somewhat cumbersome}.
-We have managed to write a fully functional and fully featured assembler wich
-enables the writing of programs of unbounded complexity i.e there is no design
+We have managed to write a fully functional and fully featured assembler which
+enables the writing of programs of unbounded complexity I.e there is no design
 flaw in the assembler which would make it unpractical to write more elaborate
 programs in it.
 \subsection{Work to be done}
-There are still a few untied strings and folds to be flattened. The VM
-implementation is as of now largley incomplete and only handles a small subset
+There are still a few untied strings to be tied up and folds to be flattened.
+The VM implementation is as of now largley incomplete and only handles a small subset
 of all the operations. It also needs to be rewritten in order to use the
 \V+ResolveOpcode+ structure inorder to ensure compatibility with the assembler.
 
@@ -412,8 +420,9 @@ And maybe one day we will write a high level lanuage for the machine.
 After all of this is done and we have gotten permission from the lecturers the
 entire project will be made avaliable as open source.
 \subsection{Highlights}
-What are we really proud of whith this project. First of all that we actually
-did it. Secondly the fact that the VM is very minimalistic and yet powerful.
+What are we really proud of this project. First of all that we actually
+did it\footnote{It contains roughly 1600 lines of code!}. Secondly the fact that
+the VM is very minimalistic and yet powerful.
 This is primarily due to the way the instruction are encoded into integers and
 also trough the existence of the general purpose stack.
 
@@ -425,7 +434,7 @@ valid instructions.
 \subsubsection{Structure} 
 The VM consists of 9 components. Two general purpouse registers(\x \ , \y ), one
 general purpose stack (\s), One virtual read only register (\A), One jump stack
-\J, Two IRQ adress registers (\q \ , \qq), One ``ALU'', One program counter
+\J, Two IRQ address registers (\q \ , \qq), One ``ALU'', One program counter
 (\pc) and of course a random acces memory.
 
 \paragraph{The general purpose registers} \
@@ -437,7 +446,7 @@ These two registers can be incremented and decremented.
 \paragraph{The stack} \
 \\
 The stack \s \ is a standard LIFO stack of unlimited size. The stack can not be
-used for adressing. One can not read the top of the stack without popping it. If
+used for addressing. One can not read the top of the stack without popping it. If
 one tries to get a value from an empty stack an exception will be raised and the
 VM must halt.
 
@@ -455,7 +464,7 @@ The jump stack \J \ is not accesible by anything besides the \pc. The program
 counter is of infinite size. The jump stack is responsible for keeping track
 of the return address when a subroutine is performed. Every time someone
 issues a subroutine jump the current address will be pushed onto the stack.
-When a return jump is issued \J \ gets popped and its value gets assigned to
+When a return jump is issued \J \ gets popped and it's value gets assigned to
 the \pc. The top entry on the stack can not be accsessed without popping the
 stack.
 If someone tries to execute a return jump if the jump stack is empty a exception 
@@ -518,7 +527,7 @@ stored in \y. \\
 \verb+020046+ $\rightarrow$ Skip next instruction if \my \ is equal to \A \\
 \newpage
 
-First i would like to  mention that
+First I would like to  mention that
 \verb+000000+ will be the \verb+NOP+ operation since it would translate to just
 moving \x \ to \x \ . 
 We can now group the instructions in to numerical ranges:
@@ -545,7 +554,7 @@ Below will follow specifications for all the instruction types.
 \subsubsection{Instruction types}
 Every instruction will take exactly one cycle. Almost every instruction needs
 only one memory cell and should increment the \pc \  by one.
-Any operation using  a argument i.e \A \ will occupy two memory cells and
+Any operation using  a argument I.e \A \ will occupy two memory cells and
 increment the \pc \ by two.\\
 Using jump operations may affect the \pc in other ways.
 No operation except moves to the IRQ registers (\q \ and \qq ) are allowed.
@@ -579,16 +588,16 @@ and a exception should be thrown and the VM shall crash.
 
 \paragraph{Jump operations} \
 \\
-The standard address jump (J) will jump the \pc \ to the address given by its
+The standard address jump (J) will jump the \pc \ to the address given by it's
 read digit.\\
-The conditional breaks takes the write digit as its first argument and the read
-digit as its second argument. If the test fails the \pc \ will skipp the next
+The conditional breaks takes the write digit as it's first argument and the read
+digit as it's second argument. If the test fails the \pc \ will skipp the next
 instruction. This will require som tricks to implement. The VM must , at
 runtime, identify weather or not the following instruction takes up one or two
-memmory cells.\\
+memory cells.\\
 
 A \V+JSR+ (subroutine jump) will take a argument in \A \ and move the \pc \
-there and it will also put its current value on \J.\\
+there and it will also put it's current value on \J.\\
 A return jump will jump to the address at the top of \J \ plus one or two
 depending on weather a non register argument is used.
  \footnote{If the return jump where to return to the value at the top of the
@@ -671,7 +680,7 @@ Indentifier & Name & Description\\
 \hline
 \V+:<data>+ & Raw input & Returns \V+<data>+ as is \\
 \hline
-\verb+$<a>+ & Address & Derefferences \V+a+\\
+\verb+$<a>+ & address & Derefferences \V+a+\\
 \hline
 \V+x+ & x & The \x \ register \\
 \hline
@@ -690,7 +699,7 @@ The names given to \emph{label}s and \emph{value}s can contain any characters ex
 whitespace ones.\\
 Operations are declared in a straightforward approach as:\\
 \V+<opcode> <arg1> <arg2>+ \\
-Wich arguments are allowed are dependent upon the opcode.\\
+which arguments are allowed are dependent upon the opcode.\\
 Any non whitespace character can be used for names of labels and values.\\
 Each file has to start with a label.
 
@@ -699,7 +708,7 @@ Each file has to start with a label.
 \\
 One noteworthy thing to point out is the limitations on the arguments. Due to
 limitations in the VM only one ``none registry'' argument can be used for any
-operation. A ``non registry'' argument is one wich is either a number or a
+operation. A ``non registry'' argument is one which is either a number or a
 a pointer. Derefferencing a pointer is a registry operations so they are valid.
 Below follows some examples:
 \begin{verbatim}
@@ -731,14 +740,14 @@ tokenazation fo the code. First the \emph{labels} will be resolved and then the
 This means that the first \emph{value} will lie after the last line of code. Since the
 address of a \emph{label} depends on where in the code their addresses are easy to
 reason about. However for \emph{values} things are bit different. Since vlues
-will be given addresses wich are ``independent'' of where in the code they appear it is
+will be given addresses which are ``independent'' of where in the code they appear it is
 hard to reason about the address of a \emph{value}. Although the \emph{value} pointers are
 resolved in order the first \emph{value} declared whill lie intermediatley after the
 last line of code and the last \emph{value} declared will lie ``at the end'' of the
-memmory used by the program. This can be exploited to use rellative addressing.
+memory used by the program. This can be exploited to use rellative addressing.
 Allthoug great care has to be taken.
 
-Its important to remember that all pointers are reffered to troughout the entire
+it's important to remember that all pointers are reffered to troughout the entire
 program therefor it's not allowed to define two pointers with the same name. If
 this where to be allowed it would generate unpredictable behaviour so instead
 the assembler will return a \V+assembler+ error.
@@ -757,13 +766,13 @@ JMP bad_idea
 Since it is not known what where \V+bad_idea+ points jumping to it is suicidal.
 
 Since pointers are just numbers under the hood one needs to take into account
-weather or not one uses them for their adress orr for their \emph{value}s. Here is some
+weather or not one uses them for their address orr for their \emph{value}s. Here is some
 examples
 \begin{verbatim}
 @pointer
 % This stores x in pointer
 MOV x value
-% This stroes x in the address wich is
+% This stroes x in the address which is
 % stored at pointer
 MOV x $value
 % This adds one to the value stored at 
@@ -800,7 +809,7 @@ MOV x y
 #silly
 INC y
 \end{verbatim}
-Here \V+loop+ and \V+silly+ will both point to the same address wich is silly.
+Here \V+loop+ and \V+silly+ will both point to the same address which is silly.
 
 Because tokenaization of the code happens before the address resolving a \emph{label}
 will be ``in scope'' troughout the enitre code. So this code is perfectly valid:
@@ -815,10 +824,10 @@ ADD s x
 \end{verbatim}
 The \V+JMP ahead+ will jump to \V+ADD s x+ even though the \V+ahead+ flag is
 defined after the jump. This was not a concious design choise but it is actually
-quite usefull since one can define subroutines anywhere in the code wich can be
+quite usefull since one can define subroutines anywhere in the code which can be
 accesed form anywhere in the code.\\
 One possible piffall arises due to the fact that the assembler does not know the
-difference between a \emph{label} and a \emph{value} after their adresses has been resolved.
+difference between a \emph{label} and a \emph{value} after their addresses has been resolved.
 So this code is valid assembly code:
 \begin{verbatim}
 #loop
@@ -889,9 +898,6 @@ The arithmetic and logic operations are quite straight forward. The arguments
 given to the operations appear as they would in the normal case. So \V+ADD x y+
 is x+y and \V+MOD x y+ is x mod y. All of these operations (except for \V+INC+
 and \V+DEC+) store their result on the stack.
-
-
-
 
 \subsection{Componets.sml description}
 Due to misscomunication a radicaly diffrent description of how the
@@ -986,7 +992,7 @@ The Stack structure provides a base for the stack part of the Pc structure.
 		takes a stack and checks if it is empty if it is then true else false.
 \\
 	val dumpStack : stack $\rightarrow$ string\\
-		takes a stack, then pops the stack until its empty and returns all values as string
+		takes a stack, then pops the stack until it's empty and returns all values as string
 
 \subsubsection{The Register structure}
 \paragraph{Synopsis} \
@@ -1058,10 +1064,6 @@ The ProgramCounter structure controls the execution flow of the VM
 
 \section{references}
 \begin{thebibliography}{}
-
-\bibitem{}
-{\url{}
-Retrieved: \today}
 
 \bibitem{Virtual}
 {\url{http://en.wikipedia.org/wiki/Virtual_machine}\\
@@ -1142,25 +1144,6 @@ Retrieved: \today}
 \bibitem{lexi}
 {\url{http://en.wikipedia.org/wiki/Lexical_analysis}\\
 Retrieved: \today}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 \end{thebibliography}
 

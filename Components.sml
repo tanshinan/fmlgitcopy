@@ -3,11 +3,11 @@ exception RUNTIME of string
 (*
 	This is the signature describing the workings of the registers
 *)
-signature REGISTER = 
+signature REGISTER =
 sig
 	exception REGISTER
-	datatype reg = Reg of int 
-	val setData : (reg * int) -> reg 				(*Set data*)
+	datatype reg = Reg of int
+	val setData : (reg * int) -> reg				(*Set data*)
 	val getData : reg -> int						(*gets data*)
 	val increment : reg -> reg						(*increments register*)
 	val decrement : reg -> reg						(*decrements register*)
@@ -34,12 +34,12 @@ end;
 *)
 
 signature RAM =
-sig 
+sig
 	exception memory of string
-	type memory = int array								
-	val initialize : int -> memory 								(*Creates a memory of size specified by the integer*)
-	val getSize : (memory) -> int 								(*Returns the size of the memory.*)
-	val write : (memory * int * int ) -> memory	  				(*Writes to memory*)
+	type memory = int array
+	val initialize : int -> memory								(*Creates a memory of size specified by the integer*)
+	val getSize : (memory) -> int								(*Returns the size of the memory.*)
+	val write : (memory * int * int ) -> memory					(*Writes to memory*)
 	val read : (memory * int) -> int							(*Reads to memory*)
 	val load : (memory* int list) -> memory						(*Loads a list of integers into the memory*)
 	val writeChunk : (memory * int * (int array)) -> memory		(*Writes a "chunk" of memory. To be used by peripherals"*)
@@ -63,7 +63,7 @@ struct
 		EXAMPLE:
 	*)
 	fun setData (Reg(_), new) = Reg(new)
-	
+
 	(*
 		getData i
 		TYPE: Reg -> int
@@ -72,38 +72,38 @@ struct
 		EXAMPLE:
 	*)
 	fun getData (Reg(i)) = i
-	
+
 	(*
 		increment i
 		TYPE: Reg -> reg
 		PRE:()
-		POST: Moves the place of the Register Pointer to next register 
+		POST: Moves the place of the Register Pointer to next register
 		EXAMPLE:
-	*)	
+	*)
 	fun increment (Reg(i)) = Reg(i+1)
 	handle Overflow => raise RUNTIME "Register overflow"
-	
+
 	(*
 		decrement i
 		TYPE: Reg -> reg
 		PRE:()
 		POST: Move the pointer to the previous register pointer
 		EXAMPLE:
-	*)	
+	*)
 	fun decrement (Reg(i)) = Reg(i-1)
 	handle Overflow => raise RUNTIME "Register underflow"
-	
+
 	(*
 		dumpRegister i
 		TYPE: Reg -> string
 		PRE:()
 		POST: gives a string of the Reg of i
 		EXAMPLE:
-	*)	
+	*)
 	fun dumpRegister (Reg(i)) = Int.toString(i)
 end
 (*
-This is the functions of the stack signatures 
+This is the functions of the stack signatures
 *)
 structure Stack :> STACK=
 struct
@@ -111,7 +111,7 @@ struct
 (*------------------------DATATYPE------------------------*)
 	datatype stack = Stack of (int list)
 (* assigns empty to a Stack *)
-	val empty = Stack([])	
+	val empty = Stack([])
 	(*
 		push s
 		TYPE: stack * int -> stack
@@ -128,7 +128,7 @@ struct
 		EXAMPLE:
 	*)
 	fun pop (Stack([])) = raise STACK "Can't pop an empty stack"
-	  | pop (Stack(x::xs)) = Stack(xs)                        
+	  | pop (Stack(x::xs)) = Stack(xs)
 
 	(*
 		top s
@@ -139,14 +139,14 @@ struct
 	*)
 	fun top (Stack([])) = raise STACK "Can't read an empty stack"
 	  | top (Stack(x::xs)) = x
-	  
+
 	(*
 		isEmpty s
 		TYPE: stack -> bool
 		PRE:()
 		POST: Checks if stack s is empty
 		EXAMPLE:
-	*)	
+	*)
 	fun isEmpty (s) = s = Stack([])
 
 	(*
@@ -155,12 +155,12 @@ struct
 		PRE:()
 		POST: Gives stack s as strings where the elements are divided by ,
 		EXAMPLE:
-	*)	
+	*)
 	fun dumpStack (Stack([])) = "Empty"
 	  |dumpStack (Stack(s)) = String.concatWith "," (map Int.toString (s))
 end
 (*
-This is the functions of the ram signatures  
+This is the functions of the ram signatures
 *)
 structure Ram :> RAM =
 struct
@@ -175,43 +175,43 @@ struct
 		PRE:()
 		POST: gives a ram of size i
 		EXAMPLE:
-	*)	
+	*)
 	fun initialize (i) = Array.array (i, 0)
 
 	(*
 		getSize i
 		TYPE: memory -> int
 		PRE:()
-		POST: gets the size of memory i 
+		POST: gets the size of memory i
 		EXAMPLE:
-	*)	
+	*)
 	fun getSize (ram) = Array.length(ram)
 
 	(*
 		write ram, address, i
 		TYPE: memory * int * int -> memory
 		PRE:()
-		POST: Gives a ram with a new element of i at address 
+		POST: Gives a ram with a new element of i at address
 		EXAMPLE:
-	*)	
+	*)
 	fun write (ram, address, i) = (Array.update(ram, address, i); ram)
 
 	(*
 		read ram, i
 		TYPE: memory * int -> int
 		PRE:()
-		POST: Gives a int from ram at i 
+		POST: Gives a int from ram at i
 		EXAMPLE:
-	*)	
+	*)
 	fun read (ram, i) = Array.sub(ram, i)
 
 	(*
-		reader ram,[] 
-		TYPE: 'a array * int list -> 'a list 
+		reader ram,[]
+		TYPE: 'a array * int list -> 'a list
 		PRE:()
-		POST: 
+		POST:
 		EXAMPLE:
-	*)	
+	*)
 	fun reader (ram,[]) = []
 	  |reader (ram,x::xs) = Array.sub(ram, x)::reader(ram,xs)
 
@@ -221,33 +221,33 @@ struct
 		PRE:()
 		POST: Adds l to ram
 		EXAMPLE:
-	*)	
+	*)
 	fun load (ram, []) = ram
 	|load (ram,x::xs) = load'(ram, xs, x)
 	and load' (ram,[], _) = ram
-	|load' (ram, x::xs, i) = (Array.update(ram, i, x); load'(ram, xs, i+1))   
+	|load' (ram, x::xs, i) = (Array.update(ram, i, x); load'(ram, xs, i+1))
 
 	(*
 		writeChunk ram, address, sorc
 		TYPE: memory *int *int array -> memory
 		PRE:()
-		POST: inserts the sorc in the ram at the start of address 
+		POST: inserts the sorc in the ram at the start of address
 		EXAMPLE:
 	*)
 	fun writeChunk (ram, address, sorc) = (Array.copy{src = sorc, dst = ram, di = address}; ram)
 
 	(*
-		readChunk ram, address, length 
+		readChunk ram, address, length
 		TYPE: memory * int * int -> int arry
 		PRE:()
 		POST: reads the ram from address and to the length
 		EXAMPLE:
-	*)	
-	fun readChunk (ram, address, length) = 
+	*)
+	fun readChunk (ram, address, length) =
 		let
 			val rlist = List.tabulate (length, (fn x => x))
 		in
-	Array.fromList(reader (ram, map (fn x => x+address) (rlist))) 
+	Array.fromList(reader (ram, map (fn x => x+address) (rlist)))
 	end
 
 	(*
@@ -256,8 +256,8 @@ struct
 		PRE:()
 		POST: dumps the content of the memory to a string.
 		EXAMPLE:
-	*)	
-	fun dump (ram) = 
+	*)
+	fun dump (ram) =
 		let
 			val dumpList = List.tabulate (Array.length(ram), (fn x => x))
 			fun dumpString ([],[]) = ""
@@ -282,18 +282,18 @@ This is the description of the PROGRAM_COUNTER
 signature PROGRAM_COUNTER =
 sig
 	exception COUNTER of string
-	datatype pc = Pc of (int * Stack.stack * Register.reg * Register.reg) 	(*pointer, jump stack,  IRQ1, IRQ2*)
-	val incrementPointer : (pc * int) -> pc 								(*increments the pointer by an arbitrary integer*)
+	datatype pc = Pc of (int * Stack.stack * Register.reg * Register.reg)	(*pointer, jump stack,  IRQ1, IRQ2*)
+	val incrementPointer : (pc * int) -> pc									(*increments the pointer by an arbitrary integer*)
 	val jump : (pc * int) -> pc												(*changes the pointer*)
-	val subroutineJump : (pc * int) -> pc 									(*performs a subroutine jump*)
-	val return : pc -> pc 													(*returns from subroutine jump*)
-	val interrupt : (pc * int) -> pc 										(*performs an interrupt jump. The integer specifies wich IRQ register to be used. *)
+	val subroutineJump : (pc * int * int) -> pc									(*performs a subroutine jump*)
+	val return : pc -> pc													(*returns from subroutine jump*)
+	val interrupt : (pc * int) -> pc										(*performs an interrupt jump. The integer specifies wich IRQ register to be used. *)
 	val dumpPc : pc -> string
 end
 
 
 (*
-This is the functions of the PROGRAM_COUNTER signatures 
+This is the functions of the PROGRAM_COUNTER signatures
 *)
 
 structure ProgramCounter :> PROGRAM_COUNTER =
@@ -301,7 +301,7 @@ struct
 	exception COUNTER of string
 (*------------------DATATYPE---------------*)
 	datatype pc = Pc of (int * Stack.stack * Register.reg * Register.reg)
-(*	
+(*
 	(*
 	Guys remember that you have to return the correct datatype not just a tupel.
 	This is very important. (i,stack,irq1,irq2) is not the same thing as Pc(i,stack,irq1,irq2)
@@ -312,9 +312,9 @@ struct
 		incrementPointer (Pc(i,s q1,q2),a)
 		TYPE: pc * int -> pc
 		PRE:()
-		POST: Adds 1 to the pointer i
+		POST: Adds a to the pointer i
 		EXAMPLE:
-	*)	
+	*)
 	fun incrementPointer (Pc(i,s,q1,q2),a) = Pc(i+a,s,q1,q2)
 
 	(*
@@ -323,18 +323,18 @@ struct
 		PRE:()
 		POST: Jumps the Pc pointer i to the value of Jump
 		EXAMPLE:
-	*)	
+	*)
 	fun jump (Pc(i,s,q1,q2),jump) = Pc(jump,s,q1,q2)
 
 	(*
-		subroutineJump (Pc(jump,s q1,q2),jump) 
-		TYPE: pc *int -> pc
+		subroutineJump (Pc(i,s q1,q2),jump, jumpsize)
+		TYPE: pc * int * int -> pc
 		PRE:()
 		POST: jumps the pc pointer i the the value of jump
 		EXAMPLE:
-	*)	
-	(*need to fix to handle when making subroutine jumps with argument *)
-	fun subroutineJump (Pc(i, s, q1, q2), jump) = Pc(jump, Stack.push(s, i+1), q1, q2)
+	*)
+	fun subroutineJump (Pc(i, s, q1, q2), jump, l) = Pc(jump, Stack.push(s,
+		i+l), q1, q2)
 
 	(*
 		return (Pc(i,s q1,q2),a)
@@ -342,7 +342,7 @@ struct
 		PRE:()
 		POST: Pops the value of í and adds it to s
 		EXAMPLE:
-	*)	
+	*)
 	(* raises STACK when empty stack *)
 	fun return (Pc(i, s, q1, q2)) = Pc(Stack.top(s), Stack.pop(s), q1, q2)
 
@@ -352,9 +352,9 @@ struct
 		PRE:()
 		POST: if the value of a is 1 or 2, then the value of i is added to s
 		EXAMPLE:
-	*)	
-	fun interrupt (Pc(i, s, irq1 as Register.Reg(q1), irq2 as Register.Reg(q2)), x) = 
-		case x of 
+	*)
+	fun interrupt (Pc(i, s, irq1 as Register.Reg(q1), irq2 as Register.Reg(q2)), x) =
+		case x of
 			1 => Pc(q1, Stack.push(s, i), irq1, irq2)
 		  | 2 => Pc(q2, Stack.push(s, i), irq1, irq2)
 		  | _ => raise COUNTER "Can't use nonexistent IRQ"
@@ -367,7 +367,7 @@ end
 (*
 The reason for using the place holder structures Register and Stack is because signatures can't "inherit" from each other.
 I can not write say REGISTER.reg in the PROGRAM_COUNTER signature.
-There is the include keyword but that just adds all of the declarations from another signature. Thus specifying that the 
+There is the include keyword but that just adds all of the declarations from another signature. Thus specifying that the
 signature containing the include must when its used in a structure also include all of the functions and values in the included
-signature. 
+signature.
 *)

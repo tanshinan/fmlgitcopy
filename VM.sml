@@ -52,13 +52,12 @@ struct
 		EXAMPLE: here be dragons (meaning, I'll fill it in later)
 	*)
 
-	fun step (virt as Vm(p as Pc(i, stack1 as Stack.Stack(s1), irq1 as Reg.Reg(q1), irq2
-		as Reg.Reg(q2)), ro as Reg.Reg(a),stack2 as Stack.Stack(s2),rx as
-		Register.Reg(x),ry as Register.Reg(y), ram:
-		Ram.memory, fl: flag)) =
+	fun step (virt as Vm(p as ProgramCounter.Pc(i, stack1 as Stack.Stack(s1), irq1 as Register.Reg(q1), irq2
+		as Register.Reg(q2)), ro as Register.Reg(a),stack2 as Stack.Stack(s2),rx as
+		Register.Reg(x),ry as Register.Reg(y), ram: Ram.memory, fl: flag)) =
 		let
-			val stepCode = GetCode(Ram.read (ram,i))
-			val opSize = length(stepcode)
+			val stepCode = getCode(Ram.read (ram,i))
+			val opSize = length(stepCode)
 			val revd as (r::rs) = rev (stepCode)
 			(* PRE: call must be with list length 5 *)
 			fun check5 (l::ls) = if l > 0 andalso l < 7 then
@@ -66,8 +65,8 @@ struct
 					if l = 2 then check52 (ls, 4) else
 					if l = 3 then check52 (ls, 4) else
 					if l = 4 then check52 (ls, 4) else
-					if l = 5 then check51 (ls) else
-					check53 (ls, 4)) else raise RUNTIME
+					if l = 5 then check51 (ls, 4) else
+					check53 (ls)) else raise RUNTIME
 			and check51 ([],_) = raise RUNTIME
 				| check51 (l, 1) = hd(l) >= 0 andalso hd(l) < 7
 				| check51 (l::ls, i1) = if l = 0 then true andalso check51
@@ -77,7 +76,7 @@ struct
 				0 andalso hd(ls) < 7
 				| check52 (l::ls, i1) = if l = 0 then true andalso check52
 				(ls,i1-1) else false
-			and check53 (l) = List.all (fn x => x=0)
+			and check53 (l) = List.all (fn x => x=0) l
 			fun check4 (l::ls) = if l > 0 andalso l < 10 then
 					(if l = 1 then check52 (ls, 3) else
 					if l = 2 then check52 (ls, 3) else
@@ -87,27 +86,27 @@ struct
 					if l = 6 then check52 (ls, 3) else
 					if l = 7 then check52 (ls, 3) else
 					if l = 8 then check52 (ls, 3) else
-					check51 (ls, 3)
+					check51 (ls, 3)) else raise RUNTIME
 			fun isarg (l::ls) = if l = 6 orelse hd(ls) = 8 then 2 else 1
-			fun resolver (a) = case a of 0 => rx
-									| 1 => ry
+			fun resolver (a) = case a of 0 => x
+									| 1 => y
 									| 2 => Stack.top(stack2)
 							(* fix more later *)
 									| 6 => Ram.read(ram, i+1)
 									| _ => raise RUNTIME
-			fun resolvew (a) = case a of 0 => rx
-									| 1 => ry
+			fun resolvew (a) = case a of 0 => x
+									| 1 => y
 									| 2 => Stack.top(stack2)
 							(* more later *)
 									| 8 => 	Ram.read(ram, i+1)
 									| _ => raise RUNTIME
 			fun step' (w::ws) = case opSize of 1 => if r > 6 orelse r < 0 then raise RUNTIME else
-						(case 0 => (Vm(ProgramCounter.incrementPointer(p, 1), ro, stack2, rx, ry, ram, fl))
+						(case w of 0 => (Vm(ProgramCounter.incrementPointer(p, 1), ro, stack2, rx, ry, ram, fl))
 								
-						| _ => (Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, (if r = 2 then Stack.pop(stack2) else stack2), resolver(r), ry, ram, fl)))
+						| _ => (Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, (if r = 2 then Stack.pop(stack2) else stack2), Register.Reg(resolver(r)), ry, ram, fl)))
 					| 2 => if ((r > 6 orelse r < 0) orelse (hd(rs) > 7 orelse hd(rs) < 0)) then raise RUNTIME else
 						(case w of 1 => 
-								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, (if r = 2 then Stack.pop(stack2) else stack2), rx, resolver(r), ram, fl))
+								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, (if r = 2 then Stack.pop(stack2) else stack2), rx, Register.Reg(resolver(r)), ram, fl))
 						| 2 => 
 								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, resolver(r)), rx, ry, ram, fl))
 						(* fix more later *)
@@ -134,16 +133,16 @@ struct
 						| 7 => 
 								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, (resolver(r) mod resolvew(hd(rs)))), rx, ry, ram, fl))
 						| _ => raise RUNTIME )
-					| 4 => if not check4 (w::ws) then raise RUNTIME else
+					| 4 => if not (check4 (w::ws)) then raise RUNTIME else
 						(case w of 1 => if resolver(r) = resolvew(hd(rs)) then
 								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, 1), rx, ry, ram, fl))
 								else
 								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, 0), rx, ry, ram, fl))
-						| 2 => resolver (r) < resolvew(hd(rs)) then
+						| 2 => if resolver (r) < resolvew(hd(rs)) then
 								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, 1), rx, ry, ram, fl))
 								else
 								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, 0), rx, ry, ram, fl))
-						| 3 => resolver (r) > resolveq(hd(rs)) then
+						| 3 => if resolver (r) > resolvew(hd(rs)) then
 								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, 1), rx, ry, ram, fl))
 								else
 								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, 0), rx, ry, ram, fl))
@@ -153,7 +152,7 @@ struct
 								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, (resolver(r) div 10)), rx, ry, ram, fl))
 						(* fix more later *)
 						| _ => raise RUNTIME )
-					| 5 => if not check5 (w::ws) then raise RUNTIME else
+					| 5 => if not (check5 (w::ws)) then raise RUNTIME else
 						(case w of 1 => 
 							(Vm(ProgramCounter.jump(p, resolver(r)), ro, stack2, rx, ry, ram, fl)) 
 						| 2 =>	if resolver(r) = resolvew(hd(rs)) then
@@ -171,9 +170,9 @@ struct
 						| 5 =>	(Vm(ProgramCounter.subroutineJump(p, resolver(r), isarg(revd)), ro, stack2, rx, ry, ram, fl))
 						| 6 =>	(Vm(ProgramCounter.return(p), ro, stack2, rx, ry, ram, fl))
 						| _ => raise RUNTIME )
-					| 6 => if List.all (fn x => x=0)
+					| 6 => if (List.all (fn x => x=0) ws)
 										then
-						(case w of 1 => (Vm(p, ro, stack2, rx, ry, HALT))
+						(case w of 1 => (Vm(p, ro, stack2, rx, ry, ram, HALT))
 						| 2 => if Stack.isEmpty (stack2) then
 					(Vm(ProgramCounter.incrementPointer(p, 1), ro, Stack.push(stack2,1), rx, ry, ram, fl)) else
 					(Vm(ProgramCounter.incrementPointer(p, 1), ro, Stack.push(stack2,0), rx, ry, ram, fl))
@@ -181,9 +180,9 @@ struct
 				Stack.pop(stack2), rx, ry, ram, fl))
 						| _ => raise RUNTIME)
 							else raise RUNTIME
-					| _ => raise RUNTIME
+					| _ => raise RUNTIME 
 			in
-		if fl = RUNNING then step' (stepCode) else dump (virt)
+		if fl = RUNNING then step' (stepCode) else virt
 	end
 
 	(*flagToString flag

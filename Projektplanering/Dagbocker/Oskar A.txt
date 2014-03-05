@@ -1,21 +1,26 @@
+
 2014-02-20
 Kontroll av kod samt genomläsning av spces samt skapade filer för loggnig av arbete, och planering samt flöde.
 2014-02-23
-Reading the Speccs and assambler code.
+Reading the Specs and assembler code.
 2014-02-24
-meeting about the assembler part that is done and assiging the rest of the work to the rest of the group
-will start codeing with the assigend part tomorrow 2014-02-25 
+meeting about the assembler part that is done and assigning the rest of the work to the rest of the group
+will start coding with the assigned part tomorrow 2014-02-25 
 2014-02-25
-Codeing the componets with Alexander and creating the strucktors in ram aswell some other things
+Coding the components with Alexander and creating the strucktors in ram as well some other things
 2014-02-26
-Codeing the componets with Alexander, done with impimation of Stacks , Ram, and started with ProgramCounter
+Coding the components with Alexander, done with implication of Stacks , Ram, and started with Program Counter
 2014-02-27
-Codeing the componets with Alexander, done with components and starting with the Vm impimnation 
+Coding the components with Alexander, done with components and starting with the Vm implementation 
 2014-02-02
-Reading thrue new material
+Reading thru new material
 2014-03-03
-Going thrue the files and adding Functions Speccs.
+Going thru the files and adding Functions Specs.
 2014-03-04
-meeting with tobias to see progress and disscussing the report and workload.
+meeting with tobias to see progress and discussing the report and workload.
 2014-03-04
-codeing with alexander to compleat the vm so we can start with the impincation of the wm
+coding with alexander to complete the vm
+Writing documentation on the Components
+
+2014-03-05
+ contuiniun Writing documentation on the Components

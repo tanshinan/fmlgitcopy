@@ -23,3 +23,8 @@ Meeting with the group to talk about implementing the vm.
 2014-03-03
 Fixed minor stuff in components.sml, started function declarations in VM.sml, 
 
+2014-03-04
+Started work on Vm.step
+
+2014-03-05
+Finished a partially functional Vm.step

@@ -26,15 +26,15 @@ The structure can be seen as a new part of the library in SML, we will now go th
 
 \subsection{\uline{The Ram structure}}
 \subsubsection{Synopsis}
-signature RAM\\
-structure Ram :\textgreater RAM\\
+\texttt{signature RAM\\
+structure Ram :\textgreater RAM}\\
 
 The Ram structure provides a base of the functions of a ram memory that is a interglacial part of the virtual machine.
 
 \subsubsection{\uline{INTERFACE}}
 
 
-    type memory = int array
+   \texttt{type memory = int array
 	\\val initialize : int $\rightarrow$ memory 							
  	\\val getSize : (memory) $\rightarrow$ int 
     \\val write :(memory * int * int ) $\rightarrow$ memory	  				
@@ -42,7 +42,7 @@ The Ram structure provides a base of the functions of a ram memory that is a int
 	\\val load : (memory* int list) $\rightarrow$ memory					
 	\\val writeChunk : (memory * int * (int array)) $\rightarrow$ memory
 	\\val readChunk : (memory * int * int) $\rightarrow$ int array			
-	\\val dump : memory $\rightarrow$ string
+	\\val dump : memory $\rightarrow$ string}
     \\
     \\
     \\
@@ -50,28 +50,28 @@ The Ram structure provides a base of the functions of a ram memory that is a int
 \\
 \subsubsection{\uline{Description}}
 
-val initialize : int $\rightarrow$ memory \\	
+\texttt{val initialize : int $\rightarrow$ memory} \\	
 	Initialize the ram to a memory with the size of int, when int > 0
 \\
-val getSize : (memory) $\rightarrow$ int\\
+\texttt{val getSize : (memory) $\rightarrow$ int}\\
 		Gets the size of the ram (memory) 
 \\
-val write :(memory * int * int ) $\rightarrow$ memory\\
+\texttt{val write :(memory * int * int ) $\rightarrow$ memory}\\
 		write takes a memory and writs a new value of int at the pointer of the first int and returns the memory
 \\
-val read: (memory * int) $\rightarrow$ memory\\
+\texttt{val read: (memory * int) $\rightarrow$ memory}\\
 		read takes a memory and reads the value of the place of int
 \\
-val load: (memory * int list) $\rightarrow$ memory\\
+\texttt{val load: (memory * int list) $\rightarrow$ memory}\\
 		load takes a list of values and loads them to the memory
 \\
-val writeChunk: (memory* int *( int array)) $\rightarrow$ memory \\
+\texttt{val writeChunk: (memory* int *( int array)) $\rightarrow$ memory} \\
 		writeChuck takes a memory and a start pointer and adds a chunk to the memory
 \\
-val readChunk: (memory * int *int) $\rightarrow$ int array \\
+\texttt{val readChunk: (memory * int *int) $\rightarrow$ int array} \\
 		readChumk takes a memory and reads a chunk form first int to the last int and gives the values as an int array
 \\
-val dump: memory $\rightarrow$ string\\
+\texttt{val dump: memory $\rightarrow$ string}\\
 		dump takes a memory and returns the value as strings
 \\
 \\
@@ -80,41 +80,40 @@ This concludes the RAM structure
 \\
 \subsection{\uline{The Stack structure}}
 \subsubsection{Synopsis}
-
-signature STACK \\
-structure Stack :\textgreater STACK
+\texttt{signature STACK \\
+structure Stack :\textgreater STACK}
 \\
 \\
 The Stack structure provides a base for the stack part of the Pc structure.
 
 \subsubsection{\uline{INTERFACE}}
-	datatype stack = Stack of (int list)\\	
+	\texttt{datatype stack = Stack of (int list)\\	
 	val empty : stack \\
 	val push : stack * int $\rightarrow$ stack\\					
 	val pop : stack $\rightarrow$ stack\\						
 	val top : stack $\rightarrow$ int\\						
 	val isEmpty : stack $\rightarrow$ bool \\						
-	val dumpStack : stack $\rightarrow$ string\\					 
+	val dumpStack : stack $\rightarrow$ string}\\					 
 
 
 \subsubsection{\uline{Description}}
 
-	val empty : stack\\
+	\texttt{val empty : stack}\\
 		is a definition of a empty Stack
 \\
-	val push : stack * int $\rightarrow$ stack\\					
+	\texttt{val push : stack * int $\rightarrow$ stack}\\					
 		takes a stack and adds the value of int to the stack.
 \\
-	val pop : stack $\rightarrow$ stack	\\					
+	\texttt{val pop : stack $\rightarrow$ stack}\\					
 		takes a Stack and “pop”s the first element of the stack.
 \\
-	val top : stack $\rightarrow$ int\\							
+	\texttt{val top : stack $\rightarrow$ int}\\							
 		takes the stack and returns the first element of the stack
 \\
-	val isEmpty : stack $\rightarrow$ bool\\						
+	\texttt{val isEmpty : stack $\rightarrow$ bool}\\						
 		takes a stack and checks if it is empty if it is then true else false.
 \\
-	val dumpStack : stack $\rightarrow$ string\\
+	\texttt{val dumpStack : stack $\rightarrow$ string}\\
 		takes a stack, then pops the stack until its empty and returns all values as string
 \\
 \\
@@ -124,31 +123,31 @@ This concludes the stack structure.
 \subsection{\uline{The Register structure}}
 \subsubsection{Synopsis}
 
-signature REGISTER\\
-structure Register :\textgreater REGISTER\\
+\texttt{signature REGISTER\\
+structure Register :\textgreater REGISTER}\\
 \\
-The Register structure provides a base structure of the different register that is contained in the Pc as well the Virtual machine. The vm has tow different registers.\\
+The Register structure provides a base structure of the different register that is contained in the Pc as well the Virtual machine. The vm has two different registers.\\
 \subsubsection{\uline{INTERFACE}}
-	datatype reg = Reg of int 
+	\texttt{datatype reg = Reg of int 
 \\	
 	val setData : (reg * int) $\rightarrow$ reg 				
 \\	val getData : reg $\rightarrow$ int						
 \\	val increment : reg $\rightarrow$ reg						
 \\	val decrement : reg $\rightarrow$ reg						
-\\	val dumpRegister : reg $\rightarrow$ string
+\\	val dumpRegister : reg $\rightarrow$ string}
 \\
 \\
 \subsubsection{\uline{Description}}
 
-	val setData : (reg * int) $\rightarrow$ reg\\
+	\texttt{val setData : (reg * int) $\rightarrow$ reg}\\
 		Setups a new Register \\
-	val getData : reg $\rightarrow$ int	\\
+	\texttt{val getData : reg $\rightarrow$ int}\\
 		Gets the value of the reg as an int\\					
-	val increment : reg $\rightarrow$ reg\\		
+	\texttt{val increment : reg $\rightarrow$ reg}\\		
 		Takes a reg and increment it with one.\\	
-	val decrement : reg $\rightarrow$ reg\\					
+	\texttt{val decrement : reg $\rightarrow$ reg}\\					
 		Takes a reg and decrements it with one.\\
-	val dumpRegister : reg $\rightarrow$ string\\
+	\texttt{val dumpRegister : reg $\rightarrow$ string}\\
 		Takes the register and adds all elements to a string.\\
 \\
 This concludes the Register structure.
@@ -156,33 +155,33 @@ This concludes the Register structure.
 \\
 \subsection{\uline{The Program\textunderscore Counter structure}}
 \subsubsection{Synopsis}
-signature PROGRAM\textunderscore COUNTER\\
-structure ProgramCounter :\textgreater PROGRAM\textunderscore COUNTER\\
+\texttt{signature PROGRAM\textunderscore COUNTER\\
+structure ProgramCounter :\textgreater PROGRAM\textunderscore COUNTER}\\
 \\
 The ProgramCounter structure provides the foundation of the Virtual machine this is the hearth of the 
 \\
 \subsubsection{\uline{INTERFACE}}
-	datatype pc = Pc of (int * Stack.stack * Register.reg * Register.reg)
+	\texttt{datatype pc = Pc of (int * Stack.stack * Register.reg * Register.reg)
 \\
 	val incrementPointer : (pc * int) $\rightarrow$ pc\\
 	val jump : (pc * int) $\rightarrow$ pc\\
 	val subroutineJump : (pc * int) $\rightarrow$ pc\\ 						
 	val return : pc $\rightarrow$ pc\\	
     val interrupt : (pc * int) $\rightarrow$ pc\\
-    val dumpPc : pc $\rightarrow$ string\\
+    val dumpPc : pc $\rightarrow$ string}\\
 \\
 \subsubsection{\uline{Description}}
-	val incrementPointer : (pc * int) $\rightarrow$ pc\\
+	\texttt{val incrementPointer : (pc * int) $\rightarrow$ pc}\\
 		Takes a Pc and adds a int > 0\\							
-	val jump : (pc * int) $\rightarrow$ pc\\
+	\texttt{val jump : (pc * int) $\rightarrow$ pc}\\
 		Takes a Pc and jumps the pc counter to the value of int > 0\\
-	val subroutineJump : (pc * int) $\rightarrow$ pc\\
+	\texttt{val subroutineJump : (pc * int) $\rightarrow$ pc}\\
 		Takes a Pc and preforms SubrutineJump with the value of  int > 0 and adds the  value of the pointer + 1 to the stack\\						
-	val return : pc $\rightarrow$ pc\\
+	\texttt{val return : pc $\rightarrow$ pc}\\
     	Takes a pc and gets the value from the pointer and pops the stack with the value\\
-	val interrupt : (pc * int) $\rightarrow$ pc\\							
+	\texttt{val interrupt : (pc * int) $\rightarrow$ pc}\\							
 		if the value of a is 1 or 2, then the value of i is added to s\\
-	val dumpPc : pc $\rightarrow$ string\\
+	\texttt{val dumpPc : pc $\rightarrow$ string}\\
 		Takes a pc and dumps the content of the pc as a string (the Pc contained a pointer, Stack, and tow registers)\\
 \\
 This concludes the ProgramCounter structure

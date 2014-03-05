@@ -1,7 +1,11 @@
 (* Yet to be implemented:
  * Registers as adresses for memory *)
 
-
+val current_dir = OS.FileSys.getDir();
+OS.FileSys.chDir("Utills");
+use "StringUtills.sml";
+use "IO.sml";
+OS.FileSys.chDir(current_dir);
 use "Components.sml";
 
 (*
@@ -17,6 +21,7 @@ sig
 	val init : (int list * int) -> vm	(*Creates an initialized VM. Loads int list into the memory and makes the memory have a size of the second int*)
 	val step : vm -> vm					(*Takes one vm and returns the next vm. I.e it runns the virtual machine for one step.*) (*shouldn't step take more than just the vm? So we can know if it's going to move the pointer 1 or 2? *)
 	val dump : vm -> unit				(*Prints the VM to stdOut. The output should be really pretty to make debugging easy.*)
+	val loop : vm -> unit 
 
 end
 (*This is the functions of the signature Virtual_Machine*)
@@ -187,6 +192,8 @@ struct
 			in
 		if fl = RUNNING then step' (stepCode) else virt
 	end
+	
+
 
 	(*flagToString flag
 			TYPE: flag -> string
@@ -227,9 +234,27 @@ struct
 	(Register.dumpRegister(x))^ ", " ^ (Register.dumpRegister(y))^ "\n" ^ (Ram.dump(ram)) ^ "\n"
 	^ flagToString(fl) ^ "\n"))
 
+		(*getFlag vm
+		TYPE: vm -> flag
+		PRE:None
+		POST: returns the flag of the vm
+	*)
+	fun getFlag(Vm(_,_,_,_,_,_, flag)) = flag
+
+	fun loop(vm as Vm(pc, a, s, x, y, ram, fl)) =
+	let
+		val dump = dump(vm)
+		val new_vm = step(vm)
+	in
+		if fl = RUNNING then
+			loop(new_vm)
+		else
+			()
+	end
 end
 
-(*
-	I'm not going to give you much more clues about how to go about writing this. Its not as hard as you think.
-	It might get pretty ugly but that is not the end of the world.
-*)
+val init_vm = Vm.init(IO_Handler.fileToIntList("out.fml"),20);
+
+
+Vm.loop(init_vm);
+

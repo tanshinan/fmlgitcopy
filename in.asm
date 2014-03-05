@@ -1,3 +1,5 @@
 #start
-MOV y s
-DIV y s
+MOV 10 s
+MOV 5 x
+ADD x s
+HLT

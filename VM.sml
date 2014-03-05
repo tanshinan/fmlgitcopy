@@ -1,3 +1,7 @@
+(* Yet to be implemented:
+ * Registers as adresses for memory *)
+
+
 use "Components.sml";
 
 (*
@@ -16,7 +20,7 @@ sig
 
 end
 (*This is the functions of the signature Virtual_Machine*)
-structure Vm (*:> VIRTUAL_MACHINE *)=
+structure Vm :> VIRTUAL_MACHINE =
 struct
 	exception RUNTIME
 	(*DATATYPE*)
@@ -73,7 +77,7 @@ struct
 				(ls,i1-1) else false
 			and check52 ([],_) = raise RUNTIME
 				| check52 (l::ls, 2) = l >= 0 andalso l < 9 andalso hd(ls) >=
-				0 andalso hd(ls) < 7
+				0 andalso hd(ls) < 7 andalso not (l = hd(ls))
 				| check52 (l::ls, i1) = if l = 0 then true andalso check52
 				(ls,i1-1) else false
 			and check53 (l) = List.all (fn x => x=0) l
@@ -91,7 +95,7 @@ struct
 			fun resolver (a) = case a of 0 => x
 									| 1 => y
 									| 2 => Stack.top(stack2)
-							(* fix more later *)
+							(* memory adress stuff to be implemented later *)
 									| 6 => Ram.read(ram, i+1)
 									| _ => raise RUNTIME
 			fun resolvew (a) = case a of 0 => x
@@ -108,7 +112,7 @@ struct
 						(case w of 1 => 
 								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, (if r = 2 then Stack.pop(stack2) else stack2), rx, Register.Reg(resolver(r)), ram, fl))
 						| 2 => 
-								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, resolver(r)), rx, ry, ram, fl))
+								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push((if r=2 then Stack.pop(stack2) else stack2), resolver(r)), rx, ry, ram, fl))
 						(* fix more later *)
 						| _ => raise RUNTIME )
 					| 3 => if ((r > 6 orelse r < 0) orelse (hd(rs) > 8 orelse hd(rs) < 0)) then raise RUNTIME else
@@ -123,33 +127,33 @@ struct
 								(Vm(ProgramCounter.incrementPointer(p, 1), ro, stack2, rx, Register.decrement(ry), ram, fl))
 								else raise RUNTIME
 						| 3 => 
-								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, (resolver(r) + resolvew(hd(rs)))), rx, ry, ram, fl))
+								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push((if r=2 andalso hd(rs) = 2 then raise RUNTIME else if r = 2 orelse hd(rs) = 2 then Stack.pop(stack2) else stack2), (resolver(r) + resolvew(hd(rs)))), rx, ry, ram, fl))
 						| 4 => 
-								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, (resolver(r) - resolvew(hd(rs)))), rx, ry, ram, fl))
+								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push((if r=2 andalso hd(rs) = 2 then raise RUNTIME else if r = 2 orelse hd(rs) = 2 then Stack.pop(stack2) else stack2), (resolver(r) - resolvew(hd(rs)))), rx, ry, ram, fl))
 						| 5 => 
-								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, (resolver(r) * resolvew(hd(rs)))), rx, ry, ram, fl))
+								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push((if r=2 andalso hd(rs) = 2 then raise RUNTIME else if r = 2 orelse hd(rs) = 2 then Stack.pop(stack2) else stack2), (resolver(r) * resolvew(hd(rs)))), rx, ry, ram, fl))
 						| 6 => 
-								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, (resolver(r) div resolvew(hd(rs)))), rx, ry, ram, fl))
+								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push((if r=2 andalso hd(rs) = 2 then raise RUNTIME else if r = 2 orelse hd(rs) = 2 then Stack.pop(stack2) else stack2), (resolver(r) div resolvew(hd(rs)))), rx, ry, ram, fl))
 						| 7 => 
-								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, (resolver(r) mod resolvew(hd(rs)))), rx, ry, ram, fl))
+								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push((if r=2 andalso hd(rs) = 2 then raise RUNTIME else if r = 2 orelse hd(rs) = 2 then Stack.pop(stack2) else stack2), (resolver(r) mod resolvew(hd(rs)))), rx, ry, ram, fl))
 						| _ => raise RUNTIME )
 					| 4 => if not (check4 (w::ws)) then raise RUNTIME else
 						(case w of 1 => if resolver(r) = resolvew(hd(rs)) then
-								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, 1), rx, ry, ram, fl))
+								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push((if r = 2 orelse hd(rs) = 2 then Stack.pop(stack2) else stack2), 1), rx, ry, ram, fl))
 								else
-								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, 0), rx, ry, ram, fl))
+								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push((if r = 2 orelse hd(rs) = 2 then Stack.pop(stack2) else stack2), 0), rx, ry, ram, fl))
 						| 2 => if resolver (r) < resolvew(hd(rs)) then
-								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, 1), rx, ry, ram, fl))
+								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push((if r = 2 orelse hd(rs) = 2 then Stack.pop(stack2) else stack2), 1), rx, ry, ram, fl))
 								else
-								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, 0), rx, ry, ram, fl))
+								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push((if r = 2 orelse hd(rs) = 2 then Stack.pop(stack2) else stack2), 0), rx, ry, ram, fl))
 						| 3 => if resolver (r) > resolvew(hd(rs)) then
-								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, 1), rx, ry, ram, fl))
+								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push((if r = 2 orelse hd(rs) = 2 then Stack.pop(stack2) else stack2), 1), rx, ry, ram, fl))
 								else
-								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, 0), rx, ry, ram, fl))
+								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push((if r = 2 orelse hd(rs) = 2 then Stack.pop(stack2) else stack2), 0), rx, ry, ram, fl))
 						| 4 => 
-								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, (resolver(r) * 10)), rx, ry, ram, fl))
+								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push((if r=2 then Stack.pop(stack2) else stack2), (resolver(r) * 10)), rx, ry, ram, fl))
 						| 5 =>
-								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, (resolver(r) div 10)), rx, ry, ram, fl))
+								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push((if r=2 then Stack.pop(stack2) else stack2), (resolver(r) div 10)), rx, ry, ram, fl))
 						(* fix more later *)
 						| _ => raise RUNTIME )
 					| 5 => if not (check5 (w::ws)) then raise RUNTIME else

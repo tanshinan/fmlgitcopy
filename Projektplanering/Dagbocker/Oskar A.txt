@@ -14,4 +14,8 @@ Codeing the componets with Alexander, done with components and starting with the
 2014-02-02
 Reading thrue new material
 2014-03-03
-Going thrue the fils and adding Functions Speccs.
+Going thrue the files and adding Functions Speccs.
+2014-03-04
+meeting with tobias to see progress and disscussing the report and workload.
+2014-03-04
+codeing with alexander to compleat the vm so we can start with the impincation of the wm

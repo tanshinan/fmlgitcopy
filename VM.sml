@@ -55,7 +55,6 @@ struct
 		POST: VM ran one cycle
 		EXAMPLE: here be dragons (meaning, I'll fill it in later)
 	*)
-
 	fun step (virt as Vm(p as ProgramCounter.Pc(i, stack1 as Stack.Stack(s1), irq1 as Register.Reg(q1), irq2
 		as Register.Reg(q2)), ro as Register.Reg(a),stack2 as Stack.Stack(s2),rx as
 		Register.Reg(x),ry as Register.Reg(y), ram: Ram.memory, fl: flag)) =
@@ -105,10 +104,10 @@ struct
 									| 8 => 	Ram.read(ram, i+1)
 									| _ => raise RUNTIME
 			fun step' (w::ws) = case opSize of 1 => if r > 6 orelse r < 0 then raise RUNTIME else
-						(case w of 0 => (Vm(ProgramCounter.incrementPointer(p, 1), ro, stack2, rx, ry, ram, fl))
-								
+						(case w of 
+						0 => (Vm(ProgramCounter.incrementPointer(p, 1), ro, stack2, rx, ry, ram, fl))
 						| _ => (Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, (if r = 2 then Stack.pop(stack2) else stack2), Register.Reg(resolver(r)), ry, ram, fl)))
-					| 2 => if ((r > 6 orelse r < 0) orelse (hd(rs) > 7 orelse hd(rs) < 0)) then raise RUNTIME else
+						| 2 => if ((r > 6 orelse r < 0) orelse (hd(rs) > 7 orelse hd(rs) < 0)) then raise RUNTIME else
 						(case w of 1 => 
 								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, (if r = 2 then Stack.pop(stack2) else stack2), rx, Register.Reg(resolver(r)), ram, fl))
 						| 2 => 

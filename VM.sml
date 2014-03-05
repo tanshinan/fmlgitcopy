@@ -229,9 +229,10 @@ struct
 		POST: state of vm printed in prompt in easily readable text
 		EXAMPLE:
 	*)
-	fun dump (Vm(pc, a, s, x, y, ram, fl)) = print  ((ProgramCounter.dumpPc(pc) ^ "\n" ^
-	(Register.dumpRegister(a))^ ", " ^(Stack.dumpStack(s))^ ", " ^
-	(Register.dumpRegister(x))^ ", " ^ (Register.dumpRegister(y))^ "\n" ^ (Ram.dump(ram)) ^ "\n"
+	fun dump (Vm(pc, a, s, x, y, ram, fl)) = print  (
+	(ProgramCounter.dumpPc(pc) ^ "\n" ^
+	("A: "^Register.dumpRegister(a))^ "\nStack: " ^(Stack.dumpStack(s))^ "\nX: " ^
+	(Register.dumpRegister(x))^ " Y: " ^ (Register.dumpRegister(y))^ "\n" ^ (Ram.dump(ram)) ^ "\n"
 	^ flagToString(fl) ^ "\n"))
 
 		(*getFlag vm

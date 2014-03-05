@@ -21,7 +21,8 @@ sig
 	val init : (int list * int) -> vm	(*Creates an initialized VM. Loads int list into the memory and makes the memory have a size of the second int*)
 	val step : vm -> vm					(*Takes one vm and returns the next vm. I.e it runns the virtual machine for one step.*) (*shouldn't step take more than just the vm? So we can know if it's going to move the pointer 1 or 2? *)
 	val dump : vm -> unit				(*Prints the VM to stdOut. The output should be really pretty to make debugging easy.*)
-	val loop : vm -> unit 
+	val loop : vm -> unit
+	val dumpRam : vm -> unit 
 
 end
 (*This is the functions of the signature Virtual_Machine*)
@@ -231,10 +232,18 @@ struct
 	*)
 	fun dump (Vm(pc, a, s, x, y, ram, fl)) = print  (
 	(ProgramCounter.dumpPc(pc) ^ "\n" ^
-	("A: "^Register.dumpRegister(a))^ "\nStack: " ^(Stack.dumpStack(s))^ "\nX: " ^
-	(Register.dumpRegister(x))^ " Y: " ^ (Register.dumpRegister(y))^ "\n" ^ (Ram.dump(ram)) ^ "\n"
+	(*"A: "^Register.dumpRegister(a))*) "Stack: " ^(Stack.dumpStack(s))^ "\nX: " ^
+	(Register.dumpRegister(x))^ " Y: " ^ (Register.dumpRegister(y))^ "\n" 
 	^ flagToString(fl) ^ "\n"))
-
+	
+		(* dumpRam vm
+		TYPE: vm -> unit
+		PRE: true
+		POST: Dumps the ram to stdOut.
+		EXAMPLE:
+	*)
+	fun dumpRam(Vm(pc, a, s, x, y, ram, fl)) = print((Ram.dump(ram)) ^ "\n");
+		
 		(*getFlag vm
 		TYPE: vm -> flag
 		PRE:None
@@ -244,18 +253,17 @@ struct
 
 	fun loop(vm as Vm(pc, a, s, x, y, ram, fl)) =
 	let
-		val dump = dump(vm)
+		val dump = (print("\n");dump(vm))
 		val new_vm = step(vm)
 	in
 		if fl = RUNNING then
 			loop(new_vm)
 		else
-			()
+			dumpRam(new_vm)
 	end
 end
 
-val init_vm = Vm.init(IO_Handler.fileToIntList("out.fml"),20);
-
+val init_vm = Vm.init(IO_Handler.fileToIntList("out.fml"),50);
 
 Vm.loop(init_vm);
 

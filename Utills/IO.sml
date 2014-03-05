@@ -6,6 +6,7 @@ use "StringUtills.sml";
 structure IO_Handler =
 struct
 	exception IO_HANDLING of string
+	
 	(*
 		Reads a file and otputs a list of all its lines with the "\n" removed
 		
@@ -22,7 +23,6 @@ struct
 				|NONE => (TextIO.closeIn(ins);[]);
 		in
 			fileToList(instream)
-			
 		end
 		
 	(*

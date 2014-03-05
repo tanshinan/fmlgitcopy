@@ -87,6 +87,9 @@
 
 04/3 23:59
 	Wrote more documentation.
+	
+05/3 22:30
+	Have spent entire day writing documentation.
 
 
 	

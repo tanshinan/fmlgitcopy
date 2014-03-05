@@ -4,7 +4,7 @@
 \usepackage{float}
 \usepackage{titlesec}
 \usepackage{amsmath}
-
+\usepackage{hyperref}
 \usepackage{makeidx}
 
 \setcounter{secnumdepth}{4}
@@ -30,27 +30,36 @@
 
 \begin{document}
 \maketitle
-
+%\textsuperscript{\cite{}}
 \begin{abstract}
 For our project we have decided to build a virtual 
-machine(VM) in SML.
+machine(VM)\textsuperscript{\cite{Virtual}} in SML.
 The name FML is just an arbitrary thre letter name and has no meaning or interpertation.
-The VM is a RISC machine using a Von-Neuman architecture. It has a very
-minimalistic instruction set. The design of FML resembles those of older 8-bit
-architectures such as the MOS 6510 and the Z80 microprocessors commonly in use
-during the late 70s and early 80s. The FML machine has no ``bus width'' and 
-works exclusivley with signed integers\footnote{The details of the integers
+The VM is a RISC\textsuperscript{\cite{risc}} machine using a Von-Neuman
+architecture. It has a very minimalistic instruction set. The design of FML resembles those of older 8-bit
+architectures such as the MOS 6510\textsuperscript{\cite{6510}} and the
+Z80\textsuperscript{\cite{z80}} microprocessors commonly in use during the late
+70s and early 80s. The FML machine has no ``bus width'' and works exclusivley with signed integers\footnote{The details of the integers
 used are dependent on which SML implementation is used}. The lack of a physical
 bus enables the VM to do things wich an ordinary CPU could not achive such as
 reading from two registers at the same time. Even though
-the cpu have very few operations (only 27) a very effective instruction set architecture
-makes these operations very flexibels and there are roughly 600 valid    
-instruction codes. It is also noteworthy that FML is asycrounous and has now
-predefined clock frequenzy.\footnote{Allthogh for debugging purposues one can
-use both manual stepping and a fixed update speed.}
+the cpu have very few opcodes\textsuperscript{\cite{opcode}} (only 27) a very
+effective instruction set architecture\textsuperscript{\cite{ISA}} makes these operations very flexibels
+and there are roughly 600 valid instruction codes. It is also noteworthy that
+FML is asycrounous\textsuperscript{\cite{async}} and has now predefined clock
+frequenzy.\footnote{Allthogh for debugging purposues one can use both manual stepping and a fixed update speed.}
+
+There are features in the machine specifications\footnote{Although these are
+not as of yet implemented} wich will enable interfacing the machine with
+prepherial components such as I/O, displays, timers and much more.
 
 So even though FML is a very minimalistic machine it is quite powerfull.
-We have allso built a fully featured assembler for the FML machine.
+We have allso built a fully featured assembler\textsuperscript{\cite{assembler}}
+for the FML machine.
+\\
+This document is written in a informal way to facilitate the readers possible
+lack of familiarity with computer architectures and assembly code. Se the
+appenix for more detailed descriptions.
 \end{abstract}
 \newpage
 \tableofcontents
@@ -73,10 +82,10 @@ VM works and how the various components of it should be
 implemented. We have then had an ongoing discussion on facebook regarding
 details and problems wich we have encountered.
 
-We have been using Git as a source code management system. We have been using
-BitBucket for to host the project and troughout all of the development process
-the repository has been hidden and only we in the group and our TA have had
-access to the code.\\
+We have been using Git\textsuperscript{\cite{git}} as a source code management
+system. We have been using BitBucket\textsuperscript{\cite{bitbucket}} for to
+host the project and troughout all of the development process the repository has 
+been hidden and only we in the group and our TA have had access to the code.\\
 \\
 We are using an array  in the current implementation of the memory for the VM.
 Now i know that it is stated in the project description that the project should
@@ -87,7 +96,8 @@ is written in such a way that any other part of the program implementing the
 memmory structure will not be able to se that there are any side effects. I.e
 there are no semantically observable side effects of the memory structure. All
 of the code would look exactly the same from ``the outside'' regardles of how we
-implemented the memory. And thus the program is pure dissregarding I/O
+implemented the memory. And thus the program is
+pure\textsuperscript{\cite{pure}} dissregarding I/O handling.
 
 \subsection{Personal notes}
 In this section we will give som personal notes regarding our parts in the
@@ -100,9 +110,10 @@ project. I  began by writing the specifications for the VM.
 
 Even though i have never had any formal education in how computer achitectures
 work I have learnt a lot about it on my own. When i was younger (around 17) i
-designed a 8-bit cpu from TTL logic chps (the 7400 series). It was during this
-time I learned how to build a cpu. So the design of the FML machine was for me
-very straight forward. I have done all of the design myself and i have not
+designed a 8-bit cpu from TTL logic chps (the 7400
+series\textsuperscript{\cite{7400}}). It was during this time I learned how to
+build a cpu. So the design of the FML machine was for me very straight forward. 
+I have done all of the design myself and i have not
 copied anything from books or any previous designs. Allthough my way of thinking
 and reasoning about cpu architectures comes primarily from my own work and the
 designs of older 8-bit cpus. The design of the cpu took roughly one or two days
@@ -139,9 +150,10 @@ not to do stuff like this.
 Here a informal description of the workings of the machine. For a more detailed
 description se the VM specifications in the appendix.
 \subsection{General}
-The FML machine is built up as a very simple von-neuman architecture. The
-machine consists ony of a few major components. It's notewhorthy that there is
-no instruction decoder present. This is since all of the instruction decoding
+The FML machine is built up as a very simple von-neuman
+architecture\textsuperscript{\cite{neuman}}. The machine consists ony of a few
+major components. It's notewhorthy that there is no instruction decoder present. 
+This is since all of the instruction decoding
 and handling takes place within the software implementation of the machine.
 The size of the memory the machine has avaliable is arbitrary and is defined at
 the initilazion of the machine. Below will follow a dataflow diagram of the
@@ -153,15 +165,15 @@ machine, describing all of the components and how they can communicate.
 \end{figure}       
 
 Now this image might be a little bit confusing. One should consider the two read
-rectangles DATA and ADDRESS as ``viritual buses''. One can interpret the picture
-as: X can both read and write from other components and be used for addressing.
+rectangles DATA and ADDRESS as ``viritual buses''\textsuperscript{\cite{bus}}.
+One can interpret the picture as: X can both read and write from other components and be used for addressing.
 Below will follow brief descriptions of the components. More indepth
 descriptions are given in the appendix.
 
 \begin{description}
   \item[X and Y] \hfill \\ 
-  These are the two general purpose registers wich can be read,
-  written to and used for addressing.
+  These are the two general purpose registers\textsuperscript{\cite{register}}
+  wich can be read, written to and used for addressing.
   \item[S] \hfill \\
   This is the general purpose stack. It can be both read and
   written to. Everytime some thing gets written to the stack it gets pushed onto the
@@ -177,7 +189,8 @@ descriptions are given in the appendix.
   \item[Q$^1$ and Q$^2$] \hfill \\
   These are the two interupt registers. These are very special and can only be
   written to. They will hold the adresses to wich the machine should jump if an
-  prepherial component makes a interupt request. More on this later.
+  prepherial component makes a interupt request\textsuperscript{\cite{irq}}.
+  More on this later.
   \item[PC]\hfill \\
   This is the program counter. It keeps track on where in the memmory the 
   instructions are being read from. It allso handles the jumping.
@@ -185,8 +198,8 @@ descriptions are given in the appendix.
   This is the jump stack. This stack is used to store the return addresses for
   subroutine jumps. This stack can only be manipulated by the program counter.
   \item[ALU]\hfill \\
-  This is not really a ALU. The machine does not have a seppareta ALU component
-  but this is just here to illustrate that the all of the components which can
+  This is not really a ALU\textsuperscript{\cite{alu}}. The machine does not
+  have a seppareta ALU component but this is just here to illustrate that the all of the components which can
   be read from can be used as arguments for arithmetic and logical operations.
   All of the results from the arithmetic and logical operations are always put
   on the stack.
@@ -195,8 +208,8 @@ descriptions are given in the appendix.
 \end{description}
 
 \subsection{Instruction Set Architecture}
-The ISA of the VM is built in a special but simple fashion. Each instruction
-corresponds to a six digit integer..
+The ISA\textsuperscript{\cite{ISA}} of the VM is built in a special but simple
+fashion. Each instruction corresponds to a six digit integer..
 Where each digit corresponds to specific information regarding different types of opcodes. The digits counting from right
 to left is: 
 
@@ -209,12 +222,14 @@ to left is:
   \item[Sixth] Special
 \end{description}
 This system of encoding information into each digit of the instruction makes the
-implementyation of the instruction controler and the assembler much easier. It
+implementation of the instruction decoder and the assembler much easier. It
 allows for all the operation types to be grouped into numerical ranges and it
 gives  a lot of flexibility. Note that some of the instructions may be invalid
 and some might be nonsensical but the instruction controler crashes if a invalid
 instruction is encountered. The assembler is written in such a way that it can
-only generate valid instructions. So an example would be:
+only generate valid instructions\footnote{Allthough with the current
+implementation of  the VM this is not necessairly true}.
+So an example would be:
 000401.
 Where the 4 tells us that it we should perform a modulo operation, 
 he 0 says that the second argument is the \x register and the last 1 says 
@@ -253,9 +268,9 @@ powerfull assembler. The assembler doesnt do much more than catch invalid
 opcodes and arguments. It allso enables the use of both label pointers and value
 pointers. The main tasks of the assembler is the instruction code generation and
 address resolution. The syntax of the assembler is inspired by the syntax for
-the MOS 6510 assembly lanuage and primarily the syntax of the Turbo Assembler
-for the Commodore 64. The assembler is now fully functional and there we dont
-see any need to augment it or redisgning any spects of it. The assembler should
+the MOS 6510 assembly lanuage and primarily the syntax of the Turbo
+Assembler\textsuperscript{\cite{tasm}} for the Commodore
+64\textsuperscript{\cite{c64}}. The assembler is now fully functional and there we dont see any need to augment it or redisgning any spects of it. The assembler should
 only generate valid instructions but due to a major design error in the
 implementation of the VM this is not neccesarily true any more. Below a short
 example of a assembly program will follow:
@@ -279,14 +294,14 @@ A line starting with a \V+#+ declares a label. The address of the label will
 correspond to where in the code the the lebel gets declared.
 A line starting with a \V+@+ declares a value. The address of the label will be
 assigned independent of where in the code it apepars.
-For a more indepth description of how the assembly lanuage se the Assembler part
-of the description.
+For a more indepth description of how the assembly lanuage see the Assembler
+part of the description.
 
 \subsubsection{Implementation}
 \paragraph{General}
 The assembler works in a fairly straight forward way. The first step in the
-process of asemblying is the lexiographical analysis in wich the lines in the
-text file gets tokenized. In this tage an ``intermediate structure''
+process of asemblying is the lexical
+analysis\textsuperscript{\cite{lexi}} in wich the lines in the text file gets tokenized. In this tage an ``intermediate structure''
 \footnote{The use of the word structure here is a bit ambigous since it
 actually is a structure in sml. But in this text it will reffere to an abstract
 structure of data.} gets constructed.
@@ -298,7 +313,7 @@ the labels and values will not be assigned an adress in this phase. It is in
 theis phase where the opcodes and their arguments gets converted in to there
 corresponding numerical instruction code. It is also during this phase in wich
 the syntax gets checked. If a syntax error is encountered the assembler will
-stop emideatly. When the lexiographical analysis has been completed a check for
+stop emideatly. When the lexical analysis has been completed a check for
 duplicate pointer declaration is performed.
 
 The next phase in the assembly is the address resolution phase. This is done in
@@ -371,6 +386,40 @@ the sml interperter of your choosing and if there are no errors encountered duri
 the assembling of the program the assembeled program will be outputed to a file
 named \V+out.fml+.
 
+\section{Summary}
+In general this project has been a great sucssess considering the scale of the
+project and the time constraints. We have designed a very sleak, efficient and
+minimalistic VM. Even with its minimal set of operations programming for it is
+much fun and quite straight forward compared to more complicated machine
+lanuages. This is mainly due to the general purpose stack\footnote{Many of the
+older 8-bit micro porcessors did not have a general purpose stack wich made
+programming for them somewhat cumbersome}.
+We have managed to write a fully functional and fully featured assembler wich
+enables the writing of programs of unbounded complexity i.e there is no design
+flaw in the assembler which would make it unpractical to write more elaborate
+programs in it.
+\subsection{Work to be done}
+There are still a few untied strings and folds to be flattened. The VM
+implementation is as of now largley incomplete and only handles a small subset
+of all the operations. It also needs to be rewritten in order to use the
+\V+ResolveOpcode+ structure inorder to ensure compatibility with the assembler.
+
+After the VM implementation is fully functional it would be nice to write some
+prepherial components for handling output, input and timing.
+
+And maybe one day we will write a high level lanuage for the machine.
+
+After all of this is done and we have gotten permission from the lecturers the
+entire project will be made avaliable as open source.
+\subsection{Highlights}
+What are we really proud of whith this project. First of all that we actually
+did it. Secondly the fact that the VM is very minimalistic and yet powerful.
+This is primarily due to the way the instruction are encoded into integers and
+also trough the existence of the general purpose stack.
+
+The assembler turned out much better than we had originaly imagined. And when
+the \V+OpcodeResolve+ structure gets implemented propperly it will only generate
+valid instructions.
 \section{Appendix}
 \subsection{VM specifications}
 \subsubsection{Structure} 
@@ -1004,5 +1053,115 @@ The ProgramCounter structure controls the execution flow of the VM
 	val dumpPc : pc $\rightarrow$ string\\
 		Takes a pc and dumps the content of the pc as a string (the Pc contained a pointer, Stack, and tow registers)\\
 
+
+
+
+\section{references}
+\begin{thebibliography}{}
+
+\bibitem{}
+{\url{}
+Retrieved: \today}
+
+\bibitem{Virtual}
+{\url{http://en.wikipedia.org/wiki/Virtual_machine}\\
+Retrieved: \today}
+
+\bibitem{risc}
+{\url{http://en.wikipedia.org/wiki/RISC}\\
+Retrieved: \today}
+
+\bibitem{6510}
+{\url{http://en.wikipedia.org/wiki/6510}\\
+Retrieved: \today}
+
+\bibitem{z80}
+{\url{http://en.wikipedia.org/wiki/Z80}\\
+Retrieved: \today}
+
+\bibitem{ISA}
+{\url{http://en.wikipedia.org/wiki/Instruction_set_architecture}\\
+Retrieved: \today}
+
+\bibitem{Async}
+{\url{http://en.wikipedia.org/wiki/Asynchronous_Processor#Asynchronous_CPU}\\
+Retrieved: \today}
+
+\bibitem{git}
+{\url{http://en.wikipedia.org/wiki/Git_(software)}\\
+Retrieved: \today}
+
+\bibitem{bitbucket}
+{\url{http://bitbucket.org}\\
+Retrieved: \today}
+
+\bibitem{pure}
+{\url{http://en.wikipedia.org/wiki/Functional_purity}\\
+Retrieved: \today}
+
+\bibitem{7400}
+{\url{http://en.wikipedia.org/wiki/7400}\\
+Retrieved: \today}
+
+\bibitem{opcode}
+{\url{http://en.wikipedia.org/wiki/Opcode}\\
+Retrieved: \today}
+
+\bibitem{neuman}
+{\url{http://en.wikipedia.org/wiki/Von_Neumann_architecture}\\
+Retrieved: \today}
+
+\bibitem{bus}
+{\url{http://en.wikipedia.org/wiki/Data_bus}\\
+Retrieved: \today}
+
+\bibitem{register}
+{\url{http://en.wikipedia.org/wiki/Register_(computing)}\\
+Retrieved: \today}
+
+\bibitem{irq}
+{\url{http://en.wikipedia.org/wiki/Interrupt_request}\\
+Retrieved: \today}
+
+\bibitem{alu}
+{\url{http://en.wikipedia.org/wiki/Arithmetic_logic_unit}\\
+Retrieved: \today}
+
+\bibitem{assembler}
+{\url{http://en.wikipedia.org/wiki/Assembler_(computing)#Assembler}\\
+Retrieved: \today}
+
+\bibitem{c64}
+{\url{http://en.wikipedia.org/wiki/Commodore_64}\\
+Retrieved: \today}
+
+\bibitem{tasm}
+{\url{http://turbo.style64.org/}\\
+Retrieved: \today}
+
+\bibitem{lexi}
+{\url{http://en.wikipedia.org/wiki/Lexical_analysis}\\
+Retrieved: \today}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{thebibliography}
 
 \end{document}

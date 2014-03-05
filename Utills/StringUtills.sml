@@ -43,7 +43,7 @@ struct
 				else
 					split(xs,x::A1,A2)
 		in
-			List.filter (fn x => x <> "") (split'(String.explode(s),[],[]))
+			List.filter (fn x => x <> "") (split(String.explode(s),[],[]))
 		end
 	
 	(* trim s

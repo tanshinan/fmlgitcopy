@@ -24,7 +24,7 @@
 \newcommand{\J}{$\textbf{J}$}
 \renewcommand{\thefootnote}{\roman{footnote}}
 
-\title{FML: a VM implemented in SML}
+\title{PKD 2013 \\ FML: a VM implemented in SML}
 \author{Henrik Sommerland, Oskar Ahlberg, Aleksander Lunqvist}
 \date{\today}
 
@@ -81,7 +81,9 @@ with our assigned TA\footnote{Our TA has during this project been Tobias Neil}.
 These meetings have primairly been about informing eathother about how the 
 VM works and how the various components of it should be
 implemented. We have then had an ongoing discussion on facebook regarding
-details and problems which we have encountered.
+details and problems which we have encountered. The workload as not been
+completley balanced but that is due to the fact that one of the group members
+have had the possibility to work on this project full time.
 
 We have been using Git\textsuperscript{\cite{git}} as a source code management
 system. We have been using BitBucket\textsuperscript{\cite{bitbucket}} to
@@ -143,16 +145,30 @@ in the group where not going to be able to understand how it all woked and even
 though it's really hard to explain something complex which is crystal clear in 
 my head to other people the others in
 the group have been very enthusiastic and have really pulled trough for this
-mammoth of a project.
+mammoth of a project. I know i have done more work than the others in the
+group but this is primarily due me only taking this course at the moment and
+the fact that i find doing projects of this nature so much fun and it has been entierly my own choise.
 \\
 I know I might have gotten a bit carried away with this project. I'm actually on
 medication not to do stuff like this.
 
+\subsubsection{Oskar Ahlberg}
+This project has been a learning experience, to be honest I have had a hard time keeping up with the other 
+members of the group and a lot of ``new'' ground has been covered. I feel that
+it has been a mutual working environment lending a hand where I can. At a whole its been hard work to keep the pace to have something to hand in. 
+I'm looking forward to presentation and the discussion about the project. Lets look on the workload 
+I have had a supporting role in the group, and I have workt closely with Aleksander, but the project lead
+ has been Henrik it was his idea and the desigen of the base of the project is 
+ his doing. We have had at leas t a meeting a week and have had contact via
+ social media, sms and phone. The whole project has been managed with BitBucket
+ as a private repository. We all have access to it as well the TA who was
+ asigende to us.
 
 \section{The VM}
 Here is an informal description of the workings of the machine. For a more
 detailed description se the VM specifications in the appendix.
 \subsection{General}
+
 The FML machine is built up as a very simple von-neuman
 architecture\textsuperscript{\cite{neuman}}. The machine consists ony of a few
 major components. It's notewhorthy that there is no instruction decoder present. 
@@ -211,7 +227,7 @@ descriptions are given in the appendix.
   This is the random access memory of the machine.
 \end{description}
 
-\subsection{Instruction Set Architecture}
+\subsubsection{Instruction Set Architecture}
 The ISA\textsuperscript{\cite{ISA}} of the VM is built in a special but simple
 fashion. Each instruction corresponds to a six digit integer 
 where each digit corresponds to specific information regarding different types
@@ -246,6 +262,40 @@ instructions code a bit more confusing to read but it makes the assembly code
 become far more intuitive.\\
 For a more detailed description of the ISA se the VM specifications in the
 appendix.
+
+\subsection{The components}
+%Yo oskar det kan no g vara en bra ide att se över hela det här kalaset. Du
+% kommer nog kunna fixa till det rätt bra imorgon när du e lite piggare.
+We will now go through the general wokings of Components.sml, this file and
+including functions are the structures of the Registers, Stack, Ram and Program
+Counter, the functions are more specified in the appendix.
+
+\subsubsection{Register}
+
+Register is used in the implication for the VM as a 
+register to save the values of x and y, to be able to 
+handle all the different arithmetical operations. It can be increased or
+decrease by one.
+
+\subsubsection{Stack}
+%Yo oskar!
+%Det du har skrivit här om vad en stack är och hur den funkar är lite virrigt.
+%skrev om det lite.
+The stack handles the work progression with a LIFO\textsuperscript{\cite{lifo}}
+structure this is a integral part of the VM implementation both to keep track of
+return adresses and as a storage.
+
+\subsubsection{Ram}
+the ram memory works as a random access memory, it is set at a size 
+at the start of the VM, and where we stores data in between operations.
+
+\subsubsection{Program Counter}
+The program counter handles the pointer to the memmory to see what is to be
+done, as well handles the IRQ registers, the jumpstack as well as the
+return jumps that redirects the pointer back to the original
+address on the jump stack.
+This is the main structure of the file all other structures are included in this
+function
 
 \section{Utillities}
 For this program we have written some utillity files. The IO.sml and the
@@ -1062,7 +1112,7 @@ The ProgramCounter structure controls the execution flow of the VM
 
 
 
-\section{references}
+\newpage
 \begin{thebibliography}{}
 
 \bibitem{Virtual}
@@ -1145,6 +1195,9 @@ Retrieved: \today}
 {\url{http://en.wikipedia.org/wiki/Lexical_analysis}\\
 Retrieved: \today}
 
+\bibitem{lifo}
+{\url{http://en.wikipedia.org/wiki/LIFO_(computing)}\\
+Retrieved: \today}
 \end{thebibliography}
 
 \end{document}

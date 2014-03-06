@@ -1,0 +1,60 @@
+\section{Datatypes used by VM}
+
+\subsection{flag}
+The flag is used to represent a part of the state in the VM. Flag decides if the VM is running, halted, interrupted or has overflown.
+
+\subsection{vm}
+vm is the state of the VM. It also works as a snapshot of the VM at any given time. 
+
+\section{Functions used by VM}
+
+\subsection{init}
+init takes an (int list * int) as argument and initializes a VM. The RAM in the VM will have a size of the integer and with the tail of the int list loaded to start at the adress of the head of the list. The pointer and all register will be at 0 and stacks will be empty. The VM starts in a RUNNING state.
+
+\subsection{getCode}
+getCode can not be used outside of the Vm-structure. 
+
+getCode takes an integer and returns it as a list of integers where the length of the list is the number of numbers in the integer. This is so later functions can more easily decode operations.
+
+\subsection{step}
+step takes a VM and runs it one cycle if the VM is RUNNING, otherwise it returns the VM unaltered. It has a number of help functions.
+
+check5 and check4 checks the operation list to see if they are wellformed.
+
+isarg checks if either read or write is an argument to be declared on the next "line", that is, it checks if should move the pointer 1 or 2 steps. 
+
+resolver and resolvew gets the values of the read and write arguments. 
+
+step' does all the actual work; decodes operations, commits operations, makes calculations and returns the next state of the VM.
+
+\subsection{flagToString}
+flagToString can not be used outside of the Vm-structure
+
+It is used to convert flag to a string to be used in the dump-functions.
+
+\subsection{dumpToFile}
+Dumps the state of the VM to a text-file. The text is easily readable for easy debugging.
+
+\subsection{dump}
+Dumps the state of the VM as easily readable text in the prompt.
+
+\subsection{loop}
+Uses step on a VM until it the flag isn't RUNNING.
+
+\section{Work done by step}
+
+\subsection{Flowchart}
+A very simplified flowchart of the work done by step is included. The flowchart is simplified because a flowchart showing everything is unreadable.
+
+Step does not actually end the loop if the VM isn't running, it returns it unaltered. The loop function deals with the loop ending.
+
+The flowchart shows that the function checks if the instructions are valid at the start of each loop, that is not the case. Invalid functions can raise exceptions at several points in the cycle.
+
+\subsection{Features yet to be implemented}
+There are some features that are not yet implemented due to time constraints.
+
+Any attempt to use adresses in memory as a read or write to a function will raise an exception. That is, using integers 3-5 as read/write will crash the VM
+
+Use of IRQ registers as write will raise an exception. Using integers 6-7 as write will crash the VM.
+
+The logical operations AND, ORR, XOR and NOT will raise an exception. Using integers 6-9 to choose a logical operation will crash the VM.

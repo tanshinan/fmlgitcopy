@@ -1,17 +1,17 @@
-forgotten dates 
+forgotten dates
 
 reading up on signatures, structures, monads and Henriks specification of the assignment
 
 2014-02-24
 
 meeting about the assembler part that is done and assiging the rest of the work to the rest of the group
-will start coding with the assigend part tomorrow 
+will start coding with the assigend part tomorrow
 
-2014-02-25 
+2014-02-25
 Coding the components with Oskar and creating the structure for ram, stack and registers
 
 2014-02-26
-Coding components.sml, finished register, stacks and ram, started with PC. 
+Coding components.sml, finished register, stacks and ram, started with PC.
 
 2014-02-27
 Finished components.sml, started with VM.sml
@@ -20,7 +20,7 @@ Finished components.sml, started with VM.sml
 Meeting with the group to talk about implementing the vm.
 
 2014-03-03
-Fixed minor stuff in components.sml, started function declarations in VM.sml, 
+Fixed minor stuff in components.sml, started function declarations in VM.sml,
 
 2014-03-04, 11:00 - 22:00
 Started work on Vm.step
@@ -39,3 +39,6 @@ Made a new flowchart because the last one sucked
 
 2014-03-06, 01:00-02:30
 Documentation work
+
+2014-03-06, 11:30-14:30
+Some documentation work, cleaning of code, fix of some function declarations

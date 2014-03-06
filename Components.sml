@@ -310,13 +310,7 @@ DATATYPE INVARIANTS: This data type is restrictive to the cases above.
 *)
 
 	datatype pc = Pc of (int * Stack.stack * Register.reg * Register.reg)
-(*
-	(*
-	Guys remember that you have to return the correct datatype not just a tupel.
-	This is very important. (i,stack,irq1,irq2) is not the same thing as Pc(i,stack,irq1,irq2)
-	*)
-	(*You missed the int. You will want to be able to increment the pointer with an arbitrary number*)
-*)
+
 	(*
 		incrementPointer (Pc(i,s q1,q2),a)
 		TYPE: pc * int -> pc
@@ -373,10 +367,3 @@ DATATYPE INVARIANTS: This data type is restrictive to the cases above.
 end
 
 
-(*
-The reason for using the place holder structures Register and Stack is because signatures can't "inherit" from each other.
-I can not write say REGISTER.reg in the PROGRAM_COUNTER signature.
-There is the include keyword but that just adds all of the declarations from another signature. Thus specifying that the
-signature containing the include must when its used in a structure also include all of the functions and values in the included
-signature.
-*)

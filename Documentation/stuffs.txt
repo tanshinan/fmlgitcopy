@@ -1,0 +1,44 @@
+
+Personal note,
+
+This project has been a learning experience, to be honest I have had a hard time keeping up with the other 
+members of the group a lot of “new” ground has been covered  . I feel that it has been a mutual working environment
+lending a hand where I can. At a whole its been hard work to keep the pace to have something to hand in. 
+I'm looking forward to presentation and the discussion about the project. Lets look on the workload 
+I have had a supporting role in the group, and I have workt closely with Aleksander, but the project lead
+ has been Henrik it was his ide and the desigen of the base of the project is his doing.We have had at leas
+t a meeting a week and have had contact via social media, sms and phone. The whole project has been managed 
+with BitBucket as a privet depository. We all have access to it as well the TA who was asigende to us.
+
+The work,
+
+We have a divide in the amount of work that was done due to different time constraints e.g.
+one of the members of this project group was able to commit all his time to the project.
+
+The complexities level on the project is average to high, depending what part of the project.
+
+We will now go through the general purpose of Components. This file and including functions are the
+ structures of the Registers, Stack, Ram and Program Counter, the functions are more specified in Appendix x.1.
+
+Register--
+
+Register is used in the implication for the wm as a 
+register to save the values of x and y, to be able to 
+handle all the different arithmetical operations. It can be increased or decrease by one
+
+Stack--
+
+The stack handles the work progression with a LIFO structure (e.g Last In First Out)
+this is a  integer part of the program. In the sense where we store all the different 
+OpCodes for the program that we are running on the vm.
+
+Ram--
+the ram memory works as a Random Access Memory, it is set at a size 
+at the start of the vm, and where we stores data in between operations.
+
+Program_Counter--
+The program counter handles the pointer to the stack to see what to be done, 
+as well handles the IRQ registers, jumpstack as well the subrutinJump that redirects
+ the pointer back to the original jumpstack. This is the main function of the file all other 
+functions are included in this function
+   

@@ -5,7 +5,7 @@ Kontroll av kod samt genomläsning av spces samt skapade filer för loggnig av arb
 Reading the Specs and assembler code.
 2014-02-24
 meeting about the assembler part that is done and assigning the rest of the work to the rest of the group
-will start coding with the assigned part tomorrow 2014-02-25 
+will start coding with the assigned part tomorrow  
 2014-02-25
 Coding the components with Alexander and creating the strucktors in ram as well some other things
 2014-02-26
@@ -19,8 +19,12 @@ Going thru the files and adding Functions Specs.
 2014-03-04
 meeting with tobias to see progress and discussing the report and workload.
 2014-03-04
+kl~11
 coding with alexander to complete the vm
 Writing documentation on the Components
-
 2014-03-05
- contuiniun Writing documentation on the Components
+start 10:00
+reading and generateing Documents about Components
+reading, drafts of rapport aswell as new code.
+Spawning on outline of Presentation
+contuiniun Writing documentation on the Components

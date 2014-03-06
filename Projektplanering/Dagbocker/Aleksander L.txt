@@ -1,3 +1,5 @@
+Aleksander Lundquist
+
 forgotten dates
 
 reading up on signatures, structures, monads and Henriks specification of the assignment

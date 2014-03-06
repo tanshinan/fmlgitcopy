@@ -1,3 +1,11 @@
+(* PKD 2014 group 27
+	Henrik Sommerland, Oskar Ahlberg, Aleksander Lundquist
+*)
+
+(*
+	This is the file definig the major components of the VM implementation
+*)
+
 exception RUNTIME of string
 
 (*

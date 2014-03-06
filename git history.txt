@@ -1,0 +1,941 @@
+This is a log file of all the git commits.
+Note that these does not exactly correspond to what has been done.
+
+Some of us has been using different accounts to access the repositiory.
+Authors:
+tnshinan is Aleksander Lunquist
+TheGrandmother/henrik.sommerland@gmail.com are both Henrik Sommerland
+
+
+
+
+
+commit 8890e08
+Author: TheGrandmother <TheGrandmother@gmail.com>
+Date:   Thu Mar 6 15:35:32 2014 +0000
+
+    nothing
+
+commit a3f59ad
+Author: TheGrandmother <TheGrandmother@gmail.com>
+Date:   Thu Mar 6 15:34:00 2014 +0000
+
+    Added pictures
+
+commit cfcc9ae
+Author: Oskar Ahlberg <osaka.sfi@gmail.com>
+Date:   Thu Mar 6 15:43:04 2014 +0100
+
+    added some commentayrs and update log, some minor fixes for documentation
+
+commit 3c29587
+Author: tanshinan <kafasius@gmail.com>
+Date:   Thu Mar 6 15:22:28 2014 +0100
+
+    Diary update
+
+commit 9566ab6
+Author: tanshinan <kafasius@gmail.com>
+Date:   Thu Mar 6 13:54:58 2014 +0100
+
+    Woop, first merge conflict. Fixed it.
+
+commit 14045d7
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Thu Mar 6 13:48:27 2014 +0100
+
+    sa
+
+commit 29e54ec
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Thu Mar 6 13:46:13 2014 +0100
+
+    fixing
+
+commit fd5b41d
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Thu Mar 6 13:40:32 2014 +0100
+
+    fix
+
+commit 4ce682f
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Thu Mar 6 13:38:25 2014 +0100
+
+    fixing
+
+commit 614c42b
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Thu Mar 6 13:35:47 2014 +0100
+
+    Pushed pictures
+
+commit 0ecee14
+Author: Oskar Ahlberg <osaka.sfi@gmail.com>
+Date:   Thu Mar 6 13:02:08 2014 +0100
+
+    more commentary fix
+
+commit 7c9d03b
+Author: Oskar Ahlberg <osaka.sfi@gmail.com>
+Date:   Thu Mar 6 12:59:33 2014 +0100
+
+    minor fix in components
+
+commit 45d0076
+Author: TheGrandmother <TheGrandmother@gmail.com>
+Date:   Thu Mar 6 12:52:03 2014 +0000
+
+    tiny tiny changes
+
+commit 56e548a
+Author: TheGrandmother <TheGrandmother@gmail.com>
+Date:   Thu Mar 6 12:50:32 2014 +0000
+
+    minor things
+
+commit 6e17ef0
+Author: TheGrandmother <TheGrandmother@gmail.com>
+Date:   Thu Mar 6 12:06:05 2014 +0000
+
+    Wrote more documentation.
+    Beautified the Assembler.sml file.
+
+commit b2d1335
+Author: tanshinan <kafasius@gmail.com>
+Date:   Thu Mar 6 02:27:37 2014 +0100
+
+    Updated diary. I always forget that.
+
+commit d492993
+Author: tanshinan <kafasius@gmail.com>
+Date:   Thu Mar 6 02:16:34 2014 +0100
+
+    Forgot the flowchart last commit.
+
+commit d34635c
+Author: tanshinan <kafasius@gmail.com>
+Date:   Thu Mar 6 02:13:56 2014 +0100
+
+    Some shitty documentation work
+
+commit 9141baf
+Author: tanshinan <kafasius@gmail.com>
+Date:   Thu Mar 6 01:27:19 2014 +0100
+
+    Minor bugfix
+
+commit 5a34415
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Thu Mar 6 00:06:28 2014 +0100
+
+    Added oskars things to the documentation
+
+commit 3f2da8d
+Author: Oskar Ahlberg <osaka.sfi@gmail.com>
+Date:   Wed Mar 5 23:32:31 2014 +0100
+
+    log entry, and sections for the report
+
+commit 4abecbe
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Mar 5 23:16:18 2014 +0100
+
+    Preliminary spell checking.
+
+commit 9e56b85
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Mar 5 21:56:40 2014 +0100
+
+    Added refferences and wrote some more
+
+commit ec090a4
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Mar 5 20:34:58 2014 +0100
+
+    Did some more testing of the VM.
+    Wrote a bunch more to the documentation.
+    Added the appendixes to the documentation file.
+
+commit 496a930
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Mar 5 17:24:17 2014 +0100
+
+    Wrote more documentation and added oskars thing to the docuemntation
+
+commit 8332812
+Author: Oskar Ahlberg <osaka.sfi@gmail.com>
+Date:   Wed Mar 5 16:22:37 2014 +0100
+
+    fix of fonts, style
+
+commit b96e538
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Mar 5 15:57:26 2014 +0100
+
+    Some fixes to VM. It now loads the out.fml file and runns it untill it
+    halts.
+
+commit 20bbbc9
+Author: Oskar Ahlberg <osaka.sfi@gmail.com>
+Date:   Wed Mar 5 14:54:39 2014 +0100
+
+    Docs about componets
+
+commit 5e4ca89
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Mar 5 14:50:55 2014 +0100
+
+    Finished the writing of the assembler part of the documentation and some
+    of the introduction.
+
+commit f197ecc
+Author: Oskar Ahlberg <osaka.sfi@gmail.com>
+Date:   Wed Mar 5 14:50:44 2014 +0100
+
+    no message
+
+commit b951b94
+Author: tanshinan <kafasius@gmail.com>
+Date:   Wed Mar 5 14:39:56 2014 +0100
+
+    fixed bugs in VM.sml
+
+commit 8f4b545
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Mar 5 14:09:54 2014 +0100
+
+    Some minor stuff and.
+
+commit b2a9533
+Author: tanshinan <kafasius@gmail.com>
+Date:   Wed Mar 5 13:24:22 2014 +0100
+
+    Vm.step partially functional
+
+commit 55181a5
+Author: tanshinan <kafasius@gmail.com>
+Date:   Wed Mar 5 12:21:06 2014 +0000
+
+    Diary edit
+
+commit 436bc22
+Author: tanshinan <kafasius@gmail.com>
+Date:   Wed Mar 5 11:40:43 2014 +0100
+
+    Work on the monster that is Vm.step, finished with a most likely buggy
+    version
+
+commit ec8bb1c
+Author: Oskar Ahlberg <osaka.sfi@gmail.com>
+Date:   Wed Mar 5 11:27:14 2014 +0100
+
+    log
+
+commit 8e8da51
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Mar 5 00:31:20 2014 +0100
+
+    Started work on documentation.
+
+commit cd4cc49
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Tue Mar 4 21:58:55 2014 +0100
+
+    Wrote some assembler documentation
+
+commit 2d63539
+Author: tanshinan <kafasius@gmail.com>
+Date:   Tue Mar 4 20:43:29 2014 +0100
+
+    start work on VM.step, the big monster
+
+commit 7eda735
+Author: tanshinan <kafasius@gmail.com>
+Date:   Tue Mar 4 20:42:32 2014 +0100
+
+    fix some comments and alter subroutineJump for ease of use
+
+commit be7ac9d
+Author: TheGrandmother <TheGrandmother@gmail.com>
+Date:   Tue Mar 4 17:50:30 2014 +0000
+
+    Ẃrite comments for StringUtills.sml
+    Started work on final documentation.
+
+commit 0b212fc
+Author: TheGrandmother <TheGrandmother@gmail.com>
+Date:   Tue Mar 4 13:53:16 2014 +0000
+
+    Fixed indentation
+
+commit e2f6065
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Mon Mar 3 20:29:07 2014 +0100
+
+    Wrote function specifications for Assembler.sml and wrote some Assembler
+    documentation
+
+commit 4031b44
+Author: tanshinan <kafasius@gmail.com>
+Date:   Mon Mar 3 18:42:17 2014 +0100
+
+    minor fixes in components and vm
+
+commit d66f8a6
+Author: Oskar Ahlberg <osaka.sfi@gmail.com>
+Date:   Mon Mar 3 18:41:14 2014 +0100
+
+    log update
+
+commit 49feb1a
+Author: Oskar Ahlberg <osaka.sfi@gmail.com>
+Date:   Mon Mar 3 18:38:14 2014 +0100
+
+    update
+
+commit b034b10
+Author: tanshinan <kafasius@gmail.com>
+Date:   Mon Mar 3 18:33:10 2014 +0100
+
+    started function declarations in VM.sml
+
+commit d6b333f
+Author: tanshinan <kafasius@gmail.com>
+Date:   Mon Mar 3 17:45:41 2014 +0100
+
+    changed rlist from function to val in readchunk
+
+commit 99f19bd
+Author: Oskar Ahlberg <osaka.sfi@gmail.com>
+Date:   Mon Mar 3 17:14:13 2014 +0100
+
+    fix
+
+commit 7ee2b88
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Sun Mar 2 13:11:04 2014 +0100
+
+    More documentation work
+
+commit 4564b0d
+Author: Henrik Sommerland <henrik.sommerland@gmail.com>
+Date:   Sat Mar 1 09:35:31 2014 +0000
+
+    README.txt edited online with Bitbucket
+
+commit 7e6c892
+Author: Henrik Sommerland <henrik.sommerland@gmail.com>
+Date:   Sat Mar 1 09:34:43 2014 +0000
+
+    README.txt edited online with Bitbucket
+
+commit 5dc35fc
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Sat Mar 1 00:25:47 2014 +0100
+
+    Wrote documentation and fixed some bugs in the assembler
+
+commit 0992ab4
+Author: tanshinan <kafasius@gmail.com>
+Date:   Fri Feb 28 09:07:18 2014 +0000
+
+    Wrote explanation of a function.
+
+commit 1de6543
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Thu Feb 27 16:01:40 2014 +0100
+
+    Read trough VM.sml and Components.sml and made minor changes.
+
+commit 6fd840f
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Thu Feb 27 15:54:11 2014 +0100
+
+    More assembler documenatation
+
+commit 5727a66
+Author: oskar ahlberg <osaka.sfi@gmail.com>
+Date:   Thu Feb 27 15:44:05 2014 +0100
+
+    log update
+
+commit b81006a
+Author: tanshinan <kafasius@gmail.com>
+Date:   Thu Feb 27 15:34:21 2014 +0100
+
+    more component stuff and start with vm /Aleksander und Oskar
+
+commit 6fd1289
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Thu Feb 27 12:21:01 2014 +0100
+
+    Some work on assembler documentation and some minor changes to
+    components.sml
+
+commit 246171b
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 26 18:21:39 2014 +0100
+
+    Fixed some things and commented on something in the Components.sml file.
+
+commit 4751e50
+Author: oskar ahlberg <osaka.sfi@gmail.com>
+Date:   Wed Feb 26 16:47:00 2014 +0100
+
+    Log update
+
+commit 84838f0
+Author: oskar ahlberg <osaka.sfi@gmail.com>
+Date:   Wed Feb 26 16:44:34 2014 +0100
+
+    Codeing Bonnanzzza part 2 Aleksande and Oskar
+    done with impimation of Stacks , Ram, and started with ProgramCounter
+
+commit 17613b1
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Tue Feb 25 23:27:09 2014 +0100
+
+    Did some changes to the Components.sml file.
+
+commit 00d42ba
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Tue Feb 25 20:51:29 2014 +0100
+
+    Wrote more assembler documentation
+
+commit ac744d0
+Author: oskar ahlberg <osaka.sfi@gmail.com>
+Date:   Tue Feb 25 18:20:53 2014 +0100
+
+    Logg update
+
+commit 0cdfee7
+Author: oskar ahlberg <osaka.sfi@gmail.com>
+Date:   Tue Feb 25 18:17:51 2014 +0100
+
+    Oskar and Alexanders code bonaza......
+
+commit 12a09a0
+Author: tanshinan <kafasius@gmail.com>
+Date:   Tue Feb 25 12:26:39 2014 +0000
+
+    ändrade ett Reg till reg så man inte får static errors
+
+commit 64ece4b
+Author: TheGrandmother <TheGrandmother@gmail.com>
+Date:   Mon Feb 24 16:25:39 2014 +0000
+
+    Added comments and fixed some minor issues with the assembler code.
+
+commit 888622c
+Author: oskar ahlberg <osaka.sfi@gmail.com>
+Date:   Mon Feb 24 15:20:55 2014 +0100
+
+    small fix in exampels_signs
+
+commit f97b235
+Author: TheGrandmother <TheGrandmother@gmail.com>
+Date:   Mon Feb 24 13:29:23 2014 +0000
+
+    Code is now PG 13
+
+commit ef060cc
+Author: TheGrandmother <TheGrandmother@gmail.com>
+Date:   Mon Feb 24 12:57:54 2014 +0000
+
+    Minor changes to Components.sml
+    
+    Added diary entry
+
+commit 267a814
+Author: oskar ahlberg <osaka.sfi@gmail.com>
+Date:   Mon Feb 24 12:58:14 2014 +0100
+
+    updates in the diary for meeting speccs
+
+commit b712f3c
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Sun Feb 23 22:36:27 2014 +0100
+
+    fixes to the assembler
+
+commit 759cd3a
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Sun Feb 23 18:05:00 2014 +0100
+
+    Removed abiguity in the VM specification
+
+commit eb2e755
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Sun Feb 23 17:56:17 2014 +0100
+
+    Wrote a more complicated assembler test case. found some bugs and
+    corrected them.
+    
+    Stated work on the assembler documentation
+
+commit 0044f54
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Sun Feb 23 17:16:22 2014 +0100
+
+    Serious pitfall in VM spec detected!
+
+commit 5ffa244
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Sun Feb 23 11:54:24 2014 +0100
+
+    Beutified the specs file.
+    Fixed the componenets file a little bit.
+    created the VM.sml file
+
+commit 4529bd4
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Sun Feb 23 00:37:33 2014 +0100
+
+    Added POP instruction to remove objects from stack
+
+commit a8f87ca
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Sun Feb 23 00:36:22 2014 +0100
+
+    Added a POP instruction for removing objects from the stack.
+
+commit e0e413d
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Sat Feb 22 23:08:55 2014 +0100
+
+    Wrote a components file containing the signatures for the componenets of
+    the VM.
+    I did not start writing the VM signatures yet due to mysterious and
+    horribly annoing complications with the module systyem.
+
+commit d1111b3
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Sat Feb 22 15:12:05 2014 +0100
+
+    Added example file for signatures
+
+commit bc76fef
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Sat Feb 22 13:57:44 2014 +0100
+
+    Added diary entry
+
+commit 1eeb958
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Sat Feb 22 13:56:23 2014 +0100
+
+    Assembler checks for duplicate pointers
+
+commit 9f33150
+Author: Henrik Sommerland <henrik.sommerland@gmail.com>
+Date:   Fri Feb 21 22:17:46 2014 +0000
+
+    README.txt edited online with Bitbucket
+
+commit d83cd1c
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Fri Feb 21 23:16:30 2014 +0100
+
+    MAJOR commit
+    
+    Changed the name of conditional jump to conditional break since thats
+    how i remember it from the C64 :P
+    
+    The Assembler is finished now!!!!
+    
+    Added a IOHandler structure to handle file writing and reading.
+    
+    Added some functions to StringUtills
+    
+    Added some stuffs to the VM_README
+    
+    I think thats all...
+
+commit 263f649
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Fri Feb 21 19:00:23 2014 +0100
+
+    Assembler now supports raw data entry
+
+commit 88b9cf7
+Author: Henrik Sommerland <henrik.sommerland@gmail.com>
+Date:   Fri Feb 21 16:00:16 2014 +0000
+
+    README.txt edited online with Bitbucket
+
+commit 8287433
+Author: TheGrandmother <TheGrandmother@gmail.com>
+Date:   Fri Feb 21 11:15:39 2014 +0000
+
+    Assembler now does address resolution for all references :)
+    Minor fix to trim function.
+    Diary update
+
+commit 9a04e81
+Author: TheGrandmother <TheGrandmother@gmail.com>
+Date:   Fri Feb 21 10:18:40 2014 +0000
+
+    Minor fix cover a nonexshausitve match
+
+commit c6dac85
+Author: TheGrandmother <TheGrandmother@gmail.com>
+Date:   Fri Feb 21 10:14:17 2014 +0000
+
+    Finalized the Specs.
+    Added information to the readme VM.
+    
+    The Resolve structure now throws RESOLVER exceptions instead of
+    ASSEMBLER exceptions
+
+commit eeaae67
+Author: Henrik Sommerland <henrik.sommerland@gmail.com>
+Date:   Fri Feb 21 09:20:04 2014 +0000
+
+    Changed to do list.
+    Tasks for the the VM implementation are specified in the README_VM.txt file
+
+commit 0e7876c
+Author: oskar ahlberg <osaka.sfi@gmail.com>
+Date:   Fri Feb 21 09:39:41 2014 +0100
+
+    update to do and planering
+
+commit c8b84c2
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Thu Feb 20 16:53:55 2014 +0100
+
+    Added comments and updated diary
+
+commit d89517a
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Thu Feb 20 16:51:45 2014 +0100
+
+    Can now resolve adresses for labels.
+
+commit e6b9123
+Author: oskar ahlberg <osaka.sfi@gmail.com>
+Date:   Thu Feb 20 16:50:52 2014 +0100
+
+    update
+
+commit 114f30e
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Thu Feb 20 16:38:19 2014 +0100
+
+    Changed from .odt to .txt so that we can edit it online.
+    Added entrys to the todo list
+
+commit 175013e
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Thu Feb 20 16:33:03 2014 +0100
+
+    Broken
+
+commit 33759a5
+Author: oskar ahlberg <osaka.sfi@gmail.com>
+Date:   Thu Feb 20 16:28:50 2014 +0100
+
+    LITE filer
+
+commit b94200d
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Thu Feb 20 14:19:40 2014 +0100
+
+    Added comments to some .sml files
+
+commit 9c7cd31
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Thu Feb 20 14:11:44 2014 +0100
+
+    Major restructuring. Did this to enable working with the Utills
+    directory
+
+commit e034fa8
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Thu Feb 20 13:56:46 2014 +0100
+
+    Added some details regarding conditional jumping
+
+commit 1deadf0
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Thu Feb 20 11:13:49 2014 +0100
+
+    Fixed the dataflow picture
+
+commit 89b6dc5
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Thu Feb 20 00:56:12 2014 +0100
+
+    minor pimping
+
+commit 0b8c1be
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Thu Feb 20 00:48:53 2014 +0100
+
+    ...
+
+commit f7ea193
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Thu Feb 20 00:48:33 2014 +0100
+
+    ...
+
+commit 7301066
+Author: Henrik Sommerland <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 22:37:43 2014 +0000
+
+    README.txt edited online with Bitbucket
+
+commit 248e090
+Author: Henrik Sommerland <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 22:37:03 2014 +0000
+
+    README.txt edited online with Bitbucket
+
+commit 84cd884
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 23:33:57 2014 +0100
+
+    minor fixes.
+
+commit 693f5cb
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 23:17:18 2014 +0100
+
+    THIS IS SOME LEGIT SHIT!
+
+commit 695ecac
+Author: Henrik Sommerland <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 21:36:05 2014 +0000
+
+    README.txt edited online with Bitbucket
+
+commit ece2ed0
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 22:34:55 2014 +0100
+
+    It is starting to look like a assembler!
+
+commit e3ebb67
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 20:21:23 2014 +0100
+
+    ...
+
+commit e8d4d6f
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 20:20:46 2014 +0100
+
+    WTF
+
+commit c7b17c1
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 20:19:12 2014 +0100
+
+    Added functions for argument checking
+
+commit ba713f6
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 20:17:01 2014 +0100
+
+    Added functions wich checks for correct or incorrect arguments
+
+commit 0eb5ce1
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 20:00:30 2014 +0100
+
+    http://i.imgur.com/xVyoSl.jpg
+
+commit cdd54ef
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 19:59:05 2014 +0100
+
+    fuuu
+
+commit 077b2ef
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 19:54:51 2014 +0100
+
+    minor
+
+commit 6957f86
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 19:54:36 2014 +0100
+
+    fixed what conditional jumping can read
+
+commit 04d4956
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 19:53:05 2014 +0100
+
+    6
+
+commit c33f33d
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 19:52:00 2014 +0100
+
+    as
+
+commit ece1354
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 19:43:29 2014 +0100
+
+    sad
+
+commit 3573ee5
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 19:39:26 2014 +0100
+
+    trixxing
+
+commit 2046b54
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 19:36:49 2014 +0100
+
+    fuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+
+commit 644d15c
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 19:26:28 2014 +0100
+
+    ...
+
+commit 8b57fb1
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 19:21:56 2014 +0100
+
+    well im moderatley annoyed right now
+
+commit ab36df2
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 19:19:46 2014 +0100
+
+    Hustelin
+
+commit 1f9fc09
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 19:18:52 2014 +0100
+
+    okay
+
+commit ce1552e
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 19:17:14 2014 +0100
+
+    Cleaning upp in desperation
+
+commit 575a478
+Author: Henrik Sommerland <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 18:08:30 2014 +0000
+
+    README.txt edited online with Bitbucket
+
+commit bf914c7
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 19:06:51 2014 +0100
+
+    eeeh....
+
+commit 85685b3
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Wed Feb 19 18:48:18 2014 +0100
+
+    Major assembler work
+
+commit 51acf3c
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Tue Feb 18 22:27:52 2014 +0100
+
+    Cleaned upp the uglyness
+
+commit 740cd8a
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Tue Feb 18 22:26:59 2014 +0100
+
+    Cleaned upp uglyness
+
+commit 4024d77
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Tue Feb 18 22:22:31 2014 +0100
+
+    Minor fixes
+
+commit 512efa9
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Tue Feb 18 22:19:48 2014 +0100
+
+    Started experimenting with the assembler
+
+commit 96d9fe5
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Tue Feb 18 21:19:05 2014 +0100
+
+    Minor fixes
+
+commit 232a070
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Tue Feb 18 21:17:02 2014 +0100
+
+    Minor fixes
+
+commit 40ba30b
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Tue Feb 18 20:55:20 2014 +0100
+
+    Created assembler branch
+
+commit 901b1ba
+Author: Henrik Sommerland <henrik.sommerland@gmail.com>
+Date:   Tue Feb 18 16:42:56 2014 +0000
+
+    README.txt edited online with Bitbucket
+
+commit 9f76961
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Tue Feb 18 17:27:36 2014 +0100
+
+    Trying to get eclipse plugin working
+
+commit cd1108c
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Tue Feb 18 17:23:05 2014 +0100
+
+    Just created this directory.
+
+commit 497683d
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Tue Feb 18 17:21:22 2014 +0100
+
+    Just created a new folder
+
+commit 67e851e
+Author: Henrik Sommerland <henrik.sommerland@gmail.com>
+Date:   Tue Feb 18 16:18:12 2014 +0000
+
+    README.txt edited online with Bitbucket
+
+commit 21a21a5
+Author: henrik.sommerland@gmail.com <henrik.sommerland@gmail.com>
+Date:   Tue Feb 18 16:23:52 2014 +0100
+
+    Added the Specs Files
+
+commit c6e0134
+Author: Henrik Sommerland <henrik.sommerland@gmail.com>
+Date:   Tue Feb 18 15:01:21 2014 +0000
+
+    README.txt edited online with Bitbucket
+
+commit 7d24f78
+Author: Henrik Sommerland <henrik.sommerland@gmail.com>
+Date:   Tue Feb 18 15:00:19 2014 +0000
+
+    Created new branch Specs
+
+commit 2caa1ee
+Author: oskar ahlberg <osaka.sfi@gmail.com>
+Date:   Tue Feb 18 11:27:26 2014 +0100
+
+    README

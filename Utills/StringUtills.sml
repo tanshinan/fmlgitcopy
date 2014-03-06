@@ -1,3 +1,7 @@
+(* PKD 2014 group 27
+	Henrik Sommerland, Oskar Ahlberg, Aleksander Lundquist
+*)
+
 structure StringUtills =
 struct
 	exception SYNTAX of string

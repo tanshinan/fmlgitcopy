@@ -1,3 +1,5 @@
+Henrik Sommerland
+
 20/2 14:00
 	Started working on the address resolution for the VM.
 	

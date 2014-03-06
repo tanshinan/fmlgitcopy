@@ -24,7 +24,7 @@
 \newcommand{\J}{$\textbf{J}$}
 \renewcommand{\thefootnote}{\roman{footnote}}
 
-\title{PKD 2013 \\ FML: a VM implemented in SML}
+\title{PKD 2013/2014 \\ FML: a VM implemented in SML}
 \author{Henrik Sommerland, Oskar Ahlberg, Aleksander Lunqvist}
 \date{\today}
 
@@ -112,8 +112,8 @@ outside'' regardles of how we implemented the memory. And thus the program is
 pure\textsuperscript{\cite{pure}} dissregarding I/O handling.
 
 \subsection{Personal notes}
-In this section we will give som personal notes regarding our parts in the
-project and how we have experienced working together.
+In this section we will give some informal personal notes regarding our parts in
+the project and how we have experienced working together.
 \subsubsection{Henrik Sommerland}
 I have been incharge of designing the VM and writing the assembler. I have also
 written some signatures for the others in the group to help them get started. I
@@ -162,16 +162,15 @@ I know I might have gotten a bit carried away with this project. I'm actually on
 medication not to do stuff like this.
 
 \subsubsection{Oskar Ahlberg}
-This project has been a learning experience, to be honest I have had a hard time keeping up with the other
-members of the group and a lot of ``new'' ground has been covered. I feel that
-it has been a mutual working environment lending a hand where I can. At a whole its been hard work to keep the pace to have something to hand in.
-I'm looking forward to presentation and the discussion about the project. Lets look on the workload
-I have had a supporting role in the group, and I have workt closely with Aleksander, but the project lead
- has been Henrik it was his idea and the desigen of the base of the project is
- his doing. We have had at leas t a meeting a week and have had contact via
- social media, sms and phone. The whole project has been managed with BitBucket
- as a private repository. We all have access to it as well the TA who was
- asigende to us.
+This project has been a learning experience, to be honest I have had a hard time keeping up with the other members of the group a lot of �new� ground has been covered  . I feel that it has been a mutual working environment lending a hand where I can. At a whole its been hard work to keep the pace to have something to hand in. I'm looking forward to presentation and the discussion about the project. Lets look on the workload I have had a supporting role in the group, and I have worked  closely with Aleksander, but the project lead has been Henrik it was his idea and the design of the base of the project is his doing .We have had at least a meeting a week and had contact via social media, texts and phone. The whole project has been managed via BitBucket and the version/change log, the depository was set up as privet for the duration of project. We all have access to it as well the TA who was allocated to us. All the work that has been done, has been  filed in files according to name in the ./projekplaning/dagboker
+
+The work,
+We have a divide in the amount of work that was done due to different time constraints e.g. one of the members of this project group was able to commit all his time to the project. And me and Aleksander have worked as a pair on parts of the project, where aleksander was manning the keyboard  and I was checking code and documentation online when we had problems with the code.
+
+As an conclusion of the Personal note,
+The complexities level on the project is average to high, depending what part of the project.
+It has been fun and challenging and at some times it feels like we took on to much work but we pulled throe, and was able to create one of the coolest thing I have had the privilege of working on. 
+Also it has been a privilege to work with these gentlemen.
  
  \subsubsection{Aleksander Lundqvist}
 I joined this group by chance, they had just lost a member and I was looking for 
@@ -196,6 +195,19 @@ During this time it has mostly been my hands on the keyboard,
 but having Oskar there to discuss with has been invaluable. 
 And when I've been bugfixing he has contributed to the documentation, 
 the part that is by far my weakest point in the project. 
+
+\section{Usage}
+To use the VM one first must compile a program. This dome trough first writing
+ones program in a file called \V+in.asm+ and then one just runs the
+\V+Assembler.sml+ file in either Poly or SML/NJ. If the code is valid the
+assembler will write the output to a file called \V+out.fml+.
+
+After this one can just run the program by running the \V+VM.sml+ file. The
+program will then run untill the VM halts if no error is encountered.
+\\
+To make propper use of this machbine one should be familiar with assembly
+programming and one should allso read the VM specification and the assembler
+usage guide thouroghly.
 
 \section{The VM}
 Here is an informal description of the workings of the machine. For a more
@@ -305,11 +317,10 @@ Counter, the functions are more specified in the appendix.
 
 \subsubsection{Register}
 
-Register is used in the implication for the VM as a
-register to save the values of x and y, to be able to
-handle all the different arithmetical operations. It can be increased or
-decrease by one.
-\section{Implementation}
+Register is used in the implementation for the wm as a register to save the
+values of x and y, to be able to handle all the different arithmetical operations. This is also used to create the IRQ registers in the Pc Data type.
+
+\subsection{Implementation}
 \subsubsection{Stack}
 %Yo oskar!
 %Det du har skrivit här om vad en stack är och hur den funkar är lite virrigt.
@@ -327,8 +338,8 @@ The program counter handles the pointer to the memmory to see what is to be
 done, as well handles the IRQ registers, the jumpstack as well as the
 return jumps that redirects the pointer back to the original
 address on the jump stack.
-This is the main structure of the file all other structures are included in this
-function
+This is the main function of the file all other functions are included in this structure.
+The encapsulated functions and the infrastructure of the the Program_Counter can be seen in the Appendix on Components.
 
 \section{Utillities}
 For this program we have written some utillity files. The IO.sml and the
@@ -1076,8 +1087,10 @@ Components.sml file works was written and have been included here as an
 appendix.
 \subsubsection{Introduction}
 
-The following structures and signatures are present in Components.sml are the
-Ram, Stack, Register and ProgramCounter.
+This file and including functions are the structures of the Registers, Stack, Ram and Program Counter, the functions are more specified in Appendix x.1.
+
+We have refrained to make examples for the functions due to the rudimentary nature of them and some that have a complexity that an example would make it indecipherable . And to go on to the case of  test cases for the whole program we have the running machine that will take a �program� and run it with a predictable result. So to conclude this section,  see the sections below 
+
 
 \subsubsection{The Ram structure}
 \paragraph{Synopsis} \

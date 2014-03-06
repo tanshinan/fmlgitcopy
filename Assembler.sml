@@ -1,3 +1,8 @@
+(* PKD 2014 group 27
+	Henrik Sommerland, Oskar Ahlberg, Aleksander Lundquist
+*)
+
+
 (*
 	This is the code for the assembler.
 	I know its not the prettiest one.

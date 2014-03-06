@@ -1,3 +1,10 @@
+(* PKD 2014 group 27
+	Henrik Sommerland, Oskar Ahlberg, Aleksander Lundquist
+*)
+
+(*This is the file wich implements the VM*)
+
+
 (* Yet to be implemented:
  * Logical operations AND, ORR, XOR, NOT
  * Adresses for memory used as read/write

@@ -1,0 +1,37 @@
+\BOOKMARK [1][-]{section.1}{Our work}{}
+\BOOKMARK [2][-]{subsection.1.1}{Personal notes}{section.1}
+\BOOKMARK [3][-]{subsubsection.1.1.1}{Henrik Sommerland}{subsection.1.1}
+\BOOKMARK [3][-]{subsubsection.1.1.2}{Oskar Ahlberg}{subsection.1.1}
+\BOOKMARK [1][-]{section.2}{The VM}{}
+\BOOKMARK [2][-]{subsection.2.1}{General}{section.2}
+\BOOKMARK [3][-]{subsubsection.2.1.1}{Instruction Set Architecture}{subsection.2.1}
+\BOOKMARK [2][-]{subsection.2.2}{The components}{section.2}
+\BOOKMARK [3][-]{subsubsection.2.2.1}{Register}{subsection.2.2}
+\BOOKMARK [3][-]{subsubsection.2.2.2}{Stack}{subsection.2.2}
+\BOOKMARK [3][-]{subsubsection.2.2.3}{Ram}{subsection.2.2}
+\BOOKMARK [3][-]{subsubsection.2.2.4}{Program Counter}{subsection.2.2}
+\BOOKMARK [1][-]{section.3}{Utillities}{}
+\BOOKMARK [1][-]{section.4}{Assembler}{}
+\BOOKMARK [2][-]{subsection.4.1}{General}{section.4}
+\BOOKMARK [2][-]{subsection.4.2}{Implementation}{section.4}
+\BOOKMARK [3][-]{subsubsection.4.2.1}{General}{subsection.4.2}
+\BOOKMARK [3][-]{subsubsection.4.2.2}{Flow chart}{subsection.4.2}
+\BOOKMARK [2][-]{subsection.4.3}{Usage}{section.4}
+\BOOKMARK [1][-]{section.5}{Summary}{}
+\BOOKMARK [2][-]{subsection.5.1}{Work to be done}{section.5}
+\BOOKMARK [2][-]{subsection.5.2}{Highlights}{section.5}
+\BOOKMARK [1][-]{section.6}{Appendix}{}
+\BOOKMARK [2][-]{subsection.6.1}{VM specifications}{section.6}
+\BOOKMARK [3][-]{subsubsection.6.1.1}{Structure}{subsection.6.1}
+\BOOKMARK [3][-]{subsubsection.6.1.2}{ISA}{subsection.6.1}
+\BOOKMARK [3][-]{subsubsection.6.1.3}{Instruction types}{subsection.6.1}
+\BOOKMARK [3][-]{subsubsection.6.1.4}{Opcodes}{subsection.6.1}
+\BOOKMARK [2][-]{subsection.6.2}{Assembler usage guide}{section.6}
+\BOOKMARK [3][-]{subsubsection.6.2.1}{Syntax}{subsection.6.2}
+\BOOKMARK [3][-]{subsubsection.6.2.2}{Usage}{subsection.6.2}
+\BOOKMARK [2][-]{subsection.6.3}{Componets.sml description}{section.6}
+\BOOKMARK [3][-]{subsubsection.6.3.1}{Introduction}{subsection.6.3}
+\BOOKMARK [3][-]{subsubsection.6.3.2}{The Ram structure}{subsection.6.3}
+\BOOKMARK [3][-]{subsubsection.6.3.3}{The Stack structure}{subsection.6.3}
+\BOOKMARK [3][-]{subsubsection.6.3.4}{The Register structure}{subsection.6.3}
+\BOOKMARK [3][-]{subsubsection.6.3.5}{The Program Counter structure}{subsection.6.3}

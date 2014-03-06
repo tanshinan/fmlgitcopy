@@ -9,7 +9,7 @@
 
 \setcounter{secnumdepth}{4}
 
-%\usepackage{adjustbox}  
+%\usepackage{adjustbox}
 \newcommand{\V}{\verb}
 \newcommand{\x}{$\textbf{X}$}
 \newcommand{\y}{$\textbf{Y}$}
@@ -20,7 +20,7 @@
 \newcommand{\ma}{$\textbf{M}_{\textbf{A}}$}
 \newcommand{\q}{$\textbf{Q}_{\textbf{1}}$}
 \newcommand{\qq}{$\textbf{Q}_{\textbf{2}}$}
-\newcommand{\pc}{$\textbf{PC}$}    
+\newcommand{\pc}{$\textbf{PC}$}
 \newcommand{\J}{$\textbf{J}$}
 \renewcommand{\thefootnote}{\roman{footnote}}
 
@@ -32,7 +32,7 @@
 \maketitle
 
 \begin{abstract}
-For our project we have decided to build a virtual 
+For our project we have decided to build a virtual
 machine(VM)\textsuperscript{\cite{Virtual}} in SML.
 The name FML is just an arbitrary thre letter name and has no meaning or interpertation.
 The VM is a RISC\textsuperscript{\cite{risc}} machine using a Von-Neuman
@@ -87,7 +87,7 @@ find there way trough the tests and have to be detected trough online testing.
 
 We have continously have meetings both with just us in the group and also some
 with our assigned TA\footnote{Our TA has during this project been Tobias Neil}.
-These meetings have primairly been about informing eathother about how the 
+These meetings have primairly been about informing eathother about how the
 VM works and how the various components of it should be
 implemented. We have then had an ongoing discussion on facebook regarding
 details and problems which we have encountered. The workload as not been
@@ -96,17 +96,17 @@ have had the possibility to work on this project full time.
 
 We have been using Git\textsuperscript{\cite{git}} as a source code management
 system. We have been using BitBucket\textsuperscript{\cite{bitbucket}} to
-host the project and troughout all of the development process the repository has 
+host the project and troughout all of the development process the repository has
 been hidden and only we in the group and our TA have had access to the code.\\
 \\
 We are using an array in the current implementation of the memory for the VM.
 Now we know that it is stated in the project description that the project should
 be written in a functional and pure way and avoid side effects. We discussed
-with both Dave Clarke and Tjark Weber about using a ``monad like'' structure 
+with both Dave Clarke and Tjark Weber about using a ``monad like'' structure
 to hide the side effects of the array hadling and they said that it was okay.
 The structure handling the memory is written in such a way that any other part
 of the program implementing the memory structure will not be able to se that there
-are any side effects. I.e there are no semantically observable side effects of 
+are any side effects. I.e there are no semantically observable side effects of
 the memory structure. All of the code would look exactly the same from ``the
 outside'' regardles of how we implemented the memory. And thus the program is
 pure\textsuperscript{\cite{pure}} dissregarding I/O handling.
@@ -150,8 +150,8 @@ program whilst guiding the others in the group.
 In general I have found this project to be increadibly fun and interesting.
 This will sound very sad (which it is) but doing things like this (and climbing)
 is what makes life worth living. In the beggining I was worried that the others
-in the group where not going to be able to understand how it all woked and even 
-though it's really hard to explain something complex which is crystal clear in 
+in the group where not going to be able to understand how it all woked and even
+though it's really hard to explain something complex which is crystal clear in
 my head to other people the others in
 the group have been very enthusiastic and have really pulled trough for this
 mammoth of a project. I know i have done more work than the others in the
@@ -162,12 +162,12 @@ I know I might have gotten a bit carried away with this project. I'm actually on
 medication not to do stuff like this.
 
 \subsubsection{Oskar Ahlberg}
-This project has been a learning experience, to be honest I have had a hard time keeping up with the other 
+This project has been a learning experience, to be honest I have had a hard time keeping up with the other
 members of the group and a lot of ``new'' ground has been covered. I feel that
-it has been a mutual working environment lending a hand where I can. At a whole its been hard work to keep the pace to have something to hand in. 
-I'm looking forward to presentation and the discussion about the project. Lets look on the workload 
+it has been a mutual working environment lending a hand where I can. At a whole its been hard work to keep the pace to have something to hand in.
+I'm looking forward to presentation and the discussion about the project. Lets look on the workload
 I have had a supporting role in the group, and I have workt closely with Aleksander, but the project lead
- has been Henrik it was his idea and the desigen of the base of the project is 
+ has been Henrik it was his idea and the desigen of the base of the project is
  his doing. We have had at leas t a meeting a week and have had contact via
  social media, sms and phone. The whole project has been managed with BitBucket
  as a private repository. We all have access to it as well the TA who was
@@ -180,17 +180,17 @@ detailed description se the VM specifications in the appendix.
 
 The FML machine is built up as a very simple von-neuman
 architecture\textsuperscript{\cite{neuman}}. The machine consists ony of a few
-major components. It's notewhorthy that there is no instruction decoder present. 
+major components. It's notewhorthy that there is no instruction decoder present.
 This is since all of the instruction decoding
 and handling takes place within the software implementation of the machine.
 The size of the memory the machine has avaliable is arbitrary and is defined at
 the initilazion of the machine. Below will follow a dataflow diagram of the
-machine, describing all of the components and how they can communicate.  
+machine, describing all of the components and how they can communicate.
 
 \begin{figure}[H]
 \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Dataflow.png}
 \caption{Dataflow diagram of the FML machine}
-\end{figure}       
+\end{figure}
 
 Now this image might be a little bit confusing. One should consider the two read
 rectangles DATA and ADDRESS as ``viritual buses''\textsuperscript{\cite{bus}}.
@@ -199,7 +199,7 @@ Below will follow brief descriptions of the components. More indepth
 descriptions are given in the appendix.
 
 \begin{description}
-  \item[X and Y] \hfill \\ 
+  \item[X and Y] \hfill \\
   These are the two general purpose registers\textsuperscript{\cite{register}}
   which can be read, written to and used for addressing.
   \item[S] \hfill \\
@@ -218,9 +218,9 @@ descriptions are given in the appendix.
   These are the two interupt registers. These are very special and can only be
   written to. They will hold the addresses to which the machine should jump if an
   prepherial component makes a interupt request\textsuperscript{\cite{irq}}.
-  
+
   \item[PC]\hfill \\
-  This is the program counter. It keeps track on where in the memory the 
+  This is the program counter. It keeps track on where in the memory the
   instructions are being read from. It allso handles the both the subroutine
   jumps and the conditional breaking.
   \item[J]\hfill \\
@@ -238,9 +238,9 @@ descriptions are given in the appendix.
 
 \subsubsection{Instruction Set Architecture}
 The ISA\textsuperscript{\cite{ISA}} of the VM is built in a special but simple
-fashion. Each instruction corresponds to a six digit integer 
+fashion. Each instruction corresponds to a six digit integer
 where each digit corresponds to specific information regarding different types
-of opcodes. The digits counting from right to left is: 
+of opcodes. The digits counting from right to left is:
 
 \begin{description}
   \item[First] Second argument
@@ -261,8 +261,8 @@ only generate valid instructions\footnote{Allthough with the current
 implementation of  the VM this is not necessairly true}.
 So an example would be:
 000401.
-Where the 4 tells us that we should perform a modulo operation, 
-the 0 says that the second argument is the \x register and the last 1 says 
+Where the 4 tells us that we should perform a modulo operation,
+the 0 says that the second argument is the \x register and the last 1 says
 that the first argument is the \y register. Notice that the order of
 the last two digits is reversed in respect to the order of the arguments in
 the operation.
@@ -281,8 +281,8 @@ Counter, the functions are more specified in the appendix.
 
 \subsubsection{Register}
 
-Register is used in the implication for the VM as a 
-register to save the values of x and y, to be able to 
+Register is used in the implication for the VM as a
+register to save the values of x and y, to be able to
 handle all the different arithmetical operations. It can be increased or
 decrease by one.
 
@@ -295,7 +295,7 @@ structure this is a integral part of the VM implementation both to keep track of
 return adresses and as a storage.
 
 \subsubsection{Ram}
-the ram memory works as a random access memory, it is set at a size 
+the ram memory works as a random access memory, it is set at a size
 at the start of the VM, and where we stores data in between operations.
 
 \subsubsection{Program Counter}
@@ -319,7 +319,7 @@ the assembler and the VM. If both the assembler and the VM addheres to this
 structure the assembler will not generate any instructions not accepted by the
 VM. In general the \V+ResolveOpcode+ structure just contains a lot of ``lookup
 tables'' in which one can find important information regarding the different
-instructions and opcodes, such as which number corresponds to what type of operation, which 
+instructions and opcodes, such as which number corresponds to what type of operation, which
 arguments are allowed for each operations and so forth.
 Since this structure was not propperly used in the VM implementation there are
 still some things left to write for it, such as a series of reverse lookup
@@ -339,7 +339,7 @@ dont see any need to augment it or redisgning any aspects of it. The assembler s
 implementation of the VM this is not neccesarily true any more. Below a short
 example of a assembly program will follow:
 \begin{verbatim}
-% This a simple program which fills a part 
+% This a simple program which fills a part
 % of the memory with 100 consecutive integers
 % trough rellative addressing.
 #start
@@ -385,7 +385,7 @@ duplicate pointer declarations is performed.
 The next phase in the assembly is the address resolution phase. This is done in
 two phases, in the first one the labels gets resolved and in the second the
 values gets  resolved. It begins by first resolving the labels.
-This is done by first giving the assembler a \emph{base address} which is 
+This is done by first giving the assembler a \emph{base address} which is
 the address of the first label. As of now the first
 non comment line in the input file has to be a label since every line has to
 have a label assigned to it. Then the address resolving function continues
@@ -430,7 +430,7 @@ encountered. \V+offsett+ is vital in the address resolution of the tokens.
 \subsubsection{Flow chart}
 Below a flow chart will folow for how the assembler the assembles the
 assembly code.
- 
+
 \begin{figure}[H]
 \begin{centering}
 \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{assembler_flow.png}
@@ -458,7 +458,7 @@ assembly code.
 \newpage
 We have not included a flowchart for the address resolution of the values or
 the finalization part since these are trivial.
-\subsection{Usage}  
+\subsection{Usage}
 To use the assembler propperly one has to know how to write assembly code and
 understand the detailed workings of the machine. We recomend studying both the
 VM spcifications and the assembler documentation in the appendix before you
@@ -507,7 +507,7 @@ the \V+OpcodeResolve+ structure gets implemented propperly it will only generate
 valid instructions.
 \section{Appendix}
 \subsection{VM specifications}
-\subsubsection{Structure} 
+\subsubsection{Structure}
 The VM consists of 9 components. Two general purpouse registers(\x \ , \y ), one
 general purpose stack (\s), One virtual read only register (\A), One jump stack
 \J, Two IRQ address registers (\q \ , \qq), One ``ALU'', One program counter
@@ -543,7 +543,7 @@ issues a subroutine jump the current address will be pushed onto the stack.
 When a return jump is issued \J \ gets popped and it's value gets assigned to
 the \pc. The top entry on the stack can not be accsessed without popping the
 stack.
-If someone tries to execute a return jump if the jump stack is empty a exception 
+If someone tries to execute a return jump if the jump stack is empty a exception
 shall be raised and the VM must crash.
 
 \paragraph{The IRQ registers} \
@@ -582,7 +582,7 @@ Read & \x & \y & \s  &\mx & \my & \ma & \A & & & \\
 
 Write & \x & \y & \s  &\mx & \my & \ma & \q& \qq & \A &\\
 
-Arit &  & \V+INC+ & \V+DEC+ & \V+ADD+ & \V+SUB+ & \V+MUL+ & \V+DIV+ & \V+MOD+  & 
+Arit &  & \V+INC+ & \V+DEC+ & \V+ADD+ & \V+SUB+ & \V+MUL+ & \V+DIV+ & \V+MOD+  &
 &
 \\
 
@@ -591,7 +591,7 @@ Logic &  &  \V+EQL+ & \V+GRT+ & \V+LES+ & \V+BRL+ & \V+BRR+ & \V+AND+ & \V+ORR+
 
 Jump & & \V+JMP+ & \V+BEQ+ & \V+BLE+ & \V+BGR+ & \V+JSR+ & \V+RET+ & & & \\
 
-Special & & H & Se & \V+POP+ &  &  &  &  &  &  \\	
+Special & & H & Se & \V+POP+ &  &  &  &  &  &  \\
 \end{tabular}
 \end{center}
 Here \mx , \my and \ma is to be read as address of \x , \y \ and \A.  All
@@ -605,7 +605,7 @@ stored in \y. \\
 
 First I would like to  mention that
 \verb+000000+ will be the \verb+NOP+ operation since it would translate to just
-moving \x \ to \x \ . 
+moving \x \ to \x \ .
 We can now group the instructions in to numerical ranges:
 
 \begin{tabular}{l l}
@@ -677,8 +677,8 @@ there and it will also put it's current value on \J.\\
 A return jump will jump to the address at the top of \J \ plus one or two
 depending on weather a non register argument is used.
  \footnote{If the return jump where to return to the value at the top of the
- stack it where to return to the address where the subroutine jump is and thus 
- get stuck in a loop} and then pop the stack.If the jump where to be empty the 
+ stack it where to return to the address where the subroutine jump is and thus
+ get stuck in a loop} and then pop the stack.If the jump where to be empty the
  VM should crash and an exception should be raised.\\
 
 
@@ -692,12 +692,12 @@ The \V+POP+ just pops the stack. I.e removing the top object.
 
 \subsubsection{Opcodes}
 Below a short summary of all the avliable opcodes will follow.\\
-\begin{tabular}{l || c | *{7}{c|} | r}     
+\begin{tabular}{l || c | *{7}{c|} | r}
 \textbf{Mnemonic} & \textbf{Description} & \x & \y& \s & \A &\ma & \mx & \my &
 Args
 \\
 \hline
-\V+NOP+ & No Operation & x & x & x & x & x & x & x & 0  \\ 
+\V+NOP+ & No Operation & x & x & x & x & x & x & x & 0  \\
 \hline
 \V+MOV+ & Move operations & b & b & b & r & b & b & b & 1 \\
 \hline
@@ -719,7 +719,7 @@ Args
 \V+XOR+ & Xor		& r & r & b & r & r & r & r & 2 \\
 \V+NOT+ & Not		& r & r & b & r & r & r & r & 2 \\
 \hline
-\V+JMP+ & Jump		& r & r & x & r & r & r & r & 1 \\ 
+\V+JMP+ & Jump		& r & r & x & r & r & r & r & 1 \\
 \V+BEQ+ & Jump Equal& r & r & r & r & r & r & r & 2 \\
 \V+BLE+ & Jump Less	& r & r & r & r & r & r & r & 2 \\
 \V+BGR+ & Jump Greater& r & r & r & r & r & r & r & 2 \\
@@ -780,7 +780,7 @@ Any non whitespace character can be used for names of labels and values.\\
 Each file has to start with a label.
 
 \subsubsection{Usage}
-\paragraph{General} \ 
+\paragraph{General} \
 \\
 One noteworthy thing to point out is the limitations on the arguments. Due to
 limitations in the VM only one ``none registry'' argument can be used for any
@@ -799,7 +799,7 @@ ADD $1 $10         This is valid
 ADD 1 $1           So is this
 \end{verbatim}
 
-\paragraph{Registers} \ 
+\paragraph{Registers} \
 \\
 The useage of the registers is pretty straight forward. One has to remeber that
 \V+q1+ and \V+q2+ are write only registers and that \V+s+ cant be used for
@@ -851,7 +851,7 @@ MOV x value
 % This stroes x in the address which is
 % stored at pointer
 MOV x $value
-% This adds one to the value stored at 
+% This adds one to the value stored at
 % pointer
 ADD $pointer 1
 % This adds one to the address of pointer
@@ -939,7 +939,7 @@ MOV 5 $y
 This code would change the 2 into a 5. But great care needs to be taken since
 one could easily end up outside of the ``array'' and corrupt the program.
 
-\paragraph{Values} \ 
+\paragraph{Values} \
 \\
 \emph{Value}s are far more straight forward than \emph{label}. One only has to
 take into account that what address a \emph{value} is given is somewhat
@@ -975,7 +975,7 @@ given to the operations appear as they would in the normal case. So \V+ADD x y+
 is x+y and \V+MOD x y+ is x mod y. All of these operations (except for \V+INC+
 and \V+DEC+) store their result on the stack.
 
-\subsection{Componets.sml description}
+\subsection{Components.sml description}
 Due to misscomunication a radicaly diffrent description of how the
 Components.sml file works was written and have been included here as an
 appendix.
@@ -985,7 +985,7 @@ The following structures and signatures are present in Components.sml are the
 Ram, Stack, Register and ProgramCounter.
 
 \subsubsection{The Ram structure}
-\paragraph{Synopsis} \ 
+\paragraph{Synopsis} \
 \\
 signature RAM\\
 structure Ram :\textgreater RAM\\
@@ -994,20 +994,20 @@ The Ram structure provides a base of the functions of a ram memory. This
 structure acts as something akin to a ``monad''. It hides all of the sidefects
 sued for the array handling.
 
-\paragraph{INTERFACE} \ 
+\paragraph{INTERFACE} \
 \\
     type memory = int array
-	\\val initialize : int $\rightarrow$ memory 							
- 	\\val getSize : (memory) $\rightarrow$ int 
-    \\val write :(memory * int * int ) $\rightarrow$ memory	  				
-	\\val read : (memory * int) $\rightarrow$ int							
-	\\val load : (memory* int list) $\rightarrow$ memory					
+	\\val initialize : int $\rightarrow$ memory
+ 	\\val getSize : (memory) $\rightarrow$ int
+    \\val write :(memory * int * int ) $\rightarrow$ memory
+	\\val read : (memory * int) $\rightarrow$ int
+	\\val load : (memory* int list) $\rightarrow$ memory
 	\\val writeChunk : (memory * int * (int array)) $\rightarrow$ memory
-	\\val readChunk : (memory * int * int) $\rightarrow$ int array			
+	\\val readChunk : (memory * int * int) $\rightarrow$ int array
 	\\val dump : memory $\rightarrow$ string
 \paragraph{Description} \
 \\
-val initialize : int $\rightarrow$ memory \\	
+val initialize : int $\rightarrow$ memory \\
 	Initialize the ram to a memory with the size of int, when int > 0
 \\
 val getSize : (memory) $\rightarrow$ int\\
@@ -1042,29 +1042,29 @@ The Stack structure provides a base for the stack part of the Pc structure.
 
 \paragraph{INTERFACE}\
 \\
-	datatype stack = Stack of (int list)\\	
+	datatype stack = Stack of (int list)\\
 	val empty : stack \\
-	val push : stack * int $\rightarrow$ stack\\					
-	val pop : stack $\rightarrow$ stack\\						
-	val top : stack $\rightarrow$ int\\						
-	val isEmpty : stack $\rightarrow$ bool \\						
-	val dumpStack : stack $\rightarrow$ string\\					 
-	
+	val push : stack * int $\rightarrow$ stack\\
+	val pop : stack $\rightarrow$ stack\\
+	val top : stack $\rightarrow$ int\\
+	val isEmpty : stack $\rightarrow$ bool \\
+	val dumpStack : stack $\rightarrow$ string\\
+
 \paragraph{Description}\
 \\
 	val empty : stack\\
 		is a definition of a empty Stack
 \\
-	val push : stack * int $\rightarrow$ stack\\					
+	val push : stack * int $\rightarrow$ stack\\
 		takes a stack and adds the value of int to the stack.
 \\
-	val pop : stack $\rightarrow$ stack	\\					
+	val pop : stack $\rightarrow$ stack	\\
 		takes a Stack and pops the first element of the stack.
 \\
-	val top : stack $\rightarrow$ int\\							
+	val top : stack $\rightarrow$ int\\
 		takes the stack and returns the first element of the stack
 \\
-	val isEmpty : stack $\rightarrow$ bool\\						
+	val isEmpty : stack $\rightarrow$ bool\\
 		takes a stack and checks if it is empty if it is then true else false.
 \\
 	val dumpStack : stack $\rightarrow$ string\\
@@ -1080,57 +1080,57 @@ The Register structure provides a base structure of the different register that
 is contained in the Pc as well the Virtual machine. The vm has two different registers.\\
 \paragraph{INTERFACE} \
 \\
-	datatype reg = Reg of int 
-\\	
-	val setData : (reg * int) $\rightarrow$ reg 				
-\\	val getData : reg $\rightarrow$ int						
-\\	val increment : reg $\rightarrow$ reg						
-\\	val decrement : reg $\rightarrow$ reg						
+	datatype reg = Reg of int
+\\
+	val setData : (reg * int) $\rightarrow$ reg
+\\	val getData : reg $\rightarrow$ int
+\\	val increment : reg $\rightarrow$ reg
+\\	val decrement : reg $\rightarrow$ reg
 \\	val dumpRegister : reg $\rightarrow$ string
-\paragraph{Description} \ 
+\paragraph{Description} \
 \\
 
 	val setData : (reg * int) $\rightarrow$ reg\\
 		Setups a new Register \\
 	val getData : reg $\rightarrow$ int	\\
-		Gets the value of the reg as an int\\					
-	val increment : reg $\rightarrow$ reg\\		
-		Takes a reg and increment it with one.\\	
-	val decrement : reg $\rightarrow$ reg\\					
+		Gets the value of the reg as an int\\
+	val increment : reg $\rightarrow$ reg\\
+		Takes a reg and increment it with one.\\
+	val decrement : reg $\rightarrow$ reg\\
 		Takes a reg and decrements it with one.\\
 	val dumpRegister : reg $\rightarrow$ string\\
 		Takes the register and adds all elements to a string.\\
 
 \subsubsection{The Program Counter structure}
-\paragraph{Synopsis} \ 
+\paragraph{Synopsis} \
 \\
 signature PROGRAM_COUNTER\\
 structure ProgramCounter :> PROGRAM_COUNTER\\
 \\
 The ProgramCounter structure controls the execution flow of the VM
 \\
-\paragraph{INTERFACE} \ 
+\paragraph{INTERFACE} \
 \\
 	datatype pc = Pc of (int * Stack.stack * Register.reg * Register.reg)
 \\
 	val incrementPointer : (pc * int) $\rightarrow$ pc\\
 	val jump : (pc * int) $\rightarrow$ pc\\
-	val subroutineJump : (pc * int) $\rightarrow$ pc\\ 						
-	val return : pc $\rightarrow$ pc\\	
+	val subroutineJump : (pc * int) $\rightarrow$ pc\\
+	val return : pc $\rightarrow$ pc\\
     val interrupt : (pc * int) $\rightarrow$ pc\\
     val dumpPc : pc $\rightarrow$ string\\
 \\
-\paragraph{Description} \ 
+\paragraph{Description} \
 \\
 	val incrementPointer : (pc * int) $\rightarrow$ pc\\
-		Takes a Pc and adds a int > 0\\							
+		Takes a Pc and adds a int > 0\\
 	val jump : (pc * int) $\rightarrow$ pc\\
 		Takes a Pc and jumps the pc counter to the value of int > 0\\
 	val subroutineJump : (pc * int) $\rightarrow$ pc\\
-		Takes a Pc and preforms SubrutineJump with the value of  int > 0 and adds the  value of the pointer + 1 to the stack\\						
+		Takes a Pc and preforms SubrutineJump with the value of  int > 0 and adds the  value of the pointer + 1 to the stack\\
 	val return : pc $\rightarrow$ pc\\
     	Takes a pc and gets the value from the pointer and pops the stack with the value\\
-	val interrupt : (pc * int) $\rightarrow$ pc\\							
+	val interrupt : (pc * int) $\rightarrow$ pc\\
 		if the value of a is 1 or 2, then the value of i is added to s\\
 	val dumpPc : pc $\rightarrow$ string\\
 		Takes a pc and dumps the content of the pc as a string (the Pc contained a pointer, Stack, and tow registers)\\

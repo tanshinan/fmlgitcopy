@@ -10,13 +10,15 @@ use "IO.sml";
 OS.FileSys.chDir(current_dir);
 use "Components.sml";
 
-(*
-	create the structures in the Components file before you start working on this.
-*)
+(*This signature is one of the core parts of the program*)
 signature VIRTUAL_MACHINE =
 sig
 	exception RUNTIME
-	(*DATATYPE*)
+	(*
+	DATATYPE CONVENTIONS: flag contains tree different flags and one special that we have an integer notation.
+	The flags are HALT, INTERRUPT and the int (the special flag), Overflow, Running
+	DATATYPE INVARIANTS: 
+	*)
 	datatype flag = HALT | INTERRUPT of int | OVERFLOW | RUNNING
 	datatype vm = Vm of (ProgramCounter.pc * Register.reg * Stack.stack * Register.reg * Register.reg * Ram.memory * flag)
 
@@ -31,7 +33,13 @@ end
 structure Vm :> VIRTUAL_MACHINE =
 struct
 	exception RUNTIME
-	(*DATATYPE*)
+	(*
+	DATATYPE CONVENTIONS: The datatype of flag is the same as in the previous case.'
+		the datatype vm(ProgramCounter.pc, Register.reg, Stack.stack, Register.reg ,Register.reg ,Ram.memory flag) contains program counter as the PC , 
+		Virtual Register that is for future use, a stack,the first general purpose register known as "x", the second general purpose register known as "Y", and a ram known as Memory and a flag.
+		All these types are listed in the order of use, and the stack use a FIFO structure.
+	DATATYPE INVARIANTS: If a incorrect use of this will break the wm- to one of the listed cases of flag
+	*)
 	datatype flag = HALT | INTERRUPT of int | OVERFLOW | RUNNING
 	datatype vm = Vm of (ProgramCounter.pc * Register.reg * Stack.stack * Register.reg * Register.reg * Ram.memory * flag)
 

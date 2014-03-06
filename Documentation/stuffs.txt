@@ -1,6 +1,40 @@
 
 Personal note,
 
+This project has been a learning experience, to be honest I have had a hard time keeping up with the other members of the group a lot of “new” ground has been covered  . I feel that it has been a mutual working environment lending a hand where I can. At a whole its been hard work to keep the pace to have something to hand in. I'm looking forward to presentation and the discussion about the project. Lets look on the workload I have had a supporting role in the group, and I have worked  closely with Aleksander, but the project lead has been Henrik it was his idea and the design of the base of the project is his doing .We have had at least a meeting a week and had contact via social media, texts and phone. The whole project has been managed via BitBucket and the version/change log, the depository was set up as privet for the duration of project. We all have access to it as well the TA who was allocated to us. All the work that has been done, has been  filed in files according to name in the ./projekplaning/dagboker
+
+The work,
+We have a divide in the amount of work that was done due to different time constraints e.g. one of the members of this project group was able to commit all his time to the project. And me and Aleksander have worked as a pair on parts of the project, where aleksander was manning the keyboard  and I was checking code and documentation online when we had problems with the code.
+
+As an conclusion of the Personal note,
+The complexities level on the project is average to high, depending what part of the project.
+It has been fun and challenging and at some times it feels like we took on to much work but we pulled throe, and was able to create one of the coolest thing I have had the privilege of working on. 
+Also it has been a privilege to work with these gentlemen.
+This file and including functions are the structures of the Registers, Stack, Ram and Program Counter, the functions are more specified in Appendix x.1.
+
+NEW----
+We have refrained to make examples for the functions due to the rudimentary nature of them and some that have a complexity that an example would make it indecipherable . And to go on to the case of  test cases for the whole program we have the running machine that will take a “program” and run it with a predictable result. So to conclude this section,  see the sections below 
+.---
+Register--
+
+Register is used in the implication for the wm as a register to save the values of x and y, to be able to handle all the different arithmetical operations. This is also used to create the IRQ registers in the Pc Data type.
+
+Stack--
+
+The stack handles the work progression with a LIFO structure (e.g Last In First Out)
+this is a  integer part of the program. In the sense where we store all the different OpCodes for the program that we are running on the vm.
+
+Ram--
+the ram memory works as a Random Access Memory, it is set at a size 
+at the start of the vm, and where we stores data in between operations. This structure is something we have so we can use the vm as a more conventional computer  
+
+Program_Counter--
+The program counter handles the pointer to the stack to see whats to be done, as well handles the IRQ registers, jumpstack as well the subrutin Jump that redirects the pointer back to the original jumpstack.///// New----This is the main function of the file all other functions are included in this structure.
+The encapsulated functions and the infrastructure of the the Program_Counter can be seen in the Appendix on Components.
+
+---OLD----------------------------------------------
+Personal note,
+
 This project has been a learning experience, to be honest I have had a hard time keeping up with the other 
 members of the group a lot of “new” ground has been covered  . I feel that it has been a mutual working environment
 lending a hand where I can. At a whole its been hard work to keep the pace to have something to hand in. 

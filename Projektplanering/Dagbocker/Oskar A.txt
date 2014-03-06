@@ -1,30 +1,51 @@
 
 2014-02-20
-Kontroll av kod samt genomläsning av spces samt skapade filer för loggnig av arbete, och planering samt flöde.
+
+Created Git Repository
+Checking and reading code, reading the specs on the assembler and creating folder and 
+file structure to keep a log of the work
+and a flow chart for the work to be done
+
 2014-02-23
 Reading the Specs and assembler code.
+
 2014-02-24
 meeting about the assembler part that is done and assigning the rest of the work to the rest of the group
 will start coding with the assigned part tomorrow  
+
 2014-02-25
-Coding the components with Alexander and creating the strucktors in ram as well some other things
+Coding the components with Alexander and creating the structors in ram as well some other things
+
 2014-02-26
 Coding the components with Alexander, done with implication of Stacks , Ram, and started with Program Counter
+
 2014-02-27
-Coding the components with Alexander, done with components and starting with the Vm implementation 
+Coding the components with Alexander, done with components and starting with the vm implementation 
+
 2014-02-02
-Reading thru new material
+Reading new material, checking some functions and reading documentation online about monads  
+
 2014-03-03
-Going thru the files and adding Functions Specs.
+Going thru the files and adding Functions Specs and Datatypes conventions .
+
 2014-03-04
 meeting with tobias to see progress and discussing the report and workload.
+
 2014-03-04
 kl~11
-coding with alexander to complete the vm
+coding with Alexander to complete the vm
 Writing documentation on the Components
+
 2014-03-05
 start 10:00
-reading and generateing Documents about Components
+reading and generating Documents about Components
 reading, drafts of rapport aswell as new code.
 Spawning on outline of Presentation
-contuiniun Writing documentation on the Components
+continuing Writing documentation on the Components
+end ~2200
+
+2014-03-06
+Start ~1100
+Finalizing documentation and Function commentary on components and wm.
+checking documentation, spells checking.
+end ~1745

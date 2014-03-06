@@ -172,6 +172,30 @@ I have had a supporting role in the group, and I have workt closely with Aleksan
  social media, sms and phone. The whole project has been managed with BitBucket
  as a private repository. We all have access to it as well the TA who was
  asigende to us.
+ 
+ \subsubsection{Aleksander Lundqvist}
+I joined this group by chance, they had just lost a member and I was looking for 
+a group during a break on a lecture. Now when we're about to reach the end of 
+the project I fully realize that I had no idea what I was getting myself into.
+And I'm very happy to have joined this group and to have worked on this crazy project.
+
+It's obvious that the workload of the project hasn't been equal between us. 
+Henrik wrote the specification for the project, the signatures we used to 
+create structures and the entire assembler, and has also been a great source 
+of help when we've been stuck or even just not fully understood his specifications. 
+Despite all that, we haven't been slacking off. This has been a huge project and has
+required quite a bit of studying up on things that have not been covered by the class,
+such as monads. When I finally got the monster of a function Vm.step to compile 
+I felt triumphant. 130 lines of code. That was amazing. It didn't matter that I 
+knew that it most likely was a buggy mess (this happened to be true), when it 
+compiled I felt like we actually would be able to finish the project, even if 
+not all features was implemented.
+
+I have done most of my work by pair-programming with Oskar.
+During this time it has mostly been my hands on the keyboard, 
+but having Oskar there to discuss with has been invaluable. 
+And when I've been bugfixing he has contributed to the documentation, 
+the part that is by far my weakest point in the project. 
 
 \section{The VM}
 Here is an informal description of the workings of the machine. For a more
@@ -285,7 +309,7 @@ Register is used in the implication for the VM as a
 register to save the values of x and y, to be able to
 handle all the different arithmetical operations. It can be increased or
 decrease by one.
-
+\section{Implementation}
 \subsubsection{Stack}
 %Yo oskar!
 %Det du har skrivit här om vad en stack är och hur den funkar är lite virrigt.
@@ -324,6 +348,76 @@ arguments are allowed for each operations and so forth.
 Since this structure was not propperly used in the VM implementation there are
 still some things left to write for it, such as a series of reverse lookup
 functions and checking for invalid instructions.
+
+\subsection{Datatypes used by VM}
+
+\subsubsection{flag}
+The flag is used to represent a part of the state in the VM. Flag decides if the VM is running, halted, interrupted or has overflown.
+
+\subsubsection{vm}
+vm is the state of the VM. It also works as a snapshot of the VM at any given time.
+
+\subsection{Functions used by VM}
+
+\subsubsection{init}
+init takes an (int list * int) as argument and initializes a VM. The RAM in the VM will have a size of the integer and with the tail of the int list loaded to start at the adress of the head of the list. The pointer and all register will be at 0 and stacks will be empty. The VM starts in a RUNNING state.
+
+\subsubsection{getCode}
+getCode can not be used outside of the Vm-structure.
+
+getCode takes an integer and returns it as a list of integers where the length of the list is the number of numbers in the integer. This is so later functions can more easily decode operations.
+
+\subsubsection{step}
+step takeopuu a VM and runs it one cycle if the VM is RUNNING, otherwise it returns the VM unaltered. It has a number of help functions.
+
+check5 and check4 checks the operation list to see if they are wellformed.
+
+isarg checks if either read or write is an argument to be declared on the next "line", that is, it checks if should move the pointer 1 or 2 steps.
+
+resolver and resolvew gets the values of the read and write argumentsop.
+
+step' does all the actual work; decodes operations, commits operations, makes calculations and returns the next state of the VM.
+
+\subsubsection{flagToString}
+flagToString can not be used outside of the Vm-structure
+
+It is used to convert flag to a string to be used in the dump-functions.
+
+\subsubsection{dumpToFile}
+Dumps the state of the VM to a text-file. The text is easily readable for easy debugging.
+
+\subsubsection{dump}
+Dumps the state of the VM as easily readable text in the prompt.
+
+\subsubsection{loop}
+Uses step recurively on a VM until the flag isn't RUNNING.
+
+\subsection{Work done by step}
+
+\subsubsection{Flowchart}
+A very simplified flowchart of the work done by step is included. The flowchart is simplified because a flowchart showing everything is unreadable.
+\\
+Step does not actually end the loop if the VM isn't running, it returns it unaltered. The loop function deals with the loop ending.
+\\
+The flowchart shows that the function checks if the instructions are valid at the start of each loop, that is not the case. Invalid functions can raise exceptions at several points in the cycle.
+\\
+The flowchart represents how the VM should work, not how it actually works. This is because certain features haven't been implemented. More on this in the section "Features yet to be implemented".
+\begin{figure}[H]
+\begin{centering}
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Flowchart_VM.png}
+\caption{Flowchart for the step function. See appendix for larger version.}
+\end{centering}
+\end{figure}
+
+\subsubsection{Features yet to be implemented}
+There are some features that are not yet implemented due to time constraints.
+\\
+Any attempt to use adresses in memory as a read or write to a function will raise an exception. That is, using integers 3-5 as read/write will crash the VM
+\\
+Use of IRQ registers as write will raise an exception. Using integers 6-7 as write will crash the VM.
+\\
+The logical operations AND, ORR, XOR and NOT will raise an exception. Using integers 6-9 to choose a logical operation will crash the VM.
+
 
 \section{Assembler}
 \subsection{General}
@@ -410,23 +504,6 @@ the number of values and labels in the code. This is a safe assumption for any
 resonably written code. We se no need to try to optimize the performance of the
 assembler.
 
-\subsection{Intermediate Structure}
-One of the most important parts of the assembler implementation is the
-\V+Intermediate+ structure and especialy the \V+Inter+ datatype. There might
-be some confusion regarding the \V+intermediate+ structure since it is a
-sml structure which describes an abstract structure.It is in this datatype that
-the tokenization of the code gets stored.
-It composed of thre major components. The first is the \V+label_list+ in wich all of the label
-declarations are stored. At first the address are set to \V+NONE+ this indicates
-that their addresses have not yet been resolved. The \V+value_list+ works in the
-same way as the \V+label_list+. Then we have the \V+token list+ wich is a list
-of tupels of the form \V+(label_name, offsett, token)+. The \V+label_name+ is
-the label wich is associated with the \V+token+. The assigned label will be the
-last label declared before the \V+token+ is encountered. The \V+offsett+ is an
-int corresponding to the distance from the assigned label that the token was
-encountered. \V+offsett+ is vital in the address resolution of the tokens.
-
-
 \subsubsection{Flow chart}
 Below a flow chart will folow for how the assembler the assembles the
 assembly code.
@@ -458,6 +535,24 @@ assembly code.
 \newpage
 We have not included a flowchart for the address resolution of the values or
 the finalization part since these are trivial.
+\subsection{Intermediate Structure}
+One of the most important parts of the assembler implementation is the
+\V+Intermediate+ structure and especialy the \V+Inter+ datatype. There might
+be some confusion regarding the \V+intermediate+ structure since it is a
+sml structure which describes an abstract structure.It is in this datatype that
+the tokenization of the code gets stored.
+It composed of thre major components. The first is the \V+label_list+ in wich all of the label
+declarations are stored. At first the address are set to \V+NONE+ this indicates
+that their addresses have not yet been resolved. The \V+value_list+ works in the
+same way as the \V+label_list+. Then we have the \V+token list+ wich is a list
+of tupels of the form \V+(label_name, offsett, token)+. The \V+label_name+ is
+the label wich is associated with the \V+token+. The assigned label will be the
+last label declared before the \V+token+ is encountered. The \V+offsett+ is an
+int corresponding to the distance from the assigned label that the token was
+encountered. \V+offsett+ is vital in the address resolution of the tokens.
+
+
+
 \subsection{Usage}
 To use the assembler propperly one has to know how to write assembly code and
 understand the detailed workings of the machine. We recomend studying both the
@@ -1134,8 +1229,13 @@ The ProgramCounter structure controls the execution flow of the VM
 		if the value of a is 1 or 2, then the value of i is added to s\\
 	val dumpPc : pc $\rightarrow$ string\\
 		Takes a pc and dumps the content of the pc as a string (the Pc contained a pointer, Stack, and tow registers)\\
-
-
+\subsection{Step funtion flowchart}
+\begin{figure}[H]
+\begin{centering}
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Flowchart_VM_rot.png}
+\caption{A larger version of the step flowchart.}
+\end{centering}
+\end{figure}
 
 
 \newpage

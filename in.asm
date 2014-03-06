@@ -1,16 +1,23 @@
+%
+% 	This is the assembly test code.
+% It is a little LCG random number generator
+%	  which pushes them on stack.
 #start
-MOV 10 s
+%mod
+%4326789
+%increment
+%336789
+%multiplier
+%254789
+%seed
+%3428
+MOV 3428 s
 #loop
-MOV 5 x
-ADD x s
-ADD 100 x
-DIV 2 s
-MOV 15 y
-SUB y x
-SUB x y
-MOV 5 x
-MOV 6 y
-EQL x y
-MOV 5 y
-EQL x y
-HLT
+MUL 5789 s
+ADD s 6789
+MOD s 56789
+MOV s y
+MOV y s 
+MOD y s
+MOV loop x
+JMP x

@@ -7,6 +7,8 @@
 	this when i first wrote the code.
 *)
 
+(*This ugly but it was the only workaround to 
+	read files from different directories*)
 val current_dir = OS.FileSys.getDir();
 OS.FileSys.chDir("Utills");
 use "OpcodeResolve.sml"; (*allso imports StringUtills.sml*)
@@ -16,6 +18,14 @@ OS.FileSys.chDir(current_dir);
 structure Assembler = 
 struct
 
+(*
+	REPRESENTATION CONVENTION:
+		Label is a lebel pointer
+		Value is a value pointer
+		NULL is no pointer.
+	REPRESENTATION INVARIANT:
+		If any of the int options are SOME(int) the pointer will have been resolved.
+*)
 	datatype pointer = Label of (string * (int option)) | Value of (string * (int option)) | NULL;
 	
 	(* 
@@ -79,7 +89,7 @@ struct
 	*)
 	fun getPointerName(Label(name,_)) = name
 	|getPointerName(Value(name,_)) = name
-	|getPointerName(NULL) = raise ASSEMBLER "Got NULL???\n"
+	|getPointerName(NULL) = raise ASSEMBLER "Got NULL?\n"
 	
 	(* getPointerAddress pointer
 		TYPE:	pointer -> int
@@ -89,7 +99,7 @@ struct
 	*)
 	fun getPointerAddress(Label(_,a)) = Option.valOf(a)
 	|getPointerAddress(Value(_,a)) = Option.valOf(a)
-	|getPointerAddress(_) = raise ASSEMBLER "Got NULL???\n"
+	|getPointerAddress(_) = raise ASSEMBLER "Got NULL?\n"
 	
 	 
 	(* setPointerAddress(pointer, address)
@@ -100,7 +110,7 @@ struct
 	*)
 	fun setPointerAddress(Label(name,_),a) = Label(name,SOME(a))
 	|setPointerAddress(Value(name,_),a) = Value(name,SOME(a))
-	|setPointerAddress(NULL,a) = raise ASSEMBLER "Got NULL???\n"
+	|setPointerAddress(NULL,a) = raise ASSEMBLER "Got NULL?\n"
 	
 		(*
 			Yes i know that this is ugly but life sucks without side-effects.
@@ -128,6 +138,7 @@ struct
 					No two (pointer_name,offsett,token) ahve the same pointer_name and offsett
  			*)
 			datatype inter = I of ((pointer list) * (pointer list) * ((string*int*token) list) * pointer * int)
+			
 			
 			val initial = I([],[],[],NULL,0)
 			
@@ -258,7 +269,6 @@ struct
 				in
 					printPretty(token_list)
 				end
-			
 		end
 	
 	val initial = Inter.initial
@@ -270,7 +280,12 @@ struct
 		POST:	Prints the token_list of the intermediate_structure in a nicely formatted fashion.
 	*)
 	fun dumpTokenList(i) = Inter.dumpTokenList(i)
-	
+	(*error (line_number, message,cause)
+		TYPE: int * string * string -> unit
+		PRE:	None
+		POST:	Prints a nicely formatted error message giving information about at what line
+					the error occured, a message regarding the type of the error and what caused the error.	
+	*)
 	fun error(line_number,message,cause) = "\nSYNTAX ERROR!\n" ^ message ^ " at line: " ^ Int.toString(line_number) ^ "\n"
 				^ "Caused by: "  ^ cause ^"\n"
 
@@ -366,9 +381,10 @@ struct
 
 					in
 						case expression of
+						(*NO ARGUMENT*)
+						[m] => 
+							Inter.addToken(i,Ic(Resolve.mnemonic(m)))
 						(*SINGLE ARGUMENT*)
-						[m] => Inter.addToken(i,Ic(Resolve.mnemonic(m)))
-						(*TWO ARGUMENTS*)
 						|[m,w] => 
 							let
 								val assert_argument = Resolve.isValidWrite(m,Resolve.write(w)) orelse  (print (error(l,"Forbidden write argument",line));raise SYNTAX "")
@@ -381,8 +397,7 @@ struct
 								else
 									Inter.addToken(instruction,Option.valOf(resolveToken(w)))
 							end
-						
-						(*THRE ARGUMENTS*)
+						(*TWO ARGUMENTS*)
 						|[m,r,w] => 
 							let
 								val assert_argument_write = Resolve.isValidWrite(m,Resolve.write(w)) orelse 
@@ -419,8 +434,6 @@ struct
 	fun scanList([],i,n) = i
 	|scanList(x::xs,i,n) =scanList(xs,scanLine(x,i,n),n+1)
 	handle Resolve.RESOLVE msg => (print (error(n,msg,x));raise ASSEMBLER "";i)
-	
-	
 	
 	(* duplicateSearch intermediate_structure
 		TYPE: Inter.inter -> unit
@@ -480,7 +493,6 @@ struct
 			val value_list = List.rev(Inter.getValueList(i))
 			val label_list = List.rev(Inter.getLabelList(i))
 			
-			
 			(* resolveLabels(label_list,token_list,current_label,current_address)
 				TYPE: pointer_list *  (string * int * token) * pointer * int -> pointer list
 				PRE:	Current label should be NULL at the start, current_address should be the base_address at start.
@@ -533,7 +545,8 @@ struct
 			
 			val pass1 = firstPass(resolved_labels,token_list)
 			
-			val max_address = #1(List.last(pass1)) + 1 (* Without the +1 the values would lie within the program.*)
+			(* Without the +1 the values would lie within the program.*)
+			val max_address = #1(List.last(pass1)) + 1
 			
 			(* resolveValues(value_list,address)
 				TYPE: pointer list * int -> pointer list

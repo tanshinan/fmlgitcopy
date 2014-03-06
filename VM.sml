@@ -1,5 +1,7 @@
 (* Yet to be implemented:
- * Registers as adresses for memory *)
+ * Logical operations AND, ORR, XOR, NOT
+ * Adresses for memory used as read/write
+ * IRQs as read/write *)
 
 val current_dir = OS.FileSys.getDir();
 OS.FileSys.chDir("Utills");
@@ -112,11 +114,11 @@ struct
 						(case w of 
 						0 => (Vm(ProgramCounter.incrementPointer(p, 1), ro, stack2, rx, ry, ram, fl))
 						| _ => (Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, (if r = 2 then Stack.pop(stack2) else stack2), Register.Reg(resolver(r)), ry, ram, fl)))
-						| 2 => if ((r > 6 orelse r < 0) orelse (hd(rs) > 7 orelse hd(rs) < 0)) then raise RUNTIME else
+					| 2 => if ((r > 6 orelse r < 0) orelse (hd(rs) > 7 orelse hd(rs) < 0)) then raise RUNTIME else
 						(case w of 1 => 
 								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, (if r = 2 then Stack.pop(stack2) else stack2), rx, Register.Reg(resolver(r)), ram, fl))
 						| 2 => 
-								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push((if r=2 then Stack.pop(stack2) else stack2), resolver(r)), rx, ry, ram, fl))
+								(Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push((if r=2 then raise RUNTIME else stack2), resolver(r)), rx, ry, ram, fl))
 						(* fix more later *)
 						| _ => raise RUNTIME )
 					| 3 => if ((r > 6 orelse r < 0) orelse (hd(rs) > 8 orelse hd(rs) < 0)) then raise RUNTIME else
@@ -184,8 +186,7 @@ struct
 						| 2 => if Stack.isEmpty (stack2) then
 					(Vm(ProgramCounter.incrementPointer(p, 1), ro, Stack.push(stack2,1), rx, ry, ram, fl)) else
 					(Vm(ProgramCounter.incrementPointer(p, 1), ro, Stack.push(stack2,0), rx, ry, ram, fl))
-						| 3 => (Vm(ProgramCounter.incrementPointer(p,1), ro,
-				Stack.pop(stack2), rx, ry, ram, fl))
+						| 3 => (Vm(ProgramCounter.incrementPointer(p,1), ro, Stack.pop(stack2), rx, ry, ram, fl))
 						| _ => raise RUNTIME)
 							else raise RUNTIME
 					| _ => raise RUNTIME 

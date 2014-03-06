@@ -1,16 +1,19 @@
 \relax 
-\ifx\hyper@anchor\@undefined
-\global \let \oldcontentsline\contentsline
-\gdef \contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
-\global \let \oldnewlabel\newlabel
-\gdef \newlabel#1#2{\newlabelxx{#1}#2}
-\gdef \newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
-\AtEndDocument{\let \contentsline\oldcontentsline
-\let \newlabel\oldnewlabel}
-\else
-\global \let \hyper@last\relax 
-\fi
-
+\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
+\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldcontentsline\contentsline
+\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
+\global\let\oldnewlabel\newlabel
+\gdef\newlabel#1#2{\newlabelxx{#1}#2}
+\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\contentsline\oldcontentsline
+\let\newlabel\oldnewlabel
+\fi}
+\fi}
+\global\let\hyper@last\relax 
+\gdef\HyperFirstAtBeginDocument#1{#1}
+\providecommand\HyField@AuxAddToFields[1]{}
 \citation{Virtual}
 \citation{risc}
 \citation{neuman}
@@ -23,88 +26,108 @@
 \citation{git}
 \citation{bitbucket}
 \citation{pure}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Our work}{4}{section.1}}
 \citation{7400}
-\@writefile{toc}{\contentsline {section}{\numberline {1}Our work}{3}{section.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Personal notes}{3}{subsection.1.1}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.1.1}Henrik Sommerland}{3}{subsubsection.1.1.1}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.1.2}Oskar Ahlberg}{4}{subsubsection.1.1.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Personal notes}{5}{subsection.1.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.1.1}Henrik Sommerland}{5}{subsubsection.1.1.1}}
 \citation{neuman}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.1.2}Oskar Ahlberg}{6}{subsubsection.1.1.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.1.3}Aleksander Lundqvist}{6}{subsubsection.1.1.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}The VM}{6}{section.2}}
 \citation{bus}
 \citation{register}
-\@writefile{toc}{\contentsline {section}{\numberline {2}The VM}{5}{section.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}General}{5}{subsection.2.1}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Dataflow diagram of the FML machine}}{5}{figure.1}}
 \citation{irq}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}General}{7}{subsection.2.1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Dataflow diagram of the FML machine}}{7}{figure.1}}
 \citation{alu}
 \citation{ISA}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.1}Instruction Set Architecture}{6}{subsubsection.2.1.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.1}Instruction Set Architecture}{8}{subsubsection.2.1.1}}
 \citation{lifo}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}The components}{7}{subsection.2.2}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.1}Register}{7}{subsubsection.2.2.1}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.2}Stack}{7}{subsubsection.2.2.2}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.3}Ram}{7}{subsubsection.2.2.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}The components}{9}{subsection.2.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.1}Register}{9}{subsubsection.2.2.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Implementation}{9}{section.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.0.2}Stack}{9}{subsubsection.3.0.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.0.3}Ram}{9}{subsubsection.3.0.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.0.4}Program Counter}{9}{subsubsection.3.0.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Utillities}{10}{section.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Datatypes used by VM}{10}{subsection.4.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.1}flag}{10}{subsubsection.4.1.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.2}vm}{10}{subsubsection.4.1.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Functions used by VM}{10}{subsection.4.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}init}{10}{subsubsection.4.2.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}getCode}{10}{subsubsection.4.2.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.3}step}{11}{subsubsection.4.2.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.4}flagToString}{11}{subsubsection.4.2.4}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.5}dumpToFile}{11}{subsubsection.4.2.5}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.6}dump}{11}{subsubsection.4.2.6}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.7}loop}{11}{subsubsection.4.2.7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Work done by step}{11}{subsection.4.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}Flowchart}{11}{subsubsection.4.3.1}}
 \citation{tasm}
 \citation{c64}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.4}Program Counter}{8}{subsubsection.2.2.4}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Utillities}{8}{section.3}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Assembler}{8}{section.4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}General}{8}{subsection.4.1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Flowchart for the step function. See appendix for larger version.}}{12}{figure.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.2}Features yet to be implemented}{12}{subsubsection.4.3.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Assembler}{12}{section.5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}General}{12}{subsection.5.1}}
 \citation{lexi}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Implementation}{9}{subsection.4.2}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}General}{9}{subsubsection.4.2.1}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}Flow chart}{10}{subsubsection.4.2.2}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Dataflow diagram of the assembler}}{11}{figure.2}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Dataflow diagram of the tokenization phase}}{12}{figure.3}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Dataflow diagram of the label address resolution}}{13}{figure.4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Usage}{14}{subsection.4.3}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Summary}{14}{section.5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Work to be done}{14}{subsection.5.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Highlights}{14}{subsection.5.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Appendix}{15}{section.6}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}VM specifications}{15}{subsection.6.1}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.1}Structure}{15}{subsubsection.6.1.1}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.1.1.1}The general purpose registers}{15}{paragraph.6.1.1.1}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.1.1.2}The stack}{15}{paragraph.6.1.1.2}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.1.1.3}The Argument Register}{15}{paragraph.6.1.1.3}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.1.1.4}The Jump Stack}{15}{paragraph.6.1.1.4}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.1.1.5}The IRQ registers}{16}{paragraph.6.1.1.5}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.1.1.6}RAM}{16}{paragraph.6.1.1.6}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.2}ISA}{16}{subsubsection.6.1.2}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.3}Instruction types}{17}{subsubsection.6.1.3}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.1.3.1}Move operations}{17}{paragraph.6.1.3.1}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.1.3.2}Arithmetic operations}{17}{paragraph.6.1.3.2}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.1.3.3}Logic operations}{17}{paragraph.6.1.3.3}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.1.3.4}Jump operations}{18}{paragraph.6.1.3.4}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.1.3.5}Special}{18}{paragraph.6.1.3.5}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.4}Opcodes}{19}{subsubsection.6.1.4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Assembler usage guide}{19}{subsection.6.2}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.1}Syntax}{19}{subsubsection.6.2.1}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.2}Usage}{20}{subsubsection.6.2.2}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.2.2.1}General}{20}{paragraph.6.2.2.1}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.2.2.2}Registers}{20}{paragraph.6.2.2.2}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.2.2.3}Pointers}{21}{paragraph.6.2.2.3}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.2.2.4}Labels}{22}{paragraph.6.2.2.4}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.2.2.5}Values}{23}{paragraph.6.2.2.5}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.2.2.6}Jumping}{23}{paragraph.6.2.2.6}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.2.2.7}Arithmetic and logic operations}{24}{paragraph.6.2.2.7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Componets.sml description}{24}{subsection.6.3}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.3.1}Introduction}{24}{subsubsection.6.3.1}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.3.2}The Ram structure}{24}{subsubsection.6.3.2}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.3.2.1}Synopsis}{24}{paragraph.6.3.2.1}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.3.2.2}INTERFACE}{24}{paragraph.6.3.2.2}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.3.2.3}Description}{24}{paragraph.6.3.2.3}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.3.3}The Stack structure}{25}{subsubsection.6.3.3}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.3.3.1}Synopsis}{25}{paragraph.6.3.3.1}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.3.3.2}INTERFACE}{25}{paragraph.6.3.3.2}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.3.3.3}Description}{25}{paragraph.6.3.3.3}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.3.4}The Register structure}{26}{subsubsection.6.3.4}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.3.4.1}Synopsis}{26}{paragraph.6.3.4.1}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.3.4.2}INTERFACE}{26}{paragraph.6.3.4.2}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.3.4.3}Description}{26}{paragraph.6.3.4.3}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.3.5}The Program Counter structure}{26}{subsubsection.6.3.5}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.3.5.1}Synopsis}{26}{paragraph.6.3.5.1}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.3.5.2}INTERFACE}{26}{paragraph.6.3.5.2}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {6.3.5.3}Description}{27}{paragraph.6.3.5.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Implementation}{13}{subsection.5.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.1}General}{13}{subsubsection.5.2.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.2}Flow chart}{14}{subsubsection.5.2.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Dataflow diagram of the assembler}}{15}{figure.3}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Dataflow diagram of the tokenization phase}}{16}{figure.4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Dataflow diagram of the label address resolution}}{17}{figure.5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Intermediate Structure}{18}{subsection.5.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Usage}{18}{subsection.5.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Summary}{18}{section.6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Work to be done}{19}{subsection.6.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Highlights}{19}{subsection.6.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Appendix}{19}{section.7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}VM specifications}{19}{subsection.7.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.1.1}Structure}{19}{subsubsection.7.1.1}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.1.1.1}The general purpose registers}{19}{paragraph.7.1.1.1}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.1.1.2}The stack}{19}{paragraph.7.1.1.2}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.1.1.3}The Argument Register}{20}{paragraph.7.1.1.3}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.1.1.4}The Jump Stack}{20}{paragraph.7.1.1.4}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.1.1.5}The IRQ registers}{20}{paragraph.7.1.1.5}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.1.1.6}RAM}{20}{paragraph.7.1.1.6}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.1.2}ISA}{20}{subsubsection.7.1.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.1.3}Instruction types}{22}{subsubsection.7.1.3}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.1.3.1}Move operations}{22}{paragraph.7.1.3.1}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.1.3.2}Arithmetic operations}{22}{paragraph.7.1.3.2}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.1.3.3}Logic operations}{22}{paragraph.7.1.3.3}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.1.3.4}Jump operations}{23}{paragraph.7.1.3.4}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.1.3.5}Special}{23}{paragraph.7.1.3.5}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.1.4}Opcodes}{24}{subsubsection.7.1.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Assembler usage guide}{24}{subsection.7.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.2.1}Syntax}{24}{subsubsection.7.2.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.2.2}Usage}{25}{subsubsection.7.2.2}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.2.2.1}General}{25}{paragraph.7.2.2.1}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.2.2.2}Registers}{25}{paragraph.7.2.2.2}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.2.2.3}Pointers}{26}{paragraph.7.2.2.3}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.2.2.4}Labels}{27}{paragraph.7.2.2.4}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.2.2.5}Values}{28}{paragraph.7.2.2.5}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.2.2.6}Jumping}{28}{paragraph.7.2.2.6}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.2.2.7}Arithmetic and logic operations}{29}{paragraph.7.2.2.7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Components.sml description}{29}{subsection.7.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.1}Introduction}{29}{subsubsection.7.3.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.2}The Ram structure}{29}{subsubsection.7.3.2}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.3.2.1}Synopsis}{29}{paragraph.7.3.2.1}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.3.2.2}INTERFACE}{29}{paragraph.7.3.2.2}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.3.2.3}Description}{29}{paragraph.7.3.2.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.3}The Stack structure}{30}{subsubsection.7.3.3}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.3.3.1}Synopsis}{30}{paragraph.7.3.3.1}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.3.3.2}INTERFACE}{30}{paragraph.7.3.3.2}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.3.3.3}Description}{30}{paragraph.7.3.3.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.4}The Register structure}{31}{subsubsection.7.3.4}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.3.4.1}Synopsis}{31}{paragraph.7.3.4.1}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.3.4.2}INTERFACE}{31}{paragraph.7.3.4.2}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.3.4.3}Description}{31}{paragraph.7.3.4.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.5}The Program Counter structure}{31}{subsubsection.7.3.5}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.3.5.1}Synopsis}{31}{paragraph.7.3.5.1}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.3.5.2}INTERFACE}{31}{paragraph.7.3.5.2}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.3.5.3}Description}{32}{paragraph.7.3.5.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Step funtion flowchart}{34}{subsection.7.4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces A larger version of the step flowchart.}}{34}{figure.6}}
 \bibcite{Virtual}{1}
 \bibcite{risc}{2}
 \bibcite{6510}{3}

@@ -1,37 +1,55 @@
-\BOOKMARK [1][-]{section.1}{Our work}{}
-\BOOKMARK [2][-]{subsection.1.1}{Personal notes}{section.1}
-\BOOKMARK [3][-]{subsubsection.1.1.1}{Henrik Sommerland}{subsection.1.1}
-\BOOKMARK [3][-]{subsubsection.1.1.2}{Oskar Ahlberg}{subsection.1.1}
-\BOOKMARK [1][-]{section.2}{The VM}{}
-\BOOKMARK [2][-]{subsection.2.1}{General}{section.2}
-\BOOKMARK [3][-]{subsubsection.2.1.1}{Instruction Set Architecture}{subsection.2.1}
-\BOOKMARK [2][-]{subsection.2.2}{The components}{section.2}
-\BOOKMARK [3][-]{subsubsection.2.2.1}{Register}{subsection.2.2}
-\BOOKMARK [3][-]{subsubsection.2.2.2}{Stack}{subsection.2.2}
-\BOOKMARK [3][-]{subsubsection.2.2.3}{Ram}{subsection.2.2}
-\BOOKMARK [3][-]{subsubsection.2.2.4}{Program Counter}{subsection.2.2}
-\BOOKMARK [1][-]{section.3}{Utillities}{}
-\BOOKMARK [1][-]{section.4}{Assembler}{}
-\BOOKMARK [2][-]{subsection.4.1}{General}{section.4}
-\BOOKMARK [2][-]{subsection.4.2}{Implementation}{section.4}
-\BOOKMARK [3][-]{subsubsection.4.2.1}{General}{subsection.4.2}
-\BOOKMARK [3][-]{subsubsection.4.2.2}{Flow chart}{subsection.4.2}
-\BOOKMARK [2][-]{subsection.4.3}{Usage}{section.4}
-\BOOKMARK [1][-]{section.5}{Summary}{}
-\BOOKMARK [2][-]{subsection.5.1}{Work to be done}{section.5}
-\BOOKMARK [2][-]{subsection.5.2}{Highlights}{section.5}
-\BOOKMARK [1][-]{section.6}{Appendix}{}
-\BOOKMARK [2][-]{subsection.6.1}{VM specifications}{section.6}
-\BOOKMARK [3][-]{subsubsection.6.1.1}{Structure}{subsection.6.1}
-\BOOKMARK [3][-]{subsubsection.6.1.2}{ISA}{subsection.6.1}
-\BOOKMARK [3][-]{subsubsection.6.1.3}{Instruction types}{subsection.6.1}
-\BOOKMARK [3][-]{subsubsection.6.1.4}{Opcodes}{subsection.6.1}
-\BOOKMARK [2][-]{subsection.6.2}{Assembler usage guide}{section.6}
-\BOOKMARK [3][-]{subsubsection.6.2.1}{Syntax}{subsection.6.2}
-\BOOKMARK [3][-]{subsubsection.6.2.2}{Usage}{subsection.6.2}
-\BOOKMARK [2][-]{subsection.6.3}{Componets.sml description}{section.6}
-\BOOKMARK [3][-]{subsubsection.6.3.1}{Introduction}{subsection.6.3}
-\BOOKMARK [3][-]{subsubsection.6.3.2}{The Ram structure}{subsection.6.3}
-\BOOKMARK [3][-]{subsubsection.6.3.3}{The Stack structure}{subsection.6.3}
-\BOOKMARK [3][-]{subsubsection.6.3.4}{The Register structure}{subsection.6.3}
-\BOOKMARK [3][-]{subsubsection.6.3.5}{The Program Counter structure}{subsection.6.3}
+\BOOKMARK [1][-]{section.1}{Our work}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Personal notes}{section.1}% 2
+\BOOKMARK [3][-]{subsubsection.1.1.1}{Henrik Sommerland}{subsection.1.1}% 3
+\BOOKMARK [3][-]{subsubsection.1.1.2}{Oskar Ahlberg}{subsection.1.1}% 4
+\BOOKMARK [3][-]{subsubsection.1.1.3}{Aleksander Lundqvist}{subsection.1.1}% 5
+\BOOKMARK [1][-]{section.2}{The VM}{}% 6
+\BOOKMARK [2][-]{subsection.2.1}{General}{section.2}% 7
+\BOOKMARK [3][-]{subsubsection.2.1.1}{Instruction Set Architecture}{subsection.2.1}% 8
+\BOOKMARK [2][-]{subsection.2.2}{The components}{section.2}% 9
+\BOOKMARK [3][-]{subsubsection.2.2.1}{Register}{subsection.2.2}% 10
+\BOOKMARK [1][-]{section.3}{Implementation}{}% 11
+\BOOKMARK [2][-]{subsubsection.3.0.2}{Stack}{section.3}% 12
+\BOOKMARK [3][-]{subsubsection.3.0.3}{Ram}{subsubsection.3.0.2}% 13
+\BOOKMARK [3][-]{subsubsection.3.0.4}{Program Counter}{subsubsection.3.0.2}% 14
+\BOOKMARK [1][-]{section.4}{Utillities}{}% 15
+\BOOKMARK [2][-]{subsection.4.1}{Datatypes used by VM}{section.4}% 16
+\BOOKMARK [3][-]{subsubsection.4.1.1}{flag}{subsection.4.1}% 17
+\BOOKMARK [3][-]{subsubsection.4.1.2}{vm}{subsection.4.1}% 18
+\BOOKMARK [2][-]{subsection.4.2}{Functions used by VM}{section.4}% 19
+\BOOKMARK [3][-]{subsubsection.4.2.1}{init}{subsection.4.2}% 20
+\BOOKMARK [3][-]{subsubsection.4.2.2}{getCode}{subsection.4.2}% 21
+\BOOKMARK [3][-]{subsubsection.4.2.3}{step}{subsection.4.2}% 22
+\BOOKMARK [3][-]{subsubsection.4.2.4}{flagToString}{subsection.4.2}% 23
+\BOOKMARK [3][-]{subsubsection.4.2.5}{dumpToFile}{subsection.4.2}% 24
+\BOOKMARK [3][-]{subsubsection.4.2.6}{dump}{subsection.4.2}% 25
+\BOOKMARK [3][-]{subsubsection.4.2.7}{loop}{subsection.4.2}% 26
+\BOOKMARK [2][-]{subsection.4.3}{Work done by step}{section.4}% 27
+\BOOKMARK [3][-]{subsubsection.4.3.1}{Flowchart}{subsection.4.3}% 28
+\BOOKMARK [3][-]{subsubsection.4.3.2}{Features yet to be implemented}{subsection.4.3}% 29
+\BOOKMARK [1][-]{section.5}{Assembler}{}% 30
+\BOOKMARK [2][-]{subsection.5.1}{General}{section.5}% 31
+\BOOKMARK [2][-]{subsection.5.2}{Implementation}{section.5}% 32
+\BOOKMARK [3][-]{subsubsection.5.2.1}{General}{subsection.5.2}% 33
+\BOOKMARK [3][-]{subsubsection.5.2.2}{Flow chart}{subsection.5.2}% 34
+\BOOKMARK [2][-]{subsection.5.3}{Intermediate Structure}{section.5}% 35
+\BOOKMARK [2][-]{subsection.5.4}{Usage}{section.5}% 36
+\BOOKMARK [1][-]{section.6}{Summary}{}% 37
+\BOOKMARK [2][-]{subsection.6.1}{Work to be done}{section.6}% 38
+\BOOKMARK [2][-]{subsection.6.2}{Highlights}{section.6}% 39
+\BOOKMARK [1][-]{section.7}{Appendix}{}% 40
+\BOOKMARK [2][-]{subsection.7.1}{VM specifications}{section.7}% 41
+\BOOKMARK [3][-]{subsubsection.7.1.1}{Structure}{subsection.7.1}% 42
+\BOOKMARK [3][-]{subsubsection.7.1.2}{ISA}{subsection.7.1}% 43
+\BOOKMARK [3][-]{subsubsection.7.1.3}{Instruction types}{subsection.7.1}% 44
+\BOOKMARK [3][-]{subsubsection.7.1.4}{Opcodes}{subsection.7.1}% 45
+\BOOKMARK [2][-]{subsection.7.2}{Assembler usage guide}{section.7}% 46
+\BOOKMARK [3][-]{subsubsection.7.2.1}{Syntax}{subsection.7.2}% 47
+\BOOKMARK [3][-]{subsubsection.7.2.2}{Usage}{subsection.7.2}% 48
+\BOOKMARK [2][-]{subsection.7.3}{Components.sml description}{section.7}% 49
+\BOOKMARK [3][-]{subsubsection.7.3.1}{Introduction}{subsection.7.3}% 50
+\BOOKMARK [3][-]{subsubsection.7.3.2}{The Ram structure}{subsection.7.3}% 51
+\BOOKMARK [3][-]{subsubsection.7.3.3}{The Stack structure}{subsection.7.3}% 52
+\BOOKMARK [3][-]{subsubsection.7.3.4}{The Register structure}{subsection.7.3}% 53
+\BOOKMARK [3][-]{subsubsection.7.3.5}{The Program Counter structure}{subsection.7.3}% 54
+\BOOKMARK [2][-]{subsection.7.4}{Step funtion flowchart}{section.7}% 55

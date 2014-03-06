@@ -53,7 +53,11 @@ This is the structures of the register. Where we assign the functions for the si
 structure Register :> REGISTER=
 struct
 	exception REGISTER
-(*DATATYPE*)
+
+(*
+DATATYPE CONVENTIONS: Where reg is an int 
+DATATYPE INVARIANTS: Register can only take ints
+*)
 	datatype reg = Reg of int
 	(*
 		setData
@@ -108,7 +112,12 @@ This is the functions of the stack signatures
 structure Stack :> STACK=
 struct
 	exception STACK of string
-(*------------------------DATATYPE------------------------*)
+
+(*
+DATATYPE CONVENTIONS: Stack is a int list, but only the fist element can be manipulated   
+DATATYPE INVARIANTS: none
+*)
+
 	datatype stack = Stack of (int list)
 (* assigns empty to a Stack *)
 	val empty = Stack([])
@@ -271,11 +280,6 @@ end
 
 
 (*
-	You cant really start working on this until the Register and Stack structures are completed.
-	You should choose how to implement
-*)
-
-(*
 This is the description of the PROGRAM_COUNTER
 *)
 
@@ -285,7 +289,7 @@ sig
 	datatype pc = Pc of (int * Stack.stack * Register.reg * Register.reg)	(*pointer, jump stack,  IRQ1, IRQ2*)
 	val incrementPointer : (pc * int) -> pc									(*increments the pointer by an arbitrary integer*)
 	val jump : (pc * int) -> pc												(*changes the pointer*)
-	val subroutineJump : (pc * int * int) -> pc									(*performs a subroutine jump*)
+	val subroutineJump : (pc * int * int) -> pc								(*performs a subroutine jump*)
 	val return : pc -> pc													(*returns from subroutine jump*)
 	val interrupt : (pc * int) -> pc										(*performs an interrupt jump. The integer specifies wich IRQ register to be used. *)
 	val dumpPc : pc -> string
@@ -299,7 +303,12 @@ This is the functions of the PROGRAM_COUNTER signatures
 structure ProgramCounter :> PROGRAM_COUNTER =
 struct
 	exception COUNTER of string
-(*------------------DATATYPE---------------*)
+(*
+DATATYPE CONVENTIONS:  Pc (i, stack,irq1,irq2), where i is an integer that handles as a pointer, 
+Stack as the Stack data type above and irq 1 and 2 is of data type register
+DATATYPE INVARIANTS: This data type is restrictive to the cases above. 
+*)
+
 	datatype pc = Pc of (int * Stack.stack * Register.reg * Register.reg)
 (*
 	(*

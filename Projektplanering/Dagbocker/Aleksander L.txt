@@ -44,3 +44,6 @@ Documentation work
 
 2014-03-06, 11:30-14:30
 Some documentation work, cleaning of code, fix of some function declarations
+
+2014-03-06, 16:00-17:10
+Spellchecking, last documentation work, finding bugs in the last minute

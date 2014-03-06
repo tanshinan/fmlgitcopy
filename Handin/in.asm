@@ -2,6 +2,11 @@
 % 	This is the assembly test code.
 % It is a little LCG random number generator
 %	  which pushes them on stack.
+%
+%   Its nearly impossible to write useful
+%   code right now due to bugs in the VM
+%   implementation.
+%   This will be fixed later
 #start
 %mod
 %4326789
@@ -21,3 +26,4 @@ MOV y s
 MOV y s
 MOV loop x
 JMP x
+

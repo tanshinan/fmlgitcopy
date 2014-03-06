@@ -30,7 +30,7 @@
 
 \begin{document}
 \maketitle
-%\textsuperscript{\cite{}}
+\textsuperscript{\cite{}}
 \begin{abstract}
 For our project we have decided to build a virtual 
 machine(VM)\textsuperscript{\cite{Virtual}} in SML.
@@ -74,7 +74,16 @@ VM.
 
 We have not been using any form of unit testing. But instead we have done a
 series of more and more complicated online tests. This due to the scale and the
-complexity of the various funtions and algorithms of the project.
+complexity of the various funtions and algorithms of the project. We have allso
+tried to write defensive code. This reduces the need for testing since errors
+are catched at runtime and a usefull error message gets printed. For the more
+complicated parts of the program this allso minimizes the risk of errors
+proppagating troughout the code since they will be catched early. But offcourse
+there will still be bugs present which might be hard to catch. This is
+especially the case in this project due to its complexity. it is very difficult
+to write automated tests wich gives full code coverage for this kind of project
+and besides there is no waterproof testing framework. Some bugs will allways
+find there way trough the tests and have to be detected trough online testing.
 
 We have continously have meetings both with just us in the group and also some
 with our assigned TA\footnote{Our TA has during this project been Tobias Neil}.
@@ -400,6 +409,23 @@ code. This is under the assumption that the number of lines are far greater than
 the number of values and labels in the code. This is a safe assumption for any
 resonably written code. We se no need to try to optimize the performance of the
 assembler.
+
+\subsection{Intermediate Structure}
+One of the most important parts of the assembler implementation is the
+\V+Intermediate+ structure and especialy the \V+Inter+ datatype. There might
+be some confusion regarding the \V+intermediate+ structure since it is a
+sml structure which describes an abstract structure.It is in this datatype that
+the tokenization of the code gets stored.
+It composed of thre major components. The first is the \V+label_list+ in wich all of the label
+declarations are stored. At first the address are set to \V+NONE+ this indicates
+that their addresses have not yet been resolved. The \V+value_list+ works in the
+same way as the \V+label_list+. Then we have the \V+token list+ wich is a list
+of tupels of the form \V+(label_name, offsett, token)+. The \V+label_name+ is
+the label wich is associated with the \V+token+. The assigned label will be the
+last label declared before the \V+token+ is encountered. The \V+offsett+ is an
+int corresponding to the distance from the assigned label that the token was
+encountered. \V+offsett+ is vital in the address resolution of the tokens.
+
 
 \subsubsection{Flow chart}
 Below a flow chart will folow for how the assembler the assembles the
@@ -1048,7 +1074,7 @@ The Stack structure provides a base for the stack part of the Pc structure.
 \paragraph{Synopsis} \
 \\
 signature REGISTER\\
-structure Register :\textgreater REGISTER\\
+structure Register :> REGISTER\\
 \\
 The Register structure provides a base structure of the different register that
 is contained in the Pc as well the Virtual machine. The vm has two different registers.\\
@@ -1078,8 +1104,8 @@ is contained in the Pc as well the Virtual machine. The vm has two different reg
 \subsubsection{The Program Counter structure}
 \paragraph{Synopsis} \ 
 \\
-signature PROGRAM\textunderscore COUNTER\\
-structure ProgramCounter :\textgreater PROGRAM\textunderscore COUNTER\\
+signature PROGRAM_COUNTER\\
+structure ProgramCounter :> PROGRAM_COUNTER\\
 \\
 The ProgramCounter structure controls the execution flow of the VM
 \\

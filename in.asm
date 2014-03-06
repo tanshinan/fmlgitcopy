@@ -13,4 +13,6 @@ MOV 6 y
 EQL x y
 MOV 5 y
 EQL x y
+MOV 0 x
+JMP x
 HLT

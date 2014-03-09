@@ -7,7 +7,6 @@
 
 (* Yet to be implemented:
  * Logical operations AND, ORR, XOR, NOT
- * Adresses for memory used as read/write
  * IRQs as read/write *)
 
 val current_dir = OS.FileSys.getDir();
@@ -141,7 +140,7 @@ struct
 									| _ => r < 0 orelse r > 6 orelse hd(rs) < 0 orelse hd(rs) > 8 orelse (r=2 andalso hd(rs)=2) orelse ((r=6 orelse r=5) andalso (hd(rs)=8 orelse hd(rs)=5))
 			fun sing (d) = case d of 0 => (Vm(ProgramCounter.incrementPointer(p, 1), ro, stack2, rx, ry, ram, fl))
 						| _ => move (0::[d])
-			and move (d::ds) = case d of 
+			and move (d::ds) = case d of
 						0 => (Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, (if r=2 then Stack.pop(stack2) else stack2), Register.Reg(resolver(r)), ry, ram, fl))
 						| 1 => (Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, (if r=2 then Stack.pop(stack2) else stack2), rx, Register.Reg(resolver(r)), ram, fl))
 						| 2 => (Vm(ProgramCounter.incrementPointer(p, isarg(revd)), ro, Stack.push(stack2, resolver(r)), rx, ry, ram, fl))
@@ -184,7 +183,7 @@ struct
 						(*more later*)
 						| _ => raise RUNTIME
 			fun jmp (d::ds) = case d of 1 =>
-				(Vm(ProgramCounter.jump(p, resolver(r)), ro, stack2, rx, ry, ram, fl))
+				(Vm(ProgramCounter.jump(p, resolver(r)), ro, (if r=2 then Stack.pop(stack2) else stack2), rx, ry, ram, fl))
 						| 2 =>
 				(Vm(ProgramCounter.incrementPointer(p, isarg(revd) + (if resolvew(hd(rs)) = resolver(r) then 1 else 0)), ro, (if r=2 orelse hd(rs)=2 then Stack.pop(stack2) else stack2), rx, ry, ram, fl))
 						| 3 =>
@@ -192,7 +191,7 @@ struct
 						| 4 =>
 				(Vm(ProgramCounter.incrementPointer(p, isarg(revd) + (if resolvew(hd(rs)) < resolver(r) then 1 else 0)), ro, (if r=2 orelse hd(rs)=2 then Stack.pop(stack2) else stack2), rx, ry, ram, fl))
 						| 5 =>
-				(Vm(ProgramCounter.subroutineJump(p, resolver(r), isarg(revd)), ro, stack2, rx, ry, ram, fl))
+				(Vm(ProgramCounter.subroutineJump(p, resolver(r), isarg(revd)), ro, (if r=2 then Stack.pop(stack2) else stack2), rx, ry, ram, fl))
 						| 6 =>
 				(Vm(ProgramCounter.return(p), ro, stack2, rx, ry, ram, fl))
 						| _ => raise RUNTIME

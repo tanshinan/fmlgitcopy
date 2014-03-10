@@ -270,8 +270,8 @@ struct
 
 	fun loop(vm as Vm(pc, a, s, x, y, ram, fl)) =
 	let
-		val dump = (print("\n");dump(vm))
-		val new_vm = step(vm)
+		val dumper = (print("\n");dump(vm))
+		val new_vm = step(vm) handle RUNTIME => (dump(vm); print "\n"; dumpRam(vm); raise RUNTIME)
 	in
 		if fl = RUNNING then
 			loop(new_vm)
@@ -280,4 +280,6 @@ struct
 	end;
 end;
 
-val init_vm = Vm.init(IO_Handler.fileToIntList("out.fml"),50);
+val init_vm = Vm.init(IO_Handler.fileToIntList("out.fml"),200);
+
+Vm.loop(init_vm);

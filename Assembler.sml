@@ -390,11 +390,11 @@ struct
 						[m] => 
 							Inter.addToken(i,Ic(Resolve.mnemonic(m)))
 						(*SINGLE ARGUMENT*)
-						|[m,w] => 
+						|[m,w] => (*changed scary  shit*)
 							let
-								val assert_argument = Resolve.isValidWrite(m,Resolve.write(w)) orelse  (print (error(l,"Forbidden write argument",line));raise SYNTAX "")
+								val assert_argument = Resolve.isValidRead(m,Resolve.read(w)) orelse  (print (error(l,"Forbidden write argument",line));raise SYNTAX "")
 								val assert_no_s = (w <> "$s") orelse  (print (error(l,"Can't use stack as pointer",line));raise SYNTAX "")
-								val instruction = Inter.addToken(i,Ic(Resolve.mnemonic(m) + Resolve.write(w)))
+								val instruction = Inter.addToken(i,Ic(Resolve.mnemonic(m) + Resolve.read(w)))
 								
 							in
 								if resolveToken(w) = NONE then

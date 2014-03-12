@@ -23,13 +23,11 @@ MOV s y
 MOV y s
 
 INC x
-INC x 
 ADD eof x
 MOV s x
 MOV y $x
 SUB eof x
 MOV s x
-MOV y s
 BGR x 100
 JMP loop
 HLT
